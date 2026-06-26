@@ -5,18 +5,18 @@
 
 /* ----------------------------------------------------------------------
    COLLECTIONS — single source of truth for the lookbook.
-   PLACEHOLDER DATA. Replace each entry with the studio's real collections:
-   set `name`, `tagline`, and `img` (path under assets/img/...).
-   While `img` is null, a styled "photo" placeholder tile renders instead.
-   To add a collection, copy a block. To remove one, delete it.
+   Categories below are REAL — derived from the studio's own Instagram posts.
+   `img` is still null (no photos yet) so a styled "photo" placeholder tile
+   renders; set `img` to a path under assets/img/... once real photography
+   is added. To add/remove a category, copy or delete a block.
    ---------------------------------------------------------------------- */
 const COLLECTIONS = [
-  { name: "Bridal Couture",      tagline: "[Placeholder] Heirloom lehengas & wedding ensembles", img: null },
-  { name: "Festive Edit",        tagline: "[Placeholder] Occasion wear for the season",          img: null },
-  { name: "Signature Sarees",    tagline: "[Placeholder] Handpicked drapes, reimagined",          img: null },
-  { name: "Fusion Wear",         tagline: "[Placeholder] Indo-western silhouettes",               img: null },
-  { name: "Everyday Ethnic",     tagline: "[Placeholder] Wardrobe staples for women",             img: null },
-  { name: "Made to Measure",     tagline: "[Placeholder] Bespoke tailoring & styling",            img: null },
+  { name: "Bridal Lehengas",        tagline: "Handcrafted zari, zardozi & khat work", img: null },
+  { name: "Sarees",                 tagline: "Silk, paithani & bandhej drapes",       img: null },
+  { name: "Ethnic & Festive Wear",  tagline: "Navratri and occasion ensembles",        img: null },
+  { name: "Baby Shower & Maternity",tagline: "Bespoke outfits for the mom-to-be",       img: null },
+  { name: "Men's Ethnic Wear",      tagline: "Festive & wedding looks",                 img: null },
+  { name: "Custom Couture",         tagline: "Made to measure, designed around you",    img: null },
 ];
 
 function renderCollections(targetId, limit) {
