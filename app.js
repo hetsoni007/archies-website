@@ -24,7 +24,7 @@ function collCard(c, i) {
   const media = c.img
     ? `<div class="coll-media"><img src="${c.img}" alt="${c.name} — Aarchi's by Archana Soni" loading="lazy" width="600" height="800"></div>`
     : `<div class="coll-media"><div class="ph" role="img" aria-label="${c.name} photo placeholder"></div></div>`;
-  return `<a class="coll-card" href="/contact/" data-reveal style="--i:${i % 3}">
+  return `<a class="coll-card" href="/catalogue/" data-reveal style="--i:${i % 3}">
     ${media}
     <span class="coll-index">${n}</span>
     <div class="coll-cap">

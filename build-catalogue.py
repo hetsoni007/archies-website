@@ -1,0 +1,224 @@
+#!/usr/bin/env python3
+"""
+Aarchi's catalogue generator.
+Reads data/designs.json and emits, from a shared template (no runtime build):
+  /catalogue/index.html                 — filterable liquid-glass catalogue
+  /catalogue/<slug>/index.html          — one SEO page per design + enquiry form
+Run after editing data/designs.json or adding images:  python3 build-catalogue.py
+"""
+import json, pathlib, html
+
+ROOT = pathlib.Path(__file__).parent
+WA = "919879390731"
+SITE = "Aarchi's by Archana Soni"
+DOMAIN = ""  # TODO: set to e.g. "https://aarchisbyarchanasoni.com" once chosen (enables canonical/OG absolute URLs)
+
+designs = json.loads((ROOT / "data" / "designs.json").read_text())
+CATS = [("bridal","Bridal Lehengas"),("saree","Sarees"),("ethnic","Ethnic & Festive"),
+        ("festive","Festive Wear"),("mens","Men's Ethnic"),("babyshower","Baby Shower & Maternity")]
+OCCASIONS = sorted({o for d in designs for o in d["occasions"]})
+STYLES = sorted({s for d in designs for s in d["styles"]})
+
+def esc(s): return html.escape(s, quote=True)
+
+def head(title, desc, canonical_path, og_img, schema=None):
+    cn = f'  <link rel="canonical" href="{DOMAIN}{canonical_path}">\n' if DOMAIN else f'  <!-- canonical TODO (set DOMAIN): {canonical_path} -->\n'
+    ogi = f"{DOMAIN}{og_img}" if DOMAIN else og_img
+    sc = f'  <script type="application/ld+json">{json.dumps(schema, ensure_ascii=False)}</script>\n' if schema else ""
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{esc(title)}</title>
+  <meta name="description" content="{esc(desc)}">
+{cn}  <meta property="og:title" content="{esc(title)}">
+  <meta property="og:description" content="{esc(desc)}">
+  <meta property="og:image" content="{ogi}">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="/styles.css?v=3">
+  <link rel="stylesheet" href="/catalogue.css?v=3">
+  <script>document.documentElement.classList.add("js")</script>
+{sc}</head>
+<body>
+  <div class="preview-banner"><b>PREVIEW BUILD</b> · using the studio&#39;s own Instagram photos (confirm usage rights) · logo &amp; domain pending</div>
+"""
+
+def nav(active=""):
+    def a(href,label,key):
+        cls = ' class="active"' if key==active else ''
+        return f'<a href="{href}"{cls}>{label}</a>'
+    return f"""  <header class="nav">
+    <div class="wrap nav-in">
+      <a href="/" class="brand">Aarchi's<small>by Archana Soni</small></a>
+      <nav class="nav-links">
+        {a("/","Home","home")}
+        {a("/catalogue/","Catalogue","cat")}
+        {a("/about/","About","about")}
+        {a("/contact/","Contact","contact")}
+        <a href="/contact/" class="nav-cta">Book a Consultation</a>
+      </nav>
+      <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+"""
+
+FOOTER = f"""  <footer class="foot">
+    <div class="wrap">
+      <div class="foot-top">
+        <div>
+          <a href="/" class="brand">Aarchi's<small>by Archana Soni</small></a>
+          <p style="margin-top:14px;max-width:34ch;color:#b8a89c;font-size:14.5px">Custom fashion designer, Ahmedabad. Where tradition meets trend.</p>
+        </div>
+        <div><h4>Explore</h4><ul>
+          <li><a href="/catalogue/">Catalogue</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul></div>
+        <div><h4>Visit</h4><ul>
+          <li>[Studio address — Ahmedabad]</li>
+          <li><a href="https://wa.me/{WA}">WhatsApp: +91 98793 90731</a></li>
+        </ul></div>
+      </div>
+      <div class="foot-bot">
+        <span>© <span id="year">2026</span> Aarchi's by Archana Soni. All rights reserved.</span>
+        <span>Crafted in Ahmedabad.</span>
+      </div>
+    </div>
+  </footer>
+  <a href="https://wa.me/{WA}" class="wa-fab" aria-label="Chat on WhatsApp" rel="noopener">
+    <svg viewBox="0 0 24 24"><path d="M.06 24l1.68-6.13A11.83 11.83 0 010 11.98C0 5.37 5.37 0 11.98 0a11.9 11.9 0 018.41 3.49 11.82 11.82 0 013.49 8.41c0 6.6-5.38 11.97-11.98 11.97a12 12 0 01-5.73-1.46L.06 24zM6.6 20.2c1.67.99 3.27 1.58 5.38 1.58 5.48 0 9.95-4.46 9.95-9.95 0-5.5-4.45-9.95-9.94-9.95C6.5 1.88 2.04 6.33 2.04 11.82c0 2.22.65 3.88 1.74 5.62l-1 3.62 3.82-1zm11.39-5.55c-.07-.12-.27-.2-.57-.35-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.42.25-.69.25-1.28.18-1.41z"/></svg>
+  </a>
+"""
+
+def chips(items, cls): return "".join(f'<span class="chip {cls}">{esc(i)}</span>' for i in items)
+
+def card(d):
+    occ = " ".join(d["occasions"]); sty = " ".join(d["styles"])
+    return f"""      <a class="dcard glass-card" href="/catalogue/{d['slug']}/" data-cat="{d['category']}" data-occ="{esc(occ)}" data-sty="{esc(sty)}" data-reveal>
+        <div class="dcard-media"><img src="{d['img']}" alt="{esc(d['name'])} — {esc(d['categoryLabel'])} by {SITE}" loading="lazy" width="600" height="750"></div>
+        <div class="dcard-body">
+          <span class="dcard-cat">{esc(d['categoryLabel'])}</span>
+          <h3>{esc(d['name'])}</h3>
+          <div class="dcard-tags">{chips(d['occasions'][:2],'occ')}</div>
+          <span class="dcard-link">View &amp; customise <i>&rarr;</i></span>
+        </div>
+      </a>
+"""
+
+def catalogue_index():
+    cat_pills = '<button class="fpill active" data-filter="cat" data-val="all">All</button>' + "".join(
+        f'<button class="fpill" data-filter="cat" data-val="{k}">{esc(lbl)}</button>' for k,lbl in CATS if any(d['category']==k for d in designs))
+    occ_opts = "".join(f'<option value="{esc(o)}">{esc(o)}</option>' for o in OCCASIONS)
+    sty_opts = "".join(f'<option value="{esc(s)}">{esc(s)}</option>' for s in STYLES)
+    cards = "".join(card(d) for d in designs)
+    schema = {"@context":"https://schema.org","@type":"CollectionPage","name":f"Catalogue — {SITE}",
+              "about":"Bespoke bridal, saree, festive and custom fashion designs, made to measure in Ahmedabad."}
+    title = f"Catalogue — Bridal, Sarees & Custom Designs | {SITE}"
+    desc = "Browse the Aarchi's design catalogue — bridal lehengas, sarees, festive, men's ethnic and baby-shower wear. Filter by occasion & style, then enquire to customise any piece. Made to measure in Ahmedabad."
+    return head(title, desc, "/catalogue/", designs[0]['img'], schema) + nav("cat") + f"""
+  <section class="cat-hero">
+    <div class="cat-hero-bg" data-parallax data-speed="0.16"></div>
+    <div class="wrap center">
+      <p class="eyebrow" data-reveal style="--i:0">The Catalogue</p>
+      <h1 data-reveal style="--i:1">Designs, made <em>for you</em></h1>
+      <p class="lead center" data-reveal style="--i:2">Every piece is handcrafted and made to measure. Find a design you love,
+        pick your occasion &amp; size, and we&#39;ll tailor it just for you.</p>
+    </div>
+  </section>
+
+  <div class="filterbar glass" data-reveal>
+    <div class="wrap fb-in">
+      <div class="fpills">{cat_pills}</div>
+      <div class="fselects">
+        <label>Occasion<select id="f-occ"><option value="all">Any occasion</option>{occ_opts}</select></label>
+        <label>Style<select id="f-sty"><option value="all">Any style</option>{sty_opts}</select></label>
+        <button id="f-clear" class="fclear">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="cat-grid-wrap">
+    <div class="wrap">
+      <p class="cat-count" id="cat-count"></p>
+      <div class="dgrid" id="dgrid">
+{cards}      </div>
+      <p class="cat-empty" id="cat-empty" hidden>No designs match those filters yet — <a href="https://wa.me/{WA}">message us</a> and we&#39;ll create one for you.</p>
+    </div>
+  </section>
+""" + FOOTER + '  <script src="/app.js?v=3" defer></script>\n  <script src="/catalogue.js?v=3" defer></script>\n</body>\n</html>\n'
+
+def design_page(d, related):
+    title = f"{d['name']} — {d['categoryLabel']} | {SITE}"
+    occ_opts = "".join(f'<option{" selected" if o==d["occasions"][0] else ""}>{esc(o)}</option>' for o in OCCASIONS)
+    sty_opts = "".join(f'<option{" selected" if s==d["styles"][0] else ""}>{esc(s)}</option>' for s in STYLES)
+    sizes = ["XS","S","M","L","XL","XXL","Made-to-measure"]
+    size_opts = "".join(f'<option{" selected" if s=="Made-to-measure" else ""}>{esc(s)}</option>' for s in sizes)
+    schema = {"@context":"https://schema.org","@type":"Product","name":d["name"],
+              "image":(DOMAIN+d["img"]) if DOMAIN else d["img"],"description":d["description"],
+              "category":d["categoryLabel"],"brand":{"@type":"Brand","name":SITE},
+              "areaServed":"Ahmedabad, India","material":"Made to measure",
+              "offers":{"@type":"Offer","availability":"https://schema.org/MadeToOrder",
+                        "priceCurrency":"INR","price":"0","priceSpecification":{"@type":"PriceSpecification","valueAddedTaxIncluded":True}}}
+    bc = {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Catalogue","item":(DOMAIN+"/catalogue/") if DOMAIN else "/catalogue/"},
+        {"@type":"ListItem","position":2,"name":d["name"]}]}
+    rel_cards = "".join(card(r) for r in related)
+    return head(title, d["metaDescription"], f"/catalogue/{d['slug']}/", d["img"], [schema, bc]) + nav("cat") + f"""
+  <section class="design">
+    <div class="wrap design-in">
+      <div class="design-media glass" data-reveal="left">
+        <img src="{d['img']}" alt="{esc(d['name'])} — {esc(d['categoryLabel'])} by {SITE}" width="800" height="1000">
+      </div>
+      <div class="design-info" data-reveal="right">
+        <nav class="crumbs"><a href="/catalogue/">Catalogue</a> <span>/</span> {esc(d['categoryLabel'])}</nav>
+        <h1>{esc(d['name'])}</h1>
+        <div class="design-tags">{chips(d['occasions'],'occ')}{chips(d['styles'],'sty')}</div>
+        <p class="design-desc">{esc(d['detail'])}</p>
+        <ul class="design-meta">
+          <li><b>Category</b> {esc(d['categoryLabel'])}</li>
+          <li><b>Crafting</b> Handcrafted, made to measure in Ahmedabad</li>
+          <li><b>Pricing</b> On enquiry — every piece is customised</li>
+        </ul>
+
+        <form class="enquiry glass" id="design-enquiry"
+              data-name="{esc(d['name'])}" data-cat="{esc(d['categoryLabel'])}" data-slug="{d['slug']}">
+          <h2>Enquire &amp; customise</h2>
+          <div class="erow">
+            <label>Occasion<select name="occasion">{occ_opts}</select></label>
+            <label>Size<select name="size">{size_opts}</select></label>
+          </div>
+          <div class="erow">
+            <label>Style preference<select name="style">{sty_opts}</select></label>
+            <label>Your name<input name="name" placeholder="Name"></label>
+          </div>
+          <label class="efull">Customisation notes
+            <textarea name="notes" placeholder="Colour, fabric, sleeves, timeline, budget…"></textarea></label>
+          <button type="submit" class="btn btn-primary ebtn">Enquire on WhatsApp</button>
+          <p class="form-note">Opens WhatsApp with your details pre-filled for this design.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+""" + (f"""
+  <section class="section-soft related">
+    <div class="wrap">
+      <p class="eyebrow center" data-reveal>You may also like</p>
+      <h2 class="center" data-reveal style="margin-top:6px;font-size:clamp(26px,3.4vw,40px)">More {esc(d['categoryLabel'])}</h2>
+      <div class="dgrid">{rel_cards}</div>
+    </div>
+  </section>
+""" if related else "") + FOOTER + '  <script src="/app.js?v=3" defer></script>\n  <script src="/catalogue.js?v=3" defer></script>\n</body>\n</html>\n'
+
+def main():
+    (ROOT/"catalogue").mkdir(exist_ok=True)
+    (ROOT/"catalogue"/"index.html").write_text(catalogue_index())
+    for d in designs:
+        related = [r for r in designs if r["category"]==d["category"] and r["slug"]!=d["slug"]][:3]
+        out = ROOT/"catalogue"/d["slug"]; out.mkdir(exist_ok=True)
+        (out/"index.html").write_text(design_page(d, related))
+    print(f"generated /catalogue/ + {len(designs)} design pages")
+
+if __name__ == "__main__":
+    main()
