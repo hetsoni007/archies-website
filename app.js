@@ -11,12 +11,12 @@
    is added. To add/remove a category, copy or delete a block.
    ---------------------------------------------------------------------- */
 const COLLECTIONS = [
-  { name: "Bridal Lehengas",        tagline: "Handcrafted zari, zardozi & khat work", img: null },
-  { name: "Sarees",                 tagline: "Silk, paithani & bandhej drapes",       img: null },
-  { name: "Ethnic & Festive Wear",  tagline: "Navratri and occasion ensembles",        img: null },
-  { name: "Baby Shower & Maternity",tagline: "Bespoke outfits for the mom-to-be",       img: null },
-  { name: "Men's Ethnic Wear",      tagline: "Festive & wedding looks",                 img: null },
-  { name: "Custom Couture",         tagline: "Made to measure, designed around you",    img: null },
+  { name: "Bridal Lehengas",        tagline: "Handcrafted zari, zardozi & khat work", img: "/assets/img/bridal-lehengas.jpg" },
+  { name: "Sarees",                 tagline: "Silk, paithani & bandhej drapes",       img: "/assets/img/sarees.jpg" },
+  { name: "Ethnic & Festive Wear",  tagline: "Navratri and occasion ensembles",        img: "/assets/img/ethnic-festive.jpg" },
+  { name: "Baby Shower & Maternity",tagline: "Bespoke outfits for the mom-to-be",       img: "/assets/img/baby-shower.jpg" },
+  { name: "Men's Ethnic Wear",      tagline: "Festive & wedding looks",                 img: "/assets/img/mens-ethnic.jpg" },
+  { name: "Custom Couture",         tagline: "Made to measure, designed around you",    img: "/assets/img/custom-couture.jpg" },
 ];
 
 function renderCollections(targetId, limit) {
