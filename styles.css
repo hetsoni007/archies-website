@@ -1,0 +1,181 @@
+/* =========================================================================
+   Aarchi's by Archana Soni — design system
+   Hand-coded, no build step. Retheme by editing the variables below only.
+   Display font falls back to Georgia until a webfont is self-hosted in
+   assets/fonts (see README "Fonts").
+   ========================================================================= */
+
+:root {
+  /* --- palette (placeholder — retune to the real logo colours) --- */
+  --bg:        #FCF8F3;   /* warm ivory page */
+  --bg-soft:   #F4ECE0;   /* sectioned panels */
+  --ink:       #241F1C;   /* primary text */
+  --ink-soft:  #6F645C;   /* secondary text */
+  --line:      #E7DCCD;   /* hairline borders */
+  --wine:      #7A2E3A;   /* primary accent (deep maroon) */
+  --wine-dk:   #5E2129;   /* darker maroon (hover) */
+  --gold:      #B0894B;   /* secondary accent (champagne) */
+  --rose:      #C98B86;   /* soft blush */
+  --white:     #FFFFFF;
+
+  /* --- type --- */
+  --font-display: "Cormorant Garamond", "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* --- spacing / shape --- */
+  --maxw: 1180px;
+  --gut: clamp(20px, 5vw, 56px);
+  --radius: 4px;
+  --shadow: 0 18px 50px -28px rgba(36, 31, 28, .45);
+  --ease: cubic-bezier(.22, .61, .36, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  font-size: 17px;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.08; letter-spacing: .2px; }
+
+/* --- layout helpers --- */
+.wrap { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gut); }
+.eyebrow {
+  font-family: var(--font-body); font-size: 12px; font-weight: 600;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--gold);
+}
+.lead { font-size: clamp(17px, 2vw, 20px); color: var(--ink-soft); max-width: 56ch; }
+section { padding-block: clamp(64px, 9vw, 120px); }
+.section-soft { background: var(--bg-soft); }
+.center { text-align: center; margin-inline: auto; }
+
+/* --- buttons --- */
+.btn {
+  display: inline-flex; align-items: center; gap: .55em;
+  font-weight: 600; font-size: 15px; letter-spacing: .02em;
+  padding: 14px 26px; border-radius: var(--radius);
+  border: 1px solid transparent; cursor: pointer;
+  transition: transform .25s var(--ease), background .25s, color .25s, border-color .25s;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-primary { background: var(--wine); color: var(--white); }
+.btn-primary:hover { background: #66242e; }
+.btn-ghost { border-color: var(--ink); color: var(--ink); background: transparent; }
+.btn-ghost:hover { background: var(--ink); color: var(--bg); }
+
+/* =========================== NAV =========================== */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: saturate(140%) blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-in { display: flex; align-items: center; justify-content: space-between; height: 70px; }
+.brand { font-family: var(--font-display); font-size: 24px; font-weight: 700; letter-spacing: .5px; }
+.brand small { display: block; font-family: var(--font-body); font-size: 9.5px; letter-spacing: .32em; text-transform: uppercase; color: var(--ink-soft); margin-top: 1px; }
+.nav-links { display: flex; align-items: center; gap: 34px; }
+.nav-links a { font-size: 14.5px; letter-spacing: .04em; color: var(--ink-soft); transition: color .2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--ink); }
+.nav-cta { font-weight: 600; color: var(--wine) !important; }
+.burger { display: none; flex-direction: column; gap: 5px; background: none; border: 0; cursor: pointer; padding: 8px; }
+.burger span { width: 24px; height: 2px; background: var(--ink); transition: .3s; }
+
+/* =========================== HERO =========================== */
+.hero { position: relative; min-height: 86vh; display: grid; place-items: center; text-align: center; overflow: hidden; }
+.hero-bg {
+  position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--rose) 30%, transparent), transparent 60%),
+    linear-gradient(180deg, var(--bg-soft), var(--bg));
+}
+.hero h1 { font-size: clamp(44px, 8vw, 92px); font-weight: 600; }
+.hero h1 em { font-style: italic; color: var(--wine); }
+.hero .lead { margin: 22px auto 32px; }
+.hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+/* =========================== COLLECTIONS GRID =========================== */
+.coll-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin-top: 48px; }
+.coll-card { position: relative; border-radius: var(--radius); overflow: hidden; background: var(--bg-soft); box-shadow: var(--shadow); }
+.coll-card .ph, .coll-card img { aspect-ratio: 3 / 4; width: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+.coll-card:hover .ph, .coll-card:hover img { transform: scale(1.05); }
+.coll-card .cap {
+  position: absolute; inset: auto 0 0 0; padding: 22px;
+  background: linear-gradient(0deg, rgba(20,16,14,.78), transparent);
+  color: var(--white);
+}
+.coll-card .cap h3 { font-size: 25px; }
+.coll-card .cap span { font-size: 12.5px; letter-spacing: .04em; opacity: .85; }
+/* CSS-only photo placeholder tile */
+.ph { display: grid; place-items: center; color: color-mix(in srgb, var(--ink) 45%, transparent);
+  font-family: var(--font-display); font-size: 20px; letter-spacing: .04em;
+  background: repeating-linear-gradient(135deg, var(--bg-soft) 0 18px, #efe5d6 18px 36px); }
+.ph::after { content: "photo"; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; }
+
+/* =========================== STORY / ABOUT =========================== */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 72px); align-items: center; }
+.split .ph { aspect-ratio: 4 / 5; border-radius: var(--radius); }
+.prose p { margin-top: 16px; color: var(--ink-soft); }
+.prose h2 { font-size: clamp(30px, 4.4vw, 48px); }
+
+/* =========================== CONTACT =========================== */
+.field { margin-bottom: 18px; }
+.field label { display: block; font-size: 13px; font-weight: 600; letter-spacing: .04em; margin-bottom: 7px; }
+.field input, .field textarea {
+  width: 100%; font: inherit; font-size: 15px; padding: 13px 15px;
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); color: var(--ink);
+}
+.field input:focus, .field textarea:focus { outline: 2px solid var(--gold); outline-offset: 1px; border-color: var(--gold); }
+.field textarea { min-height: 130px; resize: vertical; }
+.form-note { font-size: 13px; color: var(--ink-soft); margin-top: 10px; }
+
+/* =========================== FOOTER =========================== */
+.foot { background: var(--ink); color: #d9cfc6; padding-block: 60px 34px; }
+.foot a { color: #d9cfc6; transition: color .2s; }
+.foot a:hover { color: var(--white); }
+.foot-top { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 40px; }
+.foot .brand { color: var(--bg); }
+.foot .brand small { color: #b8a89c; }
+.foot h4 { font-family: var(--font-body); font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #b8a89c; margin-bottom: 14px; }
+.foot ul { list-style: none; display: grid; gap: 10px; font-size: 14.5px; }
+.socials { display: flex; gap: 14px; margin-top: 18px; }
+.socials a { width: 38px; height: 38px; border: 1px solid #43392f; border-radius: 50%; display: grid; place-items: center; }
+.socials svg { width: 17px; height: 17px; fill: currentColor; }
+.foot-bot { margin-top: 44px; padding-top: 22px; border-top: 1px solid #3a3027; display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; font-size: 13px; color: #9a8d80; }
+
+/* =========================== WHATSAPP FAB =========================== */
+.wa-fab { position: fixed; right: 22px; bottom: 22px; z-index: 60; width: 56px; height: 56px; border-radius: 50%; background: #25D366; display: grid; place-items: center; box-shadow: var(--shadow); transition: transform .25s var(--ease); }
+.wa-fab:hover { transform: scale(1.08); }
+.wa-fab svg { width: 30px; height: 30px; fill: #fff; }
+
+/* =========================== PREVIEW BANNER (remove at launch) =========================== */
+.preview-banner { background: var(--wine); color: #fff; font-size: 13px; text-align: center; padding: 8px 16px; letter-spacing: .02em; }
+.preview-banner b { letter-spacing: .12em; }
+
+/* =========================== REVEAL ANIM =========================== */
+[data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+[data-reveal].in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { [data-reveal] { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+
+/* =========================== RESPONSIVE =========================== */
+@media (max-width: 900px) {
+  .coll-grid { grid-template-columns: repeat(2, 1fr); }
+  .split { grid-template-columns: 1fr; }
+  .nav-links { position: fixed; inset: 70px 0 auto 0; flex-direction: column; gap: 0; background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px var(--gut) 20px; transform: translateY(-120%); transition: transform .35s var(--ease); }
+  .nav-links.open { transform: none; }
+  .nav-links a { width: 100%; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .burger { display: flex; }
+  .foot-top { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .coll-grid { grid-template-columns: 1fr; }
+  .foot-top { grid-template-columns: 1fr; gap: 30px; }
+  .hero-actions { flex-direction: column; }
+  .hero-actions .btn { width: 100%; justify-content: center; }
+}
