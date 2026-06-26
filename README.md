@@ -28,19 +28,22 @@ Search the repo for these tokens and replace each:
 
 | Token | What to put | Where |
 |---|---|---|
-| `[PLACEHOLDER]` | Real brand copy (hero, story, descriptions) | all pages |
-| `COLLECTIONS = [...]` | Real collection names + tagline + `img` paths | `app.js` |
-| `91XXXXXXXXXX` | Real WhatsApp number (country code, no `+`/spaces) | all pages (`wa.me/...`) |
-| `+91 XXXXX XXXXX` | Display phone number | footers + contact |
-| `hello@DOMAIN-TBD` | Real studio email | footers + contact |
+| `[PLACEHOLDER]` | Real brand copy (story, service descriptions) | about, footers |
+| `COLLECTIONS = [...]` | Real collection/work names + tagline + `img` paths | `app.js` |
+| `hello@DOMAIN-TBD` | Real studio email (none found publicly — DM/phone only) | footers + contact |
 | `[Studio address — Ahmedabad]` | Real address + hours | footers + contact |
 | photo `.ph` tiles | Real photography (set `img` in COLLECTIONS / swap `.ph` divs) | everywhere |
 
-**Real facts already wired in** (verified from public profiles, safe to keep):
-Instagram, Facebook, Pinterest, LinkedIn links in the footers.
+**Real facts wired in** (verified from the live Instagram profile + public pages, safe to keep):
+- Brand: **AARCHI'S** · owner Archana (personal IG **@aarchi1976**)
+- Tagline: **"Where Tradition Meets Trend"** · positioning: **custom / made-to-measure fashion** (Fashion Designer, Ahmedabad)
+- Phone / WhatsApp: **+91 98793 90731** → `wa.me/919879390731` (live on all pages + FAB)
+- Social links: Instagram, Facebook, Pinterest, LinkedIn in the footers
+- Profile stats as of scrape: 1,414 followers · 777 posts (not displayed; for reference only)
 
-**Do NOT fabricate:** testimonials, pricing, metrics. The About page has a commented-out
-testimonials slot — fill it only with real client quotes.
+**Still needed from the owner:** logo, real photos, brand story, studio address + hours, email,
+any real testimonials. **Do NOT fabricate** testimonials, pricing, or metrics — the About page
+has a commented-out testimonials slot to fill only with real client quotes.
 
 ## Adding / editing collections
 Edit the `COLLECTIONS` array in [`app.js`](app.js). Each entry:
