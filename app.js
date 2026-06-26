@@ -43,11 +43,23 @@ function renderCollections(targetId, limit) {
 }
 
 /* ---------------------- reveal-on-scroll (with stagger) ---------------------- */
+/* Robustness: content is never left hidden. Elements already in view are
+   revealed synchronously on load (so above-the-fold never flashes blank);
+   the observer only animates elements as they scroll into view; and if there
+   is no observer support / no measurable viewport, everything is shown. */
 function initReveal() {
+  const els = Array.from(document.querySelectorAll("[data-reveal]"));
+  const show = (n) => n.classList.add("in");
+  const vh = window.innerHeight;
+  if (!("IntersectionObserver" in window) || !vh) { els.forEach(show); return; }
+  // Reveal anything already on screen right now (don't wait for async IO).
+  els.forEach(n => { if (n.getBoundingClientRect().top < vh * 0.95) show(n); });
   const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    entries.forEach(e => { if (e.isIntersecting) { show(e.target); io.unobserve(e.target); } });
   }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
-  document.querySelectorAll("[data-reveal]").forEach(n => io.observe(n));
+  els.forEach(n => { if (!n.classList.contains("in")) io.observe(n); });
+  // Last-resort self-heal for odd headless/timing states.
+  setTimeout(() => { if (!document.querySelector("[data-reveal].in")) els.forEach(show); }, 800);
 }
 
 /* ---------------------- scroll engine: progress bar + parallax ---------------------- */
