@@ -34,18 +34,27 @@
 
   <!-- ===== HERO ===== -->
   <section class="hero">
-    <div class="hero-bg"></div>
+    <div class="hero-bg" data-parallax data-speed="0.18"></div>
     <div class="wrap">
-      <p class="eyebrow" data-reveal>Custom Fashion Designer · Ahmedabad</p>
-      <h1 data-reveal>Where Tradition<br>Meets <em>Trend</em></h1>
-      <p class="lead center" data-reveal>Custom fashion, tailored for you — dream outfits designed
+      <p class="eyebrow" data-reveal style="--i:0">Custom Fashion Designer · Ahmedabad</p>
+      <h1 data-reveal style="--i:1">Where Tradition<br>Meets <em>Trend</em></h1>
+      <p class="lead center" data-reveal style="--i:2">Custom fashion, tailored for you — dream outfits designed
         and crafted in Ahmedabad by Archana Soni.</p>
-      <div class="hero-actions" data-reveal>
-        <a href="/collections/" class="btn btn-primary">Explore Collections</a>
+      <div class="hero-actions" data-reveal style="--i:3">
+        <a href="/collections/" class="btn btn-primary" data-magnetic>Explore Collections</a>
         <a href="/contact/" class="btn btn-ghost">Enquire on WhatsApp</a>
       </div>
     </div>
+    <div class="scroll-cue" aria-hidden="true">Scroll</div>
   </section>
+
+  <!-- ===== MARQUEE ===== -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Bridal Couture</span><span>Handcrafted Sarees</span><span>Festive &amp; Navratri</span><span>Bespoke Tailoring</span><span>Baby Shower &amp; Maternity</span><span>Where Tradition Meets Trend</span>
+      <span>Bridal Couture</span><span>Handcrafted Sarees</span><span>Festive &amp; Navratri</span><span>Bespoke Tailoring</span><span>Baby Shower &amp; Maternity</span><span>Where Tradition Meets Trend</span>
+    </div>
+  </div>
 
   <!-- ===== FEATURED COLLECTIONS ===== -->
   <section>
@@ -62,10 +71,11 @@
   <!-- ===== STORY STRIP ===== -->
   <section class="section-soft">
     <div class="wrap split">
-      <img src="/assets/img/story-lehenga.webp" alt="Handcrafted bridal lehenga by Aarchi's"
-        width="800" height="1000" data-reveal
-        style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--radius)">
-      <div class="prose" data-reveal>
+      <div class="media" data-reveal="left">
+        <img src="/assets/img/story-lehenga.webp" alt="Handcrafted bridal lehenga by Aarchi's"
+          width="800" height="1000" data-parallax data-speed="0.06">
+      </div>
+      <div class="prose" data-reveal="right">
         <p class="eyebrow">The Studio</p>
         <h2>A label built on craft &amp; care</h2>
         <p>Founded by Archana Soni in Ahmedabad, Aarchi's crafts timeless designs that
