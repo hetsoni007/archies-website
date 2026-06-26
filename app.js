@@ -5,18 +5,18 @@
 
 /* ----------------------------------------------------------------------
    COLLECTIONS — single source of truth for the lookbook.
-   Categories below are REAL — derived from the studio's own Instagram posts.
-   `img` is still null (no photos yet) so a styled "photo" placeholder tile
-   renders; set `img` to a path under assets/img/... once real photography
-   is added. To add/remove a category, copy or delete a block.
+   Categories AND photos are REAL — from the studio's own Instagram (see
+   assets/img/SOURCES.md for per-image source posts + credits). To swap a
+   photo, replace the file in assets/img/ or change `img`. Set `img: null`
+   to fall back to a styled "photo" placeholder tile. Add/remove = copy/delete.
    ---------------------------------------------------------------------- */
 const COLLECTIONS = [
-  { name: "Bridal Lehengas",        tagline: "Handcrafted zari, zardozi & khat work", img: "/assets/img/bridal-lehengas.jpg" },
-  { name: "Sarees",                 tagline: "Silk, paithani & bandhej drapes",       img: "/assets/img/sarees.jpg" },
-  { name: "Ethnic & Festive Wear",  tagline: "Navratri and occasion ensembles",        img: "/assets/img/ethnic-festive.jpg" },
-  { name: "Baby Shower & Maternity",tagline: "Bespoke outfits for the mom-to-be",       img: "/assets/img/baby-shower.jpg" },
-  { name: "Men's Ethnic Wear",      tagline: "Festive & wedding looks",                 img: "/assets/img/mens-ethnic.jpg" },
-  { name: "Custom Couture",         tagline: "Made to measure, designed around you",    img: "/assets/img/custom-couture.jpg" },
+  { name: "Bridal Lehengas",        tagline: "Handcrafted zari, zardozi & khat work", img: "/assets/img/bridal-lehengas.webp" },
+  { name: "Sarees",                 tagline: "Silk, paithani & bandhej drapes",       img: "/assets/img/sarees.webp" },
+  { name: "Ethnic & Festive Wear",  tagline: "Navratri and occasion ensembles",        img: "/assets/img/ethnic-festive.webp" },
+  { name: "Baby Shower & Maternity",tagline: "Bespoke outfits for the mom-to-be",       img: "/assets/img/baby-shower.webp" },
+  { name: "Men's Ethnic Wear",      tagline: "Festive & wedding looks",                 img: "/assets/img/mens-ethnic.webp" },
+  { name: "Custom Couture",         tagline: "Made to measure, designed around you",    img: "/assets/img/custom-couture.webp" },
 ];
 
 function renderCollections(targetId, limit) {

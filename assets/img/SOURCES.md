@@ -10,11 +10,11 @@ Also consider re-exporting to WebP for performance (currently Instagram-compress
 
 | File | Source post | Used on | Credits (from caption) |
 |---|---|---|---|
-| `bridal-lehengas.jpg` | [DFcqbz2sZmU](https://www.instagram.com/p/DFcqbz2sZmU/) | Collections — Bridal Lehengas | none listed |
-| `sarees.jpg` | [C8wuTa8PdlI](https://www.instagram.com/p/C8wuTa8PdlI/) (pinned) | Collections — Sarees | 📸 @one_elevenstudios · 💎 @radhaswamijewells · 💄 @umangibeauty_makeover_by_jigna |
-| `ethnic-festive.jpg` | [C8Zh8sov69l](https://www.instagram.com/p/C8Zh8sov69l/) (pinned) | Collections — Ethnic & Festive | 📸 @one_elevenstudios · 💎 @radhaswamijewells · 💄 @umangibeauty_makeover_by_jigna |
-| `baby-shower.jpg` | [DF5NambM4aV](https://www.instagram.com/p/DF5NambM4aV/) | Collections — Baby Shower & Maternity | none listed |
-| `mens-ethnic.jpg` | [DFuqZtqvluP](https://www.instagram.com/p/DFuqZtqvluP/) | Collections — Men's Ethnic Wear | none listed |
-| `custom-couture.jpg` | [DG45O4CsfoJ](https://www.instagram.com/p/DG45O4CsfoJ/) | Collections — Custom Couture | none listed |
-| `founder-archana.jpg` | [DDhPptUsEkx](https://www.instagram.com/p/DDhPptUsEkx/) (pinned) | About — founder portrait | none listed |
-| `story-lehenga.jpg` | [DE15rXasonC](https://www.instagram.com/p/DE15rXasonC/) | Home — story strip | 📸 naman_patel_photography · 💄 @makeup_by_umangi_bhalani · 💎 @suryavanshi_designer_jewellery · styling @abeyajmera._ @kathaai.era |
+| `bridal-lehengas.webp` | [DFcqbz2sZmU](https://www.instagram.com/p/DFcqbz2sZmU/) | Collections — Bridal Lehengas | none listed |
+| `sarees.webp` | [C8wuTa8PdlI](https://www.instagram.com/p/C8wuTa8PdlI/) (pinned) | Collections — Sarees | 📸 @one_elevenstudios · 💎 @radhaswamijewells · 💄 @umangibeauty_makeover_by_jigna |
+| `ethnic-festive.webp` | [C8Zh8sov69l](https://www.instagram.com/p/C8Zh8sov69l/) (pinned) | Collections — Ethnic & Festive | 📸 @one_elevenstudios · 💎 @radhaswamijewells · 💄 @umangibeauty_makeover_by_jigna |
+| `baby-shower.webp` | [DF5NambM4aV](https://www.instagram.com/p/DF5NambM4aV/) | Collections — Baby Shower & Maternity | none listed |
+| `mens-ethnic.webp` | [DFuqZtqvluP](https://www.instagram.com/p/DFuqZtqvluP/) | Collections — Men's Ethnic Wear | none listed |
+| `custom-couture.webp` | [DG45O4CsfoJ](https://www.instagram.com/p/DG45O4CsfoJ/) | Collections — Custom Couture | none listed |
+| `founder-archana.webp` | [DDhPptUsEkx](https://www.instagram.com/p/DDhPptUsEkx/) (pinned) | About — founder portrait | none listed |
+| `story-lehenga.webp` | [DE15rXasonC](https://www.instagram.com/p/DE15rXasonC/) | Home — story strip | 📸 naman_patel_photography · 💄 @makeup_by_umangi_bhalani · 💎 @suryavanshi_designer_jewellery · styling @abeyajmera._ @kathaai.era |
