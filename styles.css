@@ -6,16 +6,17 @@
    ========================================================================= */
 
 :root {
-  /* --- palette (placeholder — retune to the real logo colours) --- */
-  --bg:        #FCF8F3;   /* warm ivory page */
-  --bg-soft:   #F4ECE0;   /* sectioned panels */
-  --ink:       #241F1C;   /* primary text */
-  --ink-soft:  #6F645C;   /* secondary text */
-  --line:      #E7DCCD;   /* hairline borders */
-  --wine:      #7A2E3A;   /* primary accent (deep maroon) */
-  --wine-dk:   #5E2129;   /* darker maroon (hover) */
-  --gold:      #B0894B;   /* secondary accent (champagne) */
-  --rose:      #C98B86;   /* soft blush */
+  /* --- palette (matched to the Aarchi's logo: gold mark + black wordmark) --- */
+  --bg:        #FCF9F4;   /* warm ivory page */
+  --bg-soft:   #F5EFE3;   /* sectioned panels */
+  --ink:       #1C1A17;   /* near-black text (matches wordmark) */
+  --ink-soft:  #6B6259;   /* secondary text */
+  --line:      #EAE1D2;   /* hairline borders */
+  --gold:      #D8A52A;   /* BRAND gold (sampled from logo) */
+  --gold-deep: #A87C16;   /* accessible gold for text/links on light bg */
+  --wine:      #A87C16;   /* legacy alias → brand deep-gold (keeps inline refs on-brand) */
+  --wine-dk:   #8A6410;   /* deep-gold hover */
+  --rose:      #EBD8A6;   /* soft gold glow (hero backdrop) */
   --white:     #FFFFFF;
 
   /* --- type --- */
@@ -65,8 +66,8 @@ section { padding-block: clamp(64px, 9vw, 120px); }
   transition: transform .25s var(--ease), background .25s, color .25s, border-color .25s;
 }
 .btn:hover { transform: translateY(-2px); }
-.btn-primary { background: var(--wine); color: var(--white); }
-.btn-primary:hover { background: #66242e; }
+.btn-primary { background: var(--ink); color: var(--bg); }
+.btn-primary:hover { background: var(--gold); color: var(--ink); }
 .btn-ghost { border-color: var(--ink); color: var(--ink); background: transparent; }
 .btn-ghost:hover { background: var(--ink); color: var(--bg); }
 
@@ -155,7 +156,8 @@ section { padding-block: clamp(64px, 9vw, 120px); }
 .wa-fab svg { width: 30px; height: 30px; fill: #fff; }
 
 /* =========================== PREVIEW BANNER (remove at launch) =========================== */
-.preview-banner { background: var(--wine); color: #fff; font-size: 13px; text-align: center; padding: 8px 16px; letter-spacing: .02em; }
+.preview-banner { background: var(--ink); color: #fff; font-size: 13px; text-align: center; padding: 8px 16px; letter-spacing: .02em; }
+.preview-banner b { color: var(--gold); }
 .preview-banner b { letter-spacing: .12em; }
 
 /* =========================== REVEAL ANIM =========================== */
