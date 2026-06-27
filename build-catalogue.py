@@ -37,8 +37,8 @@ def head(title, desc, canonical_path, og_img, schema=None):
   <meta property="og:image" content="{ogi}">
   <meta property="og:type" content="website">
   <link rel="icon" href="/assets/favicon.svg">
-  <link rel="stylesheet" href="/styles.css?v=5">
-  <link rel="stylesheet" href="/catalogue.css?v=5">
+  <link rel="stylesheet" href="/styles.css?v=6">
+  <link rel="stylesheet" href="/catalogue.css?v=6">
   <script>document.documentElement.classList.add("js")</script>
 {sc}</head>
 <body>
@@ -147,7 +147,7 @@ def catalogue_index():
       <p class="cat-empty" id="cat-empty" hidden>No designs match those filters yet — <a href="https://wa.me/{WA}">message us</a> and we&#39;ll create one for you.</p>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=5" defer></script>\n  <script src="/catalogue.js?v=5" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=6" defer></script>\n  <script src="/catalogue.js?v=6" defer></script>\n</body>\n</html>\n'
 
 def design_page(d, related):
     title = f"{d['name']} — {d['categoryLabel']} | {SITE}"
@@ -209,7 +209,64 @@ def design_page(d, related):
       <div class="dgrid">{rel_cards}</div>
     </div>
   </section>
-""" if related else "") + FOOTER + '  <script src="/app.js?v=5" defer></script>\n  <script src="/catalogue.js?v=5" defer></script>\n</body>\n</html>\n'
+""" if related else "") + FOOTER + '  <script src="/app.js?v=6" defer></script>\n  <script src="/catalogue.js?v=6" defer></script>\n</body>\n</html>\n'
+
+SCENE_DESC = {
+    "bridal":     "Heirloom lehengas in zari, zardozi and khat work — crafted for the moment you've always pictured.",
+    "saree":      "Silk, paithani and bandhej drapes, hand-finished and styled for every celebration.",
+    "ethnic":     "Festive and Navratri ensembles that turn a little tradition into a statement.",
+    "festive":    "Occasion-ready festive wear, designed and made to measure.",
+    "mens":       "Sharp, regal ethnic wear for grooms and the men of the celebration.",
+    "babyshower": "Bespoke baby-shower and maternity outfits to make the mum-to-be glow.",
+}
+
+def home_showcase():
+    scenes, i = [], 0
+    for key, label in CATS:
+        items = [d for d in designs if d["category"] == key]
+        if not items: continue
+        i += 1
+        hero = items[0]
+        rev = " rev" if i % 2 == 0 else ""
+        strip = "".join(
+            f'<a class="strip-card" href="/catalogue/{esc(d["slug"])}/"><img src="{d["img"]}" alt="{esc(d["name"])}" loading="lazy" width="240" height="320"><span>{esc(d["name"])}</span></a>'
+            for d in items[:10])
+        nlabel = "design" if len(items) == 1 else "designs"
+        scenes.append(f"""  <div class="scene{rev}">
+    <div class="wrap">
+      <div class="scene-row">
+        <div class="scene-media" data-scrub>
+          <img src="{hero['img']}" alt="{esc(hero['name'])} — {esc(label)} by {SITE}" loading="lazy" width="720" height="900">
+        </div>
+        <div class="scene-info">
+          <span class="scene-num" data-reveal>{i:02d}</span>
+          <h2 data-reveal style="--i:1">{esc(label)}</h2>
+          <p class="lead" data-reveal style="--i:2">{esc(SCENE_DESC.get(key, ''))}</p>
+          <a class="scene-cta" href="/catalogue/?cat={key}" data-reveal style="--i:3">Explore {len(items)} {nlabel} <i>&rarr;</i></a>
+        </div>
+      </div>
+      <div class="strip" data-reveal>{strip}</div>
+    </div>
+  </div>""")
+    return f"""  <section class="showcase">
+    <div class="wrap showcase-intro center">
+      <p class="eyebrow" data-reveal>The Signature Edit</p>
+      <h2 data-reveal style="font-size:clamp(30px,5vw,56px);margin-top:8px">Explore by occasion</h2>
+      <p class="lead center" data-reveal>Every piece is made to measure — laid out across the moments you dress for.</p>
+    </div>
+{chr(10).join(scenes)}
+    <div class="wrap center" style="margin-top:clamp(56px,8vw,100px)">
+      <a href="/catalogue/" class="btn btn-primary" data-reveal>View the full catalogue</a>
+    </div>
+  </section>"""
+
+def inject_showcase():
+    import re
+    idx = ROOT/"index.html"; src = idx.read_text()
+    block = "<!-- SHOWCASE:START -->\n" + home_showcase() + "\n  <!-- SHOWCASE:END -->"
+    new = re.sub(r"<!-- SHOWCASE:START -->.*?<!-- SHOWCASE:END -->", lambda m: block, src, flags=re.S)
+    idx.write_text(new)
+    print("injected home showcase")
 
 def main():
     (ROOT/"catalogue").mkdir(exist_ok=True)
@@ -219,6 +276,7 @@ def main():
         out = ROOT/"catalogue"/d["slug"]; out.mkdir(exist_ok=True)
         (out/"index.html").write_text(design_page(d, related))
     print(f"generated /catalogue/ + {len(designs)} design pages")
+    inject_showcase()
 
 if __name__ == "__main__":
     main()

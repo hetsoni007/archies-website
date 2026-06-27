@@ -71,20 +71,30 @@ function initScroll() {
   document.body.appendChild(bar);
 
   const px = reduce ? [] : Array.from(document.querySelectorAll("[data-parallax]"));
+  const scrub = reduce ? [] : Array.from(document.querySelectorAll("[data-scrub]"));
   let ticking = false;
 
   function update() {
     const doc = document.documentElement;
+    const vh = window.innerHeight;
     const max = doc.scrollHeight - doc.clientHeight;
     bar.style.width = (max > 0 ? (doc.scrollTop / max) * 100 : 0) + "%";
     if (px.length) {
-      const mid = window.innerHeight / 2;
+      const mid = vh / 2;
       for (const el of px) {
         const r = el.getBoundingClientRect();
         const speed = parseFloat(el.dataset.speed || "0.1");
         const y = (mid - (r.top + r.height / 2)) * speed;
         el.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`;
       }
+    }
+    // Apple-style scrub: --p goes 0→1 as the element crosses the viewport
+    // (enters bottom = 0, leaves top = 1). Drives scale/parallax in CSS only —
+    // never opacity, so content is always visible regardless of scroll.
+    for (const el of scrub) {
+      const r = el.getBoundingClientRect();
+      const p = (vh - r.top) / (vh + r.height);
+      el.style.setProperty("--p", Math.max(0, Math.min(1, p)).toFixed(4));
     }
     ticking = false;
   }

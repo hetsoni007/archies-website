@@ -47,6 +47,17 @@ function initCatalogue() {
     if (stySel) stySel.value = "all";
     apply();
   });
+
+  // deep-link: /catalogue/?cat=bridal arrives pre-filtered (from the home showcase)
+  const pcat = new URLSearchParams(location.search).get("cat");
+  if (pcat) {
+    const pill = document.querySelector('.fpill[data-filter="cat"][data-val="' + pcat + '"]');
+    if (pill) {
+      document.querySelectorAll('.fpill[data-filter="cat"]').forEach(x => x.classList.remove("active"));
+      pill.classList.add("active");
+      state.cat = pcat;
+    }
+  }
   apply();
 }
 
