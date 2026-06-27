@@ -37,8 +37,8 @@ def head(title, desc, canonical_path, og_img, schema=None):
   <meta property="og:image" content="{ogi}">
   <meta property="og:type" content="website">
   <link rel="icon" href="/assets/favicon.svg">
-  <link rel="stylesheet" href="/styles.css?v=3">
-  <link rel="stylesheet" href="/catalogue.css?v=3">
+  <link rel="stylesheet" href="/styles.css?v=5">
+  <link rel="stylesheet" href="/catalogue.css?v=5">
   <script>document.documentElement.classList.add("js")</script>
 {sc}</head>
 <body>
@@ -96,7 +96,7 @@ def chips(items, cls): return "".join(f'<span class="chip {cls}">{esc(i)}</span>
 
 def card(d):
     occ = " ".join(d["occasions"]); sty = " ".join(d["styles"])
-    return f"""      <a class="dcard glass-card" href="/catalogue/{d['slug']}/" data-cat="{d['category']}" data-occ="{esc(occ)}" data-sty="{esc(sty)}" data-reveal>
+    return f"""      <a class="dcard glass-card" href="/catalogue/{d['slug']}/" data-cat="{d['category']}" data-occ="{esc(occ)}" data-sty="{esc(sty)}">
         <div class="dcard-media"><img src="{d['img']}" alt="{esc(d['name'])} — {esc(d['categoryLabel'])} by {SITE}" loading="lazy" width="600" height="750"></div>
         <div class="dcard-body">
           <span class="dcard-cat">{esc(d['categoryLabel'])}</span>
@@ -147,7 +147,7 @@ def catalogue_index():
       <p class="cat-empty" id="cat-empty" hidden>No designs match those filters yet — <a href="https://wa.me/{WA}">message us</a> and we&#39;ll create one for you.</p>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=3" defer></script>\n  <script src="/catalogue.js?v=3" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=5" defer></script>\n  <script src="/catalogue.js?v=5" defer></script>\n</body>\n</html>\n'
 
 def design_page(d, related):
     title = f"{d['name']} — {d['categoryLabel']} | {SITE}"
@@ -209,7 +209,7 @@ def design_page(d, related):
       <div class="dgrid">{rel_cards}</div>
     </div>
   </section>
-""" if related else "") + FOOTER + '  <script src="/app.js?v=3" defer></script>\n  <script src="/catalogue.js?v=3" defer></script>\n</body>\n</html>\n'
+""" if related else "") + FOOTER + '  <script src="/app.js?v=5" defer></script>\n  <script src="/catalogue.js?v=5" defer></script>\n</body>\n</html>\n'
 
 def main():
     (ROOT/"catalogue").mkdir(exist_ok=True)
