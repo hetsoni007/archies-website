@@ -3,61 +3,65 @@
    ========================================================================= */
 const WA_NUMBER = "919879390731";
 
-/* ---------------------- catalogue filtering ---------------------- */
+/* ---------------------- catalogue: category sections + refine + scroll-spy --------------- */
 function initCatalogue() {
-  const grid = document.getElementById("dgrid");
-  if (!grid) return;
-  const cards = Array.from(grid.querySelectorAll(".dcard"));
+  const wrap = document.getElementById("catsecs");
+  if (!wrap) return;
+  const secs = Array.from(wrap.querySelectorAll(".catsec"));
+  const cards = Array.from(wrap.querySelectorAll(".dcard"));
+  const links = Array.from(document.querySelectorAll(".catnav-link"));
+  const occSel = document.getElementById("f-occ");
+  const stySel = document.getElementById("f-sty");
+  const clear = document.getElementById("f-clear");
   const countEl = document.getElementById("cat-count");
   const emptyEl = document.getElementById("cat-empty");
-  const state = { cat: "all", occ: "all", sty: "all" };
+  const state = { occ: "all", sty: "all" };
 
   function apply() {
     let shown = 0;
     cards.forEach(c => {
-      const okCat = state.cat === "all" || c.dataset.cat === state.cat;
       const okOcc = state.occ === "all" || (" " + c.dataset.occ + " ").includes(" " + state.occ + " ");
       const okSty = state.sty === "all" || (" " + c.dataset.sty + " ").includes(" " + state.sty + " ");
-      const ok = okCat && okOcc && okSty;
+      const ok = okOcc && okSty;
       c.hidden = !ok;
       if (ok) shown++;
     });
-    if (countEl) countEl.textContent = shown + (shown === 1 ? " design" : " designs");
+    // hide whole category sections (and dim their nav link) when they have no matches
+    secs.forEach(s => {
+      const any = s.querySelector(".dcard:not([hidden])");
+      s.hidden = !any;
+      if (any) s.querySelectorAll("[data-reveal]").forEach(e => e.classList.add("in"));
+      const link = links.find(l => l.dataset.sec === s.id);
+      if (link) link.classList.toggle("off", !any);
+    });
+    const filtering = state.occ !== "all" || state.sty !== "all";
+    if (countEl) countEl.textContent = filtering ? shown + (shown === 1 ? " design" : " designs") : "";
     if (emptyEl) emptyEl.hidden = shown !== 0;
   }
 
-  grid.parentElement.parentElement; // noop
-  document.querySelectorAll('.fpill[data-filter="cat"]').forEach(b => {
-    b.addEventListener("click", () => {
-      document.querySelectorAll('.fpill[data-filter="cat"]').forEach(x => x.classList.remove("active"));
-      b.classList.add("active");
-      state.cat = b.dataset.val;
-      apply();
-    });
-  });
-  const occSel = document.getElementById("f-occ");
-  const stySel = document.getElementById("f-sty");
   if (occSel) occSel.addEventListener("change", () => { state.occ = occSel.value; apply(); });
   if (stySel) stySel.addEventListener("change", () => { state.sty = stySel.value; apply(); });
-  const clear = document.getElementById("f-clear");
   if (clear) clear.addEventListener("click", () => {
-    state.cat = state.occ = state.sty = "all";
-    document.querySelectorAll('.fpill[data-filter="cat"]').forEach(x => x.classList.toggle("active", x.dataset.val === "all"));
+    state.occ = state.sty = "all";
     if (occSel) occSel.value = "all";
     if (stySel) stySel.value = "all";
     apply();
   });
 
-  // deep-link: /catalogue/?cat=bridal arrives pre-filtered (from the home showcase)
-  const pcat = new URLSearchParams(location.search).get("cat");
-  if (pcat) {
-    const pill = document.querySelector('.fpill[data-filter="cat"][data-val="' + pcat + '"]');
-    if (pill) {
-      document.querySelectorAll('.fpill[data-filter="cat"]').forEach(x => x.classList.remove("active"));
-      pill.classList.add("active");
-      state.cat = pcat;
-    }
+  // scroll-spy: highlight the catnav link for the section currently in view
+  if ("IntersectionObserver" in window && links.length) {
+    const spy = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.remove("active"));
+          const l = links.find(x => x.dataset.sec === e.target.id);
+          if (l) l.classList.add("active");
+        }
+      });
+    }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
+    secs.forEach(s => spy.observe(s));
   }
+
   apply();
 }
 

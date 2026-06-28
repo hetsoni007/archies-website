@@ -11,45 +11,61 @@
   box-shadow: 0 18px 50px -26px rgba(46,34,12,.4), inset 0 1px 0 rgba(255,255,255,.6);
 }
 
-/* ===================== CATALOGUE HERO ===================== */
-.cat-hero { position: relative; min-height: 56vh; display: grid; place-items: center; text-align: center; overflow: hidden; }
+/* ===================== CATALOGUE HERO (tight, editorial) ===================== */
+.cat-hero { position: relative; text-align: center; overflow: hidden;
+  padding-block: clamp(56px, 9vw, 106px) clamp(28px, 4vw, 44px); }
 .cat-hero-bg { position: absolute; inset: -20%; z-index: -1; will-change: transform;
   background:
     radial-gradient(60% 60% at 20% 10%, color-mix(in srgb, var(--gold) 26%, transparent), transparent 60%),
     radial-gradient(70% 70% at 90% 30%, color-mix(in srgb, var(--rose) 60%, transparent), transparent 60%),
     linear-gradient(180deg, var(--bg-soft), var(--bg)); }
-.cat-hero h1 { font-size: clamp(40px, 7vw, 80px); font-weight: 600; }
+.cat-hero h1 { font-size: clamp(40px, 7vw, 78px); font-weight: 600; }
 .cat-hero h1 em { font-style: italic; color: var(--gold-deep); }
 .cat-hero .lead { margin: 20px auto 0; }
+.cat-stats { margin-top: 20px; font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); }
 
-/* ===================== FILTER BAR (sticky glass) ===================== */
-.filterbar { position: sticky; top: 0; z-index: 40; border-radius: 0;
-  border-inline: 0; border-top: 0; margin-bottom: 8px; }
-.fb-in { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding-block: 14px; flex-wrap: wrap; }
-.fpills { display: flex; gap: 8px; flex-wrap: wrap; }
-.fpill { font: inherit; font-size: 13.5px; font-weight: 600; letter-spacing: .01em; cursor: pointer;
-  padding: 9px 16px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.5); color: var(--ink-soft);
-  transition: all .25s var(--ease); }
-.fpill:hover { color: var(--ink); border-color: var(--gold); }
-.fpill.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.fselects { display: flex; align-items: end; gap: 14px; flex-wrap: wrap; }
-.fselects label { display: grid; gap: 4px; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
-.fselects select { font: inherit; font-size: 14px; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--line);
+/* ===================== STICKY CATEGORY NAV (scroll-spy) ===================== */
+.catnav { position: sticky; top: 70px; z-index: 40; border-radius: 0; border-inline: 0; border-top: 0; }
+.catnav-in { display: flex; align-items: center; gap: 14px 20px; padding-block: 9px; flex-wrap: nowrap; }
+.catnav-links { display: flex; gap: 4px; flex: 1 1 auto; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.catnav-links::-webkit-scrollbar { display: none; }
+.catnav-link { display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  font-size: 13.5px; font-weight: 600; letter-spacing: .01em; color: var(--ink-soft);
+  padding: 8px 15px; border-radius: 999px; transition: color .25s var(--ease), background .25s var(--ease); }
+.catnav-link i { font-style: normal; font-size: 10.5px; font-weight: 700; color: var(--gold-deep);
+  background: color-mix(in srgb, var(--gold) 16%, transparent); padding: 1px 7px; border-radius: 999px; transition: all .25s var(--ease); }
+.catnav-link:hover { color: var(--ink); }
+.catnav-link.active { background: var(--ink); color: var(--bg); }
+.catnav-link.active i { color: var(--bg); background: rgba(255,255,255,.2); }
+.catnav-link.off { opacity: .3; pointer-events: none; }
+.catnav-refine { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; flex-wrap: wrap; }
+.catnav-refine select { font: inherit; font-size: 13.5px; padding: 8px 11px; border-radius: 8px; border: 1px solid var(--line);
   background: rgba(255,255,255,.7); color: var(--ink); cursor: pointer; }
-.fselects select:focus { outline: 2px solid var(--gold); border-color: var(--gold); }
-.fclear { align-self: end; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; padding: 9px 12px;
+.catnav-refine select:focus { outline: 2px solid var(--gold); border-color: var(--gold); }
+.cat-count { font-size: 12.5px; color: var(--gold-deep); font-weight: 600; }
+.fclear { font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; padding: 8px 10px;
   background: none; border: 0; color: var(--gold-deep); text-decoration: underline; text-underline-offset: 3px; }
 
+/* ===================== CATEGORY SECTIONS (Apple-style bands) ===================== */
+.catsec { padding-block: clamp(42px, 6vw, 84px); scroll-margin-top: 158px; }
+.catsec:nth-child(even) { background: var(--bg-soft); }
+.catsec-head { display: flex; align-items: flex-start; gap: clamp(14px, 2.4vw, 30px); margin-bottom: clamp(26px, 3.2vw, 46px); }
+.catsec-num { font-family: var(--font-display); font-style: italic; font-weight: 600; line-height: .9;
+  font-size: clamp(30px, 4.2vw, 56px); color: var(--gold); }
+.catsec-head-main { flex: 1 1 auto; }
+.catsec-head h2 { font-size: clamp(28px, 4vw, 48px); line-height: 1.02; }
+.catsec-head .lead { margin-top: 9px; max-width: 50ch; }
+.catsec-count { flex: 0 0 auto; padding-top: 9px; font-size: 12px; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-soft); white-space: nowrap; }
+
 /* ===================== DESIGN GRID ===================== */
-.cat-grid-wrap { padding-block: clamp(28px, 4vw, 56px) clamp(60px, 8vw, 110px); }
-.cat-count { font-size: 13px; letter-spacing: .04em; color: var(--ink-soft); margin-bottom: 22px; }
 .dgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(16px, 1.6vw, 24px); }
 .dcard { display: flex; flex-direction: column; border-radius: 16px; overflow: hidden; transition: transform .45s var(--ease), box-shadow .45s var(--ease);
   /* transform-only entrance — NEVER touches opacity, so cards are always visible
      even if the animation is paused/never runs. Filtering just shows/hides them. */
   animation: dcardIn .55s var(--ease) backwards; }
 .dcard:hover { transform: translateY(-7px); box-shadow: 0 34px 70px -30px rgba(46,34,12,.55), inset 0 1px 0 rgba(255,255,255,.6); }
-@keyframes dcardIn { from { transform: translateY(18px); } to { transform: none; } }
+@keyframes dcardIn { from { transform: translateY(22px) scale(.985); } to { transform: none; } }
 .dgrid .dcard:nth-child(2) { animation-delay: .05s; }
 .dgrid .dcard:nth-child(3) { animation-delay: .10s; }
 .dgrid .dcard:nth-child(4) { animation-delay: .15s; }
@@ -108,16 +124,30 @@
 
 /* ===================== RESPONSIVE ===================== */
 @media (max-width: 1080px) { .dgrid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 980px) {
+  /* nav links scroll horizontally; refine wraps below */
+  .catnav-in { flex-direction: column; align-items: stretch; gap: 9px; }
+  .catnav-links { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 2px; }
+  .catnav-links::-webkit-scrollbar { display: none; }
+  .catnav-link { white-space: nowrap; }
+  .catnav-refine { justify-content: flex-start; }
+  .catsec-count { display: none; }
+  .catsec { scroll-margin-top: 172px; }
+}
 @media (max-width: 900px) {
   .design-in { grid-template-columns: 1fr; }
   .design-media { position: static; }
   .related .dgrid { grid-template-columns: repeat(2, 1fr); }
 }
-@media (max-width: 760px) { .dgrid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 760px) {
+  .dgrid { grid-template-columns: repeat(2, 1fr); }
+  .catsec-head { flex-wrap: wrap; gap: 6px 16px; }
+  .catsec-num { font-size: 30px; }
+}
 @media (max-width: 560px) {
   .dgrid, .related .dgrid { grid-template-columns: 1fr 1fr; }
   .erow { grid-template-columns: 1fr; }
-  .fb-in { gap: 12px; }
-  .fselects { width: 100%; }
+  .catnav-refine { width: 100%; }
+  .catnav-refine select { flex: 1; }
 }
 @media (max-width: 420px) { .dgrid, .related .dgrid { grid-template-columns: 1fr; } }

@@ -37,8 +37,8 @@ def head(title, desc, canonical_path, og_img, schema=None):
   <meta property="og:image" content="{ogi}">
   <meta property="og:type" content="website">
   <link rel="icon" href="/assets/favicon.svg">
-  <link rel="stylesheet" href="/styles.css?v=6">
-  <link rel="stylesheet" href="/catalogue.css?v=6">
+  <link rel="stylesheet" href="/styles.css?v=9">
+  <link rel="stylesheet" href="/catalogue.css?v=9">
   <script>document.documentElement.classList.add("js")</script>
 {sc}</head>
 <body>
@@ -108,46 +108,69 @@ def card(d):
 """
 
 def catalogue_index():
-    cat_pills = '<button class="fpill active" data-filter="cat" data-val="all">All</button>' + "".join(
-        f'<button class="fpill" data-filter="cat" data-val="{k}">{esc(lbl)}</button>' for k,lbl in CATS if any(d['category']==k for d in designs))
+    present = [(k, lbl) for k, lbl in CATS if any(d["category"] == k for d in designs)]
     occ_opts = "".join(f'<option value="{esc(o)}">{esc(o)}</option>' for o in OCCASIONS)
     sty_opts = "".join(f'<option value="{esc(s)}">{esc(s)}</option>' for s in STYLES)
-    cards = "".join(card(d) for d in designs)
+
+    navlinks = "".join(
+        f'<a class="catnav-link" href="#cat-{k}" data-sec="cat-{k}">{esc(lbl)}'
+        f'<i>{sum(1 for d in designs if d["category"]==k)}</i></a>'
+        for k, lbl in present)
+
+    secs = []
+    for i, (k, lbl) in enumerate(present, 1):
+        items = [d for d in designs if d["category"] == k]
+        n = len(items); nlabel = "design" if n == 1 else "designs"
+        cards = "".join(card(d) for d in items)
+        secs.append(f"""  <section class="catsec" id="cat-{k}" data-cat="{k}">
+    <div class="wrap">
+      <header class="catsec-head">
+        <span class="catsec-num" data-reveal>{i:02d}</span>
+        <div class="catsec-head-main">
+          <h2 data-reveal style="--i:1">{esc(lbl)}</h2>
+          <p class="lead" data-reveal style="--i:2">{esc(SCENE_DESC.get(k, ''))}</p>
+        </div>
+        <span class="catsec-count" data-reveal style="--i:1">{n} {nlabel}</span>
+      </header>
+      <div class="dgrid">
+{cards}      </div>
+    </div>
+  </section>""")
+    sections = "\n".join(secs)
+
     schema = {"@context":"https://schema.org","@type":"CollectionPage","name":f"Catalogue — {SITE}",
               "about":"Bespoke bridal, saree, festive and custom fashion designs, made to measure in Ahmedabad."}
     title = f"Catalogue — Bridal, Sarees & Custom Designs | {SITE}"
-    desc = "Browse the Aarchi's design catalogue — bridal lehengas, sarees, festive, men's ethnic and baby-shower wear. Filter by occasion & style, then enquire to customise any piece. Made to measure in Ahmedabad."
-    return head(title, desc, "/catalogue/", designs[0]['img'], schema) + nav("cat") + f"""
+    desc = "Browse the Aarchi's design catalogue — bridal lehengas, sarees, festive, men's ethnic and baby-shower wear, organised by category. Refine by occasion & style, then enquire to customise any piece. Made to measure in Ahmedabad."
+    return head(title, desc, "/catalogue/", designs[0]["img"], schema) + nav("cat") + f"""
   <section class="cat-hero">
     <div class="cat-hero-bg" data-parallax data-speed="0.16"></div>
     <div class="wrap center">
       <p class="eyebrow" data-reveal style="--i:0">The Catalogue</p>
       <h1 data-reveal style="--i:1">Designs, made <em>for you</em></h1>
-      <p class="lead center" data-reveal style="--i:2">Every piece is handcrafted and made to measure. Find a design you love,
-        pick your occasion &amp; size, and we&#39;ll tailor it just for you.</p>
+      <p class="lead center" data-reveal style="--i:2">Every piece is handcrafted and made to measure — browse by category,
+        refine by occasion &amp; style, then enquire to tailor it to you.</p>
+      <p class="cat-stats" data-reveal style="--i:3">{len(designs)} designs &middot; {len(present)} categories &middot; made to measure in Ahmedabad</p>
     </div>
   </section>
 
-  <div class="filterbar glass" data-reveal>
-    <div class="wrap fb-in">
-      <div class="fpills">{cat_pills}</div>
-      <div class="fselects">
-        <label>Occasion<select id="f-occ"><option value="all">Any occasion</option>{occ_opts}</select></label>
-        <label>Style<select id="f-sty"><option value="all">Any style</option>{sty_opts}</select></label>
+  <nav class="catnav glass" id="catnav" aria-label="Browse categories">
+    <div class="wrap catnav-in">
+      <div class="catnav-links">{navlinks}</div>
+      <div class="catnav-refine">
+        <span class="cat-count" id="cat-count" aria-live="polite"></span>
+        <select id="f-occ" aria-label="Filter by occasion"><option value="all">Any occasion</option>{occ_opts}</select>
+        <select id="f-sty" aria-label="Filter by style"><option value="all">Any style</option>{sty_opts}</select>
         <button id="f-clear" class="fclear">Reset</button>
       </div>
     </div>
-  </div>
+  </nav>
 
-  <section class="cat-grid-wrap">
-    <div class="wrap">
-      <p class="cat-count" id="cat-count"></p>
-      <div class="dgrid" id="dgrid">
-{cards}      </div>
-      <p class="cat-empty" id="cat-empty" hidden>No designs match those filters yet — <a href="https://wa.me/{WA}">message us</a> and we&#39;ll create one for you.</p>
-    </div>
-  </section>
-""" + FOOTER + '  <script src="/app.js?v=6" defer></script>\n  <script src="/catalogue.js?v=6" defer></script>\n</body>\n</html>\n'
+  <div class="catsecs" id="catsecs">
+{sections}
+  </div>
+  <p class="cat-empty" id="cat-empty" hidden><span class="wrap">No designs match those filters — <a href="https://wa.me/{WA}">message us</a> and we&#39;ll create one for you.</span></p>
+""" + FOOTER + '  <script src="/app.js?v=9" defer></script>\n  <script src="/catalogue.js?v=9" defer></script>\n</body>\n</html>\n'
 
 def design_page(d, related):
     title = f"{d['name']} — {d['categoryLabel']} | {SITE}"
@@ -209,7 +232,7 @@ def design_page(d, related):
       <div class="dgrid">{rel_cards}</div>
     </div>
   </section>
-""" if related else "") + FOOTER + '  <script src="/app.js?v=6" defer></script>\n  <script src="/catalogue.js?v=6" defer></script>\n</body>\n</html>\n'
+""" if related else "") + FOOTER + '  <script src="/app.js?v=9" defer></script>\n  <script src="/catalogue.js?v=9" defer></script>\n</body>\n</html>\n'
 
 SCENE_DESC = {
     "bridal":     "Heirloom lehengas in zari, zardozi and khat work — crafted for the moment you've always pictured.",
@@ -242,7 +265,7 @@ def home_showcase():
           <span class="scene-num" data-reveal>{i:02d}</span>
           <h2 data-reveal style="--i:1">{esc(label)}</h2>
           <p class="lead" data-reveal style="--i:2">{esc(SCENE_DESC.get(key, ''))}</p>
-          <a class="scene-cta" href="/catalogue/?cat={key}" data-reveal style="--i:3">Explore {len(items)} {nlabel} <i>&rarr;</i></a>
+          <a class="scene-cta" href="/catalogue/#cat-{key}" data-reveal style="--i:3">Explore {len(items)} {nlabel} <i>&rarr;</i></a>
         </div>
       </div>
       <div class="strip" data-reveal>{strip}</div>
