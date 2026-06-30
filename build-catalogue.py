@@ -6,12 +6,12 @@ Reads data/designs.json and emits, from a shared template (no runtime build):
   /catalogue/<slug>/index.html          — one SEO page per design + enquiry form
 Run after editing data/designs.json or adding images:  python3 build-catalogue.py
 """
-import json, pathlib, html
+import json, pathlib, html, datetime
 
 ROOT = pathlib.Path(__file__).parent
 WA = "919879390731"
 SITE = "Aarchi's by Archana Soni"
-DOMAIN = ""  # TODO: set to e.g. "https://aarchisbyarchanasoni.com" once chosen (enables canonical/OG absolute URLs)
+DOMAIN = "https://www.aarchisbyarchanasoni.com"  # primary host (www); apex forwards to www at GoDaddy
 
 designs = json.loads((ROOT / "data" / "designs.json").read_text())
 CATS = [("bridal","Bridal Lehengas"),("saree","Sarees"),("ethnic","Ethnic & Festive"),
@@ -291,6 +291,24 @@ def inject_showcase():
     idx.write_text(new)
     print("injected home showcase")
 
+def write_sitemap_robots():
+    if not DOMAIN:
+        print("DOMAIN unset — skipping sitemap/robots"); return
+    today = datetime.date.today().isoformat()
+    urls = ["/", "/catalogue/", "/about/", "/contact/"] + [f"/catalogue/{d['slug']}/" for d in designs]
+    def row(u):
+        pr = "1.0" if u == "/" else ("0.9" if u == "/catalogue/" else "0.7")
+        cf = "weekly" if u in ("/", "/catalogue/") else "monthly"
+        return f"  <url><loc>{DOMAIN}{u}</loc><lastmod>{today}</lastmod><changefreq>{cf}</changefreq><priority>{pr}</priority></url>"
+    (ROOT/"sitemap.xml").write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "\n".join(row(u) for u in urls) + "\n</urlset>\n")
+    (ROOT/"robots.txt").write_text(
+        "# Aarchi's by Archana Soni\nUser-agent: *\nAllow: /\n\n"
+        f"Sitemap: {DOMAIN}/sitemap.xml\n")
+    print(f"wrote sitemap.xml ({len(urls)} urls) + robots.txt")
+
 def main():
     (ROOT/"catalogue").mkdir(exist_ok=True)
     (ROOT/"catalogue"/"index.html").write_text(catalogue_index())
@@ -300,6 +318,7 @@ def main():
         (out/"index.html").write_text(design_page(d, related))
     print(f"generated /catalogue/ + {len(designs)} design pages")
     inject_showcase()
+    write_sitemap_robots()
 
 if __name__ == "__main__":
     main()

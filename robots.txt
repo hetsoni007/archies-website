@@ -1,4 +1,5 @@
 # Aarchi's by Archana Soni
-# TODO: add Sitemap: line once the domain is chosen.
 User-agent: *
 Allow: /
+
+Sitemap: https://www.aarchisbyarchanasoni.com/sitemap.xml
