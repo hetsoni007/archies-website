@@ -179,8 +179,6 @@ function initAnalytics() {
 
 /* ---------------------- boot ---------------------- */
 document.addEventListener("DOMContentLoaded", () => {
-  renderCollections("coll-featured", 3);
-  renderCollections("coll-all");
   initReveal();
   initScroll();
   initMagnetic();

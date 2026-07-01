@@ -48,8 +48,8 @@ def head(title, desc, canonical_path, og_img, schema=None):
   <meta property="og:type" content="website">
   <link rel="icon" href="/assets/favicon.png">
   <link rel="apple-touch-icon" href="/assets/favicon.png">
-  <link rel="stylesheet" href="/styles.css?v=11">
-  <link rel="stylesheet" href="/catalogue.css?v=11">
+  <link rel="stylesheet" href="/styles.css?v=12">
+  <link rel="stylesheet" href="/catalogue.css?v=12">
   <script>document.documentElement.classList.add("js")</script>
 {GTAG}{sc}</head>
 <body>
@@ -180,7 +180,7 @@ def catalogue_index():
 {sections}
   </div>
   <p class="cat-empty" id="cat-empty" hidden><span class="wrap">No designs match those filters — <a href="https://wa.me/{WA}">message us</a> and we&#39;ll create one for you.</span></p>
-""" + FOOTER + '  <script src="/app.js?v=11" defer></script>\n  <script src="/catalogue.js?v=11" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=12" defer></script>\n  <script src="/catalogue.js?v=12" defer></script>\n</body>\n</html>\n'
 
 def design_page(d, related):
     title = f"{d['name']} — {d['categoryLabel']} | {SITE}"
@@ -242,7 +242,7 @@ def design_page(d, related):
       <div class="dgrid">{rel_cards}</div>
     </div>
   </section>
-""" if related else "") + FOOTER + '  <script src="/app.js?v=11" defer></script>\n  <script src="/catalogue.js?v=11" defer></script>\n</body>\n</html>\n'
+""" if related else "") + FOOTER + '  <script src="/app.js?v=12" defer></script>\n  <script src="/catalogue.js?v=12" defer></script>\n</body>\n</html>\n'
 
 SCENE_DESC = {
     "bridal":     "Heirloom lehengas in zari, zardozi and khat work — crafted for the moment you've always pictured.",
