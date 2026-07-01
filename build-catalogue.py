@@ -12,6 +12,16 @@ ROOT = pathlib.Path(__file__).parent
 WA = "919879390731"
 SITE = "Aarchi's by Archana Soni"
 DOMAIN = "https://www.aarchisbyarchanasoni.com"  # primary host (www); apex forwards to www at GoDaddy
+GA4_ID = "G-BZNX9QFSGD"
+GTAG = '''  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BZNX9QFSGD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BZNX9QFSGD');
+  </script>
+'''
 
 designs = json.loads((ROOT / "data" / "designs.json").read_text())
 CATS = [("bridal","Bridal Lehengas"),("saree","Sarees"),("ethnic","Ethnic & Festive"),
@@ -40,7 +50,7 @@ def head(title, desc, canonical_path, og_img, schema=None):
   <link rel="stylesheet" href="/styles.css?v=9">
   <link rel="stylesheet" href="/catalogue.css?v=9">
   <script>document.documentElement.classList.add("js")</script>
-{sc}</head>
+{GTAG}{sc}</head>
 <body>
 """
 
