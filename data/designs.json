@@ -114,7 +114,31 @@
   "description": "Scarlet Royal Bridal Lehenga by Aarchi's by Archana Soni — a made-to-measure bridal lehenga crafted in Ahmedabad. A handcrafted red lehenga — the epitome of bridal perfection, made to feel royal. Enquire on WhatsApp to customise the colour, fabric and size.",
   "metaDescription": "Scarlet Royal Bridal Lehenga — Bridal Lehenga by Aarchi's by Archana Soni, Ahmedabad. A handcrafted red lehenga — the epitome of bridal perfection, made to fe",
   "source": "https://www.instagram.com/p/DE15rXasonC/",
-  "shortCode": "DE15rXasonC"
+  "shortCode": "DE15rXasonC",
+  "editorial": {
+   "heroImg": "/assets/img/editorial/scarlet-hero.webp",
+   "sections": [
+    {
+     "kicker": "The Craft",
+     "title": "Tailored to your unique story",
+     "body": "Meticulously hand-stitched to your exact measurements using authentic zardozi techniques — every motif placed by hand, every seam finished to fall exactly as it should on you.",
+     "img": "/assets/img/editorial/scarlet-craft.webp"
+    },
+    {
+     "kicker": "Complete the Look",
+     "title": "Adornments of pure grandeur",
+     "crosssell": true,
+     "body": "Complete your bridal vision with jewellery and finishing that echo the elegance of royal heritage. We help you style the full ensemble — the drape, the dupatta, the details — so every element sings together.",
+     "img": "/assets/img/editorial/scarlet-jewels.webp"
+    },
+    {
+     "kicker": "Heritage",
+     "title": "Your vision, our heritage",
+     "body": "Celebrate your union in a masterpiece that bridges classic tradition with modern elegance — a handcrafted legacy, designed and made to measure in Ahmedabad and shipped worldwide.",
+     "img": "/assets/img/editorial/scarlet-story.webp"
+    }
+   ]
+  }
  },
  {
   "slug": "nazaakat-beige-pink-lehenga",

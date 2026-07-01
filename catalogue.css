@@ -151,3 +151,34 @@
   .catnav-refine select { flex: 1; }
 }
 @media (max-width: 420px) { .dgrid, .related .dgrid { grid-template-columns: 1fr; } }
+
+/* ===================== FLAGSHIP EDITORIAL (per-design story) ===================== */
+.estory { padding-block: clamp(46px, 7vw, 92px); overflow: clip; }
+.estory-in { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 72px); align-items: center; }
+.estory.rev .estory-in { direction: rtl; }
+.estory.rev .estory-in > * { direction: ltr; }
+.estory-media { border-radius: 18px; overflow: hidden; aspect-ratio: 4 / 5; box-shadow: 0 40px 90px -45px rgba(28,22,15,.55); }
+.estory-media img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.estory-ph { width: 100%; height: 100%; position: relative;
+  background: radial-gradient(120% 90% at 30% 20%, color-mix(in srgb, var(--gold) 42%, transparent), transparent 60%),
+              linear-gradient(135deg, var(--bg-soft), #efe0c4); }
+.estory-ph::after { content: "Photography coming soon"; position: absolute; inset: auto 0 22px 0; text-align: center;
+  font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold-deep); opacity: .8; }
+.estory-text .eyebrow { color: var(--gold-deep); }
+.estory-text h2 { font-size: clamp(28px, 4vw, 50px); line-height: 1.05; margin-top: 8px; }
+.estory-text p { color: var(--ink-soft); font-size: clamp(16px, 1.6vw, 19px); margin-top: 16px; max-width: 46ch; }
+.estory-crosslabel { text-align: center; font-family: var(--font-body); font-size: 12px; font-weight: 600;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--gold-deep); margin: clamp(32px, 4vw, 54px) 0 20px; }
+.estory-cross { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(14px, 1.6vw, 22px); }
+.eowner { padding-block: clamp(50px, 7vw, 90px); text-align: center; }
+.eowner .lead { margin: 14px auto 0; }
+.esocials { display: flex; gap: 22px; justify-content: center; margin-top: 26px; }
+.esocials a { font-size: 13px; font-weight: 600; letter-spacing: .04em; color: var(--gold-deep); }
+.esocials a:hover { color: var(--ink); }
+@media (max-width: 860px) {
+  .estory-in { grid-template-columns: 1fr; gap: 22px; }
+  .estory.rev .estory-in { direction: ltr; }
+  .estory-media { aspect-ratio: 4 / 3; }
+  .estory-cross { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) { .estory-cross { grid-template-columns: 1fr; } }
