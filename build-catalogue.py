@@ -42,7 +42,6 @@ def head(title, desc, canonical_path, og_img, schema=None):
   <script>document.documentElement.classList.add("js")</script>
 {sc}</head>
 <body>
-  <div class="preview-banner"><b>PREVIEW BUILD</b> · using the studio&#39;s own Instagram photos (confirm usage rights) · logo &amp; domain pending</div>
 """
 
 def nav(active=""):
@@ -77,7 +76,7 @@ FOOTER = f"""  <footer class="foot">
           <li><a href="/contact/">Contact</a></li>
         </ul></div>
         <div><h4>Visit</h4><ul>
-          <li>[Studio address — Ahmedabad]</li>
+          <li>Ahmedabad, India</li>
           <li><a href="https://wa.me/{WA}">WhatsApp: +91 98793 90731</a></li>
         </ul></div>
       </div>
