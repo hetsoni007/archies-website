@@ -144,6 +144,39 @@ function initForm() {
   });
 }
 
+/* ---------------------- GA4 behavior events ---------------------- */
+/* Fires custom events into GA4 (gtag). No-ops safely if gtag isn't present. */
+function track(name, params) { try { if (window.gtag) gtag("event", name, params || {}); } catch (e) {} }
+function initAnalytics() {
+  // WhatsApp clicks (delegated — covers FAB, buttons, inline links, quiz)
+  document.addEventListener("click", (e) => {
+    const t = e.target.closest ? e.target.closest('a[href*="wa.me"]') : null;
+    if (t) track("whatsapp_click", { location: location.pathname });
+  });
+  // Primary CTAs
+  document.querySelectorAll(".btn-primary, .nav-cta, .scene-cta").forEach(el => {
+    el.addEventListener("click", () => track("cta_click", {
+      cta_text: (el.textContent || "").trim().slice(0, 60), location: location.pathname }));
+  });
+  // Catalogue: refine filters + category jumps
+  const occ = document.getElementById("f-occ"), sty = document.getElementById("f-sty");
+  if (occ) occ.addEventListener("change", () => track("catalogue_filter", { filter_type: "occasion", filter_value: occ.value }));
+  if (sty) sty.addEventListener("change", () => track("catalogue_filter", { filter_type: "style", filter_value: sty.value }));
+  document.querySelectorAll(".catnav-link").forEach(l =>
+    l.addEventListener("click", () => track("category_nav", { category: (l.dataset.sec || "").replace("cat-", "") })));
+  // Design page view (which specific pieces get attention)
+  const m = location.pathname.match(/^\/catalogue\/([^\/]+)\/$/);
+  if (m) { const h1 = document.querySelector(".design-info h1"); track("design_view", { design_slug: m[1], design_name: h1 ? h1.textContent.trim() : m[1] }); }
+  // Scroll-depth milestones
+  const seen = {}; const marks = [25, 50, 75, 100];
+  const onScroll = () => {
+    const d = document.documentElement, st = d.scrollTop || window.scrollY;
+    const h = d.scrollHeight - d.clientHeight, pct = h > 0 ? Math.round(st / h * 100) : 100;
+    marks.forEach(mk => { if (pct >= mk && !seen[mk]) { seen[mk] = 1; track("scroll_depth", { percent: mk, page: location.pathname }); } });
+  };
+  window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+}
+
 /* ---------------------- boot ---------------------- */
 document.addEventListener("DOMContentLoaded", () => {
   renderCollections("coll-featured", 3);
@@ -153,5 +186,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initMagnetic();
   initNav();
   initForm();
+  initAnalytics();
   const y = document.getElementById("year"); if (y) y.textContent = new Date().getFullYear();
 });
