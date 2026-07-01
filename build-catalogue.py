@@ -46,9 +46,10 @@ def head(title, desc, canonical_path, og_img, schema=None):
   <meta property="og:description" content="{esc(desc)}">
   <meta property="og:image" content="{ogi}">
   <meta property="og:type" content="website">
-  <link rel="icon" href="/assets/favicon.svg">
-  <link rel="stylesheet" href="/styles.css?v=10">
-  <link rel="stylesheet" href="/catalogue.css?v=10">
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/favicon.png">
+  <link rel="stylesheet" href="/styles.css?v=11">
+  <link rel="stylesheet" href="/catalogue.css?v=11">
   <script>document.documentElement.classList.add("js")</script>
 {GTAG}{sc}</head>
 <body>
@@ -60,7 +61,7 @@ def nav(active=""):
         return f'<a href="{href}"{cls}>{label}</a>'
     return f"""  <header class="nav">
     <div class="wrap nav-in">
-      <a href="/" class="brand">Aarchi's<small>by Archana Soni</small></a>
+      <a href="/" class="brand"><img class="brand-mark" src="/assets/logo-mark.png" alt="Aarchi's" width="36" height="36"><span class="brand-wm">Aarchi's<small>by Archana Soni</small></span></a>
       <nav class="nav-links">
         {a("/","Home","home")}
         {a("/catalogue/","Catalogue","cat")}
@@ -77,7 +78,7 @@ FOOTER = f"""  <footer class="foot">
     <div class="wrap">
       <div class="foot-top">
         <div>
-          <a href="/" class="brand">Aarchi's<small>by Archana Soni</small></a>
+          <a href="/" class="brand"><img class="brand-mark" src="/assets/logo-mark.png" alt="Aarchi's" width="36" height="36"><span class="brand-wm">Aarchi's<small>by Archana Soni</small></span></a>
           <p style="margin-top:14px;max-width:34ch;color:#b8a89c;font-size:14.5px">Custom fashion designer, Ahmedabad. Where tradition meets trend.</p>
         </div>
         <div><h4>Explore</h4><ul>
@@ -179,7 +180,7 @@ def catalogue_index():
 {sections}
   </div>
   <p class="cat-empty" id="cat-empty" hidden><span class="wrap">No designs match those filters — <a href="https://wa.me/{WA}">message us</a> and we&#39;ll create one for you.</span></p>
-""" + FOOTER + '  <script src="/app.js?v=10" defer></script>\n  <script src="/catalogue.js?v=10" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=11" defer></script>\n  <script src="/catalogue.js?v=11" defer></script>\n</body>\n</html>\n'
 
 def design_page(d, related):
     title = f"{d['name']} — {d['categoryLabel']} | {SITE}"
@@ -241,7 +242,7 @@ def design_page(d, related):
       <div class="dgrid">{rel_cards}</div>
     </div>
   </section>
-""" if related else "") + FOOTER + '  <script src="/app.js?v=10" defer></script>\n  <script src="/catalogue.js?v=10" defer></script>\n</body>\n</html>\n'
+""" if related else "") + FOOTER + '  <script src="/app.js?v=11" defer></script>\n  <script src="/catalogue.js?v=11" defer></script>\n</body>\n</html>\n'
 
 SCENE_DESC = {
     "bridal":     "Heirloom lehengas in zari, zardozi and khat work — crafted for the moment you've always pictured.",

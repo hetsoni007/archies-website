@@ -79,8 +79,10 @@ section { padding-block: clamp(64px, 9vw, 120px); }
   border-bottom: 1px solid var(--line);
 }
 .nav-in { display: flex; align-items: center; justify-content: space-between; height: 70px; }
-.brand { font-family: var(--font-display); font-size: 24px; font-weight: 700; letter-spacing: .5px; }
-.brand small { display: block; font-family: var(--font-body); font-size: 9.5px; letter-spacing: .32em; text-transform: uppercase; color: var(--ink-soft); margin-top: 1px; }
+.brand { display: inline-flex; align-items: center; gap: 9px; font-family: var(--font-display); font-size: 24px; font-weight: 700; letter-spacing: .5px; }
+.brand-mark { width: 36px; height: 36px; flex: 0 0 auto; }
+.brand-wm { display: inline-block; line-height: 1; }
+.brand small { display: block; font-family: var(--font-body); font-size: 9.5px; letter-spacing: .32em; text-transform: uppercase; color: var(--ink-soft); margin-top: 2px; }
 .nav-links { display: flex; align-items: center; gap: 34px; }
 .nav-links a { font-size: 14.5px; letter-spacing: .04em; color: var(--ink-soft); transition: color .2s; }
 .nav-links a:hover, .nav-links a.active { color: var(--ink); }
