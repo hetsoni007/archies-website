@@ -461,7 +461,38 @@
   "description": "Scarlet Grace Anarkali by Aarchi's by Archana Soni — a made-to-measure ethnic & festive wear crafted in Ahmedabad. Twirl into elegance with this stunning red ensemble! Enquire on WhatsApp to customise colour, fabric and size.",
   "metaDescription": "Scarlet Grace Anarkali — Ethnic & Festive Wear by Aarchi's, Ahmedabad. Twirl into elegance with this stunning red ensemble! Made to measure; enquire to custom",
   "source": "https://www.instagram.com/p/DEXWjfLM-m0/",
-  "shortCode": "DEXWjfLM-m0"
+  "shortCode": "DEXWjfLM-m0",
+  "editorial": {
+   "storyTitle": "Twirl into elegance",
+   "storyLead": "A deep scarlet Anarkali with an angrakha-style gold-embroidered neckline, paired with a patola-patterned dupatta — the Scarlet Grace, from flat-lay to golden hour.",
+   "slides": [
+    {
+     "img": "/assets/img/editorial/grace-flatlay.webp",
+     "kicker": "The Details",
+     "caption": "Gold-embroidered angrakha neckline and worked sleeve bands, beside a patola-patterned dupatta with zari borders — laid out in jasmine.",
+     "alt": "Flat-lay of the Scarlet Grace Anarkali — red angrakha-style top with gold embroidery and patola-patterned dupatta with gold zari border"
+    },
+    {
+     "img": "/assets/img/editorial/grace-look.webp",
+     "kicker": "The Look",
+     "caption": "A full-flared scarlet Anarkali, cut to your exact measurements — the dupatta draped free.",
+     "crosssell": true,
+     "alt": "Model wearing the Scarlet Grace Anarkali by Aarchi's by Archana Soni, Ahmedabad — red flared Anarkali with patola-patterned dupatta"
+    },
+    {
+     "img": "/assets/img/editorial/grace-courtyard.webp",
+     "kicker": "Golden Hour",
+     "caption": "Made to move — the flare catches the evening light with every step.",
+     "alt": "Scarlet Grace Anarkali in golden-hour courtyard light — red Anarkali gown with ikat-patterned dupatta"
+    },
+    {
+     "img": "/assets/img/editorial/grace-jharokha.webp",
+     "kicker": "The Grace",
+     "caption": "Scarlet against carved stone — festive elegance that carries from sangeet to soirée.",
+     "alt": "Portrait at a jharokha balcony — Scarlet Grace Anarkali with tasselled patola-patterned dupatta"
+    }
+   ]
+  }
  },
  {
   "slug": "scarlet-mirage-ensemble",
