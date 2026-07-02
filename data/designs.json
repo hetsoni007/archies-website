@@ -253,7 +253,38 @@
   "description": "Contemporary Pastel Bride by Aarchi's by Archana Soni — a made-to-measure bridal lehenga crafted in Ahmedabad. Pastels made to make a statement, for the contemporary bride. Enquire on WhatsApp to customise the colour, fabric and size.",
   "metaDescription": "Contemporary Pastel Bride — Bridal Lehenga by Aarchi's by Archana Soni, Ahmedabad. Pastels made to make a statement, for the contemporary bride. Made to measu",
   "source": "https://www.instagram.com/p/DEkSt01MJ82/",
-  "shortCode": "DEkSt01MJ82"
+  "shortCode": "DEkSt01MJ82",
+  "editorial": {
+   "storyTitle": "Pastels, made to make a statement",
+   "storyLead": "Mint-green pleats, a scarlet hand-embroidered blouse and a sheer gold-edged dupatta — the Contemporary Pastel Bride, from flat-lay to palace light.",
+   "slides": [
+    {
+     "img": "/assets/img/editorial/pastel-flatlay.webp",
+     "kicker": "The Details",
+     "caption": "Laid out in jasmine — gold-bordered dupatta, tasselled latkans and a scarlet blouse worked with floral zardozi motifs.",
+     "alt": "Flat-lay of the Contemporary Pastel Bride lehenga with jasmine flowers — mint skirt, red embroidered blouse, gold-edged dupatta"
+    },
+    {
+     "img": "/assets/img/editorial/pastel-silhouette.webp",
+     "kicker": "The Silhouette",
+     "caption": "A softly pleated mint lehenga balanced by a fitted sweetheart blouse — pastel, but never quiet.",
+     "alt": "Contemporary Pastel Bride lehenga silhouette — pleated mint-green skirt with red zardozi blouse and sheer dupatta"
+    },
+    {
+     "img": "/assets/img/editorial/pastel-look.webp",
+     "kicker": "The Look",
+     "caption": "Worn with the dupatta draped long — scarlet and pistachio, cut to your exact measurements.",
+     "crosssell": true,
+     "alt": "Model wearing the Contemporary Pastel Bride lehenga by Aarchi's by Archana Soni, Ahmedabad"
+    },
+    {
+     "img": "/assets/img/editorial/pastel-palace.webp",
+     "kicker": "The Bride",
+     "caption": "Veiled in gold-edged tulle — a contemporary bride in heritage light.",
+     "alt": "Bridal portrait — Contemporary Pastel Bride lehenga with dupatta worn as veil in palace light"
+    }
+   ]
+  }
  },
  {
   "slug": "sangeet-special-anarkali",

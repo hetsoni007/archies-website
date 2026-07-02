@@ -48,8 +48,8 @@ def head(title, desc, canonical_path, og_img, schema=None):
   <meta property="og:type" content="website">
   <link rel="icon" href="/assets/favicon.png">
   <link rel="apple-touch-icon" href="/assets/favicon.png">
-  <link rel="stylesheet" href="/styles.css?v=14">
-  <link rel="stylesheet" href="/catalogue.css?v=14">
+  <link rel="stylesheet" href="/styles.css?v=15">
+  <link rel="stylesheet" href="/catalogue.css?v=15">
   <script>document.documentElement.classList.add("js")</script>
 {GTAG}{sc}</head>
 <body>
@@ -180,7 +180,7 @@ def catalogue_index():
 {sections}
   </div>
   <p class="cat-empty" id="cat-empty" hidden><span class="wrap">No designs match those filters — <a href="https://wa.me/{WA}">message us</a> and we&#39;ll create one for you.</span></p>
-""" + FOOTER + '  <script src="/app.js?v=14" defer></script>\n  <script src="/catalogue.js?v=14" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=15" defer></script>\n  <script src="/catalogue.js?v=15" defer></script>\n</body>\n</html>\n'
 
 SOCIAL_ICONS = ('<a href="https://www.instagram.com/aarchis.byarchanasoni/" target="_blank" rel="noopener">Instagram</a>'
   '<a href="https://www.facebook.com/aarchis.byearchanasonii/" target="_blank" rel="noopener">Facebook</a>'
@@ -201,11 +201,14 @@ def editorial_html(d, related):
     slides = [s for s in all_slides if _exists(s.get("img", ""))]
     if not slides:
         return ""
-    figs = "\n".join(
-        f'      <figure class="eslide" data-reveal><img src="{s["img"]}" '
-        f'alt="{esc(s.get("alt",""))}" loading="lazy" width="562" height="1000"></figure>'
-        for s in slides
-    )
+    def fig(s):
+        cap = ""
+        if s.get("caption"):
+            kick = f'<span class="eslide-kicker">{esc(s["kicker"])}</span>' if s.get("kicker") else ""
+            cap = f'<figcaption class="eslide-cap">{kick}<p>{esc(s["caption"])}</p></figcaption>'
+        return (f'      <figure class="eslide" data-reveal><img src="{s["img"]}" '
+                f'alt="{esc(s.get("alt",""))}" loading="lazy" width="562" height="1000">{cap}</figure>')
+    figs = "\n".join(fig(s) for s in slides)
     story_title = esc(ed.get("storyTitle", "Up close"))
     story_lead = esc(ed.get("storyLead",
         "From the first sketch to the final drape — every detail is hand-worked, "
@@ -300,7 +303,7 @@ def design_page(d, related):
       <div class="dgrid">{rel_cards}</div>
     </div>
   </section>
-""" if related else "") + FOOTER + '  <script src="/app.js?v=14" defer></script>\n  <script src="/catalogue.js?v=14" defer></script>\n</body>\n</html>\n'
+""" if related else "") + FOOTER + '  <script src="/app.js?v=15" defer></script>\n  <script src="/catalogue.js?v=15" defer></script>\n</body>\n</html>\n'
 
 SCENE_DESC = {
     "bridal":     "Heirloom lehengas in zari, zardozi and khat work — crafted for the moment you've always pictured.",
