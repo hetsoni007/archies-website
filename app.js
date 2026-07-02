@@ -178,8 +178,70 @@ function initAnalytics() {
 }
 
 /* ---------------------- boot ---------------------- */
+
+/* Campaign slider — native scroll-snap + autoplay, swipe-friendly, GA4-tracked */
+function initSlider() {
+  const track = document.getElementById("hsTrack");
+  if (!track) return;
+  const slides = [...track.querySelectorAll(".hs-slide")];
+  const dotsBox = document.getElementById("hsDots");
+  const prev = document.getElementById("hsPrev"), next = document.getElementById("hsNext");
+  if (!slides.length) return;
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let active = 0, timer = null, pauseUntil = 0;
+
+  const dots = slides.map((_, i) => {
+    const b = document.createElement("button");
+    b.className = "hs-dot" + (i ? "" : " on");
+    b.setAttribute("aria-label", "Go to slide " + (i + 1));
+    b.addEventListener("click", () => { hold(); goTo(i); });
+    dotsBox.appendChild(b);
+    return b;
+  });
+
+  function setActive(i) {
+    if (i === active) return;
+    active = i;
+    slides.forEach((s, j) => s.classList.toggle("is-active", j === i));
+    dots.forEach((d, j) => d.classList.toggle("on", j === i));
+    track_evt();
+  }
+  let tracked = {};
+  function track_evt() { if (!tracked[active]) { tracked[active] = 1; track("slider_view", { slide_index: active + 1 }); } }
+  function goTo(i) {
+    const n = (i + slides.length) % slides.length;
+    track.scrollTo({ left: n * track.clientWidth, behavior: reduced ? "auto" : "smooth" });
+  }
+  function hold() { pauseUntil = Date.now() + 12000; }
+
+  slides[0].classList.add("is-active");
+  let st;
+  track.addEventListener("scroll", () => {
+    clearTimeout(st);
+    st = setTimeout(() => setActive(Math.round(track.scrollLeft / track.clientWidth)), 80);
+  }, { passive: true });
+
+  prev.addEventListener("click", () => { hold(); goTo(active - 1); });
+  next.addEventListener("click", () => { hold(); goTo(active + 1); });
+  track.addEventListener("pointerdown", hold, { passive: true });
+  track.addEventListener("keydown", e => {
+    if (e.key === "ArrowRight") { hold(); goTo(active + 1); }
+    if (e.key === "ArrowLeft") { hold(); goTo(active - 1); }
+  });
+
+  if (!reduced) {
+    timer = setInterval(() => {
+      if (document.hidden || Date.now() < pauseUntil) return;
+      const r = track.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) return;
+      goTo(active + 1);
+    }, 5200);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initReveal();
+  initSlider();
   initScroll();
   initMagnetic();
   initNav();

@@ -32,7 +32,9 @@ STYLES = sorted({s for d in designs for s in d["styles"]})
 def esc(s): return html.escape(s, quote=True)
 
 def head(title, desc, canonical_path, og_img, schema=None):
-    cn = f'  <link rel="canonical" href="{DOMAIN}{canonical_path}">\n' if DOMAIN else f'  <!-- canonical TODO (set DOMAIN): {canonical_path} -->\n'
+    cn = (f'  <link rel="canonical" href="{DOMAIN}{canonical_path}">\n'
+          f'  <link rel="alternate" hreflang="en" href="{DOMAIN}{canonical_path}">\n'
+          f'  <link rel="alternate" hreflang="x-default" href="{DOMAIN}{canonical_path}">\n') if DOMAIN else f'  <!-- canonical TODO (set DOMAIN): {canonical_path} -->\n'
     ogi = f"{DOMAIN}{og_img}" if DOMAIN else og_img
     sc = f'  <script type="application/ld+json">{json.dumps(schema, ensure_ascii=False)}</script>\n' if schema else ""
     return f"""<!DOCTYPE html>
@@ -46,10 +48,16 @@ def head(title, desc, canonical_path, og_img, schema=None):
   <meta property="og:description" content="{esc(desc)}">
   <meta property="og:image" content="{ogi}">
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{SITE}">
+  <meta property="og:url" content="{DOMAIN}{canonical_path}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{esc(title)}">
+  <meta name="twitter:description" content="{esc(desc)}">
+  <meta name="twitter:image" content="{ogi}">
   <link rel="icon" href="/assets/favicon.png">
   <link rel="apple-touch-icon" href="/assets/favicon.png">
-  <link rel="stylesheet" href="/styles.css?v=15">
-  <link rel="stylesheet" href="/catalogue.css?v=15">
+  <link rel="stylesheet" href="/styles.css?v=16">
+  <link rel="stylesheet" href="/catalogue.css?v=16">
   <script>document.documentElement.classList.add("js")</script>
 {GTAG}{sc}</head>
 <body>
@@ -150,8 +158,8 @@ def catalogue_index():
 
     schema = {"@context":"https://schema.org","@type":"CollectionPage","name":f"Catalogue — {SITE}",
               "about":"Bespoke bridal, saree, festive and custom fashion designs, made to measure in Ahmedabad."}
-    title = f"Catalogue — Bridal, Sarees & Custom Designs | {SITE}"
-    desc = "Browse the Aarchi's design catalogue — bridal lehengas, sarees, festive, men's ethnic and baby-shower wear, organised by category. Refine by occasion & style, then enquire to customise any piece. Made to measure in Ahmedabad."
+    title = "Custom Bridal Lehengas, Sarees & Festive Wear Catalogue | Aarchi's"
+    desc = "Browse 40+ custom bridal lehengas, designer sarees, festive, men's ethnic and baby-shower outfits — made to measure in Ahmedabad, shipped worldwide. Customise colour, fabric and size."
     return head(title, desc, "/catalogue/", designs[0]["img"], schema) + nav("cat") + f"""
   <section class="cat-hero">
     <div class="cat-hero-bg" data-parallax data-speed="0.16"></div>
@@ -180,7 +188,7 @@ def catalogue_index():
 {sections}
   </div>
   <p class="cat-empty" id="cat-empty" hidden><span class="wrap">No designs match those filters — <a href="https://wa.me/{WA}">message us</a> and we&#39;ll create one for you.</span></p>
-""" + FOOTER + '  <script src="/app.js?v=15" defer></script>\n  <script src="/catalogue.js?v=15" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=16" defer></script>\n  <script src="/catalogue.js?v=16" defer></script>\n</body>\n</html>\n'
 
 SOCIAL_ICONS = ('<a href="https://www.instagram.com/aarchis.byarchanasoni/" target="_blank" rel="noopener">Instagram</a>'
   '<a href="https://www.facebook.com/aarchis.byearchanasonii/" target="_blank" rel="noopener">Facebook</a>'
@@ -244,17 +252,17 @@ def editorial_html(d, related):
 
 def design_page(d, related):
     hero_img = d["editorial"]["heroImg"] if (d.get("editorial") and _exists(d["editorial"].get("heroImg",""))) else d["img"]
-    title = f"{d['name']} — {d['categoryLabel']} | {SITE}"
+    title = f"{d['name']} — Custom {d['categoryLabel']}, Ahmedabad | Aarchi's"
     occ_opts = "".join(f'<option{" selected" if o==d["occasions"][0] else ""}>{esc(o)}</option>' for o in OCCASIONS)
     sty_opts = "".join(f'<option{" selected" if s==d["styles"][0] else ""}>{esc(s)}</option>' for s in STYLES)
     sizes = ["XS","S","M","L","XL","XXL","Made-to-measure"]
     size_opts = "".join(f'<option{" selected" if s=="Made-to-measure" else ""}>{esc(s)}</option>' for s in sizes)
+    imgs = [(DOMAIN+d["img"]) if DOMAIN else d["img"]]
+    for s in (d.get("editorial") or {}).get("slides", []):
+        if _exists(s.get("img","")): imgs.append((DOMAIN+s["img"]) if DOMAIN else s["img"])
     schema = {"@context":"https://schema.org","@type":"Product","name":d["name"],
-              "image":(DOMAIN+d["img"]) if DOMAIN else d["img"],"description":d["description"],
-              "category":d["categoryLabel"],"brand":{"@type":"Brand","name":SITE},
-              "areaServed":"Ahmedabad, India","material":"Made to measure",
-              "offers":{"@type":"Offer","availability":"https://schema.org/MadeToOrder",
-                        "priceCurrency":"INR","price":"0","priceSpecification":{"@type":"PriceSpecification","valueAddedTaxIncluded":True}}}
+              "image":imgs,"description":d["description"],
+              "category":d["categoryLabel"],"brand":{"@type":"Brand","name":SITE}}
     bc = {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
         {"@type":"ListItem","position":1,"name":"Catalogue","item":(DOMAIN+"/catalogue/") if DOMAIN else "/catalogue/"},
         {"@type":"ListItem","position":2,"name":d["name"]}]}
@@ -303,7 +311,7 @@ def design_page(d, related):
       <div class="dgrid">{rel_cards}</div>
     </div>
   </section>
-""" if related else "") + FOOTER + '  <script src="/app.js?v=15" defer></script>\n  <script src="/catalogue.js?v=15" defer></script>\n</body>\n</html>\n'
+""" if related else "") + FOOTER + '  <script src="/app.js?v=16" defer></script>\n  <script src="/catalogue.js?v=16" defer></script>\n</body>\n</html>\n'
 
 SCENE_DESC = {
     "bridal":     "Heirloom lehengas in zari, zardozi and khat work — crafted for the moment you've always pictured.",
@@ -354,13 +362,58 @@ def home_showcase():
     </div>
   </section>"""
 
+def home_campaign():
+    """Homepage campaign slider — one slide per design that has an editorial story.
+    The last editorial photo (the finale portrait) fronts each slide."""
+    eds = [d for d in designs if d.get("editorial") and
+           any(_exists(s.get("img","")) for s in d["editorial"].get("slides",[]))]
+    pri = {"bridal":0,"saree":1,"ethnic":2,"festive":3,"mens":4,"babyshower":5}
+    eds.sort(key=lambda d: pri.get(d["category"], 9))
+    if not eds:
+        return ""
+    slides = []
+    for i, d in enumerate(eds):
+        s = [s for s in d["editorial"]["slides"] if _exists(s.get("img",""))][-1]
+        eager = ' fetchpriority="low"' if i else ''
+        lazy = ' loading="lazy"' if i else ''
+        slides.append(f"""      <article class="hs-slide" role="group" aria-label="{i+1} of {len(eds)}">
+        <div class="hs-media"><img src="{s['img']}" alt="{esc(s.get('alt', d['name']))}"{lazy}{eager} width="562" height="1000"></div>
+        <div class="hs-text">
+          <span class="hs-num">{i+1:02d} / {len(eds):02d}</span>
+          <span class="eyebrow">{esc(d['categoryLabel'])}</span>
+          <h3>{esc(d['name'])}</h3>
+          <p>{esc(d['editorial'].get('storyTitle',''))} — {esc(d['detail'])}</p>
+          <div class="hs-actions">
+            <a class="btn btn-primary" href="/catalogue/{d['slug']}/">View the story</a>
+            <a class="btn btn-ghost" href="https://wa.me/{WA}" rel="noopener">Enquire</a>
+          </div>
+        </div>
+      </article>""")
+    return f"""  <section class="hslider" aria-label="Signature campaign stories">
+    <div class="wrap center hslider-head">
+      <p class="eyebrow" data-reveal>The Campaign</p>
+      <h2 data-reveal style="font-size:clamp(30px,5vw,56px);margin-top:8px">Signature stories</h2>
+      <p class="lead center" data-reveal>Our flagship pieces, shot detail by detail — swipe through the collection.</p>
+    </div>
+    <div class="hs-track" id="hsTrack" tabindex="0">
+{chr(10).join(slides)}
+    </div>
+    <div class="hs-ctl" aria-hidden="false">
+      <button class="hs-btn" id="hsPrev" aria-label="Previous slide">&larr;</button>
+      <div class="hs-dots" id="hsDots"></div>
+      <button class="hs-btn" id="hsNext" aria-label="Next slide">&rarr;</button>
+    </div>
+  </section>"""
+
 def inject_showcase():
     import re
     idx = ROOT/"index.html"; src = idx.read_text()
     block = "<!-- SHOWCASE:START -->\n" + home_showcase() + "\n  <!-- SHOWCASE:END -->"
     new = re.sub(r"<!-- SHOWCASE:START -->.*?<!-- SHOWCASE:END -->", lambda m: block, src, flags=re.S)
+    cblock = "<!-- CAMPAIGN:START -->\n" + home_campaign() + "\n  <!-- CAMPAIGN:END -->"
+    new = re.sub(r"<!-- CAMPAIGN:START -->.*?<!-- CAMPAIGN:END -->", lambda m: cblock, new, flags=re.S)
     idx.write_text(new)
-    print("injected home showcase")
+    print("injected home showcase + campaign slider")
 
 def write_sitemap_robots():
     if not DOMAIN:
