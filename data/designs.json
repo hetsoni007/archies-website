@@ -95,7 +95,38 @@
   "description": "Blush Pastel Bridal Lehenga by Aarchi's by Archana Soni — a made-to-measure bridal lehenga crafted in Ahmedabad. A modern-age bridal lehenga in dreamy pastel pink with delicate khat work. Enquire on WhatsApp to customise the colour, fabric and size.",
   "metaDescription": "Blush Pastel Bridal Lehenga — Bridal Lehenga by Aarchi's by Archana Soni, Ahmedabad. A modern-age bridal lehenga in dreamy pastel pink with delicate khat work",
   "source": "https://www.instagram.com/p/DFcqbz2sZmU/",
-  "shortCode": "DFcqbz2sZmU"
+  "shortCode": "DFcqbz2sZmU",
+  "editorial": {
+   "storyTitle": "Dreamy pastels, delicate khat work",
+   "storyLead": "An ivory-blush bridal lehenga with hand-embroidered arch panels and a sheer pink-bordered dupatta — the Blush Pastel bride, from flat-lay to marigold courtyard.",
+   "slides": [
+    {
+     "img": "/assets/img/editorial/blush-flatlay.webp",
+     "kicker": "The Details",
+     "caption": "Arched kali panels hand-worked in rose and antique gold, under a sheer dupatta with pink embroidered borders.",
+     "alt": "Flat-lay of the Blush Pastel Bridal Lehenga — ivory skirt with embroidered arch panels and sheer pink-bordered dupatta"
+    },
+    {
+     "img": "/assets/img/editorial/blush-look.webp",
+     "kicker": "The Look",
+     "caption": "Scattered butis, an embroidered waistband and a veil-soft dupatta — pastel bridal, made to your exact measurements.",
+     "crosssell": true,
+     "alt": "Model wearing the Blush Pastel Bridal Lehenga by Aarchi's by Archana Soni, Ahmedabad — ivory-blush lehenga with khat work"
+    },
+    {
+     "img": "/assets/img/editorial/blush-bench.webp",
+     "kicker": "At Dusk",
+     "caption": "Lantern light on hand embroidery — quiet grandeur for the modern-age bride.",
+     "alt": "Bride seated on a carved stone bench at dusk wearing the Blush Pastel Bridal Lehenga with lanterns beside her"
+    },
+    {
+     "img": "/assets/img/editorial/blush-courtyard.webp",
+     "kicker": "The Bride",
+     "caption": "In a marigold courtyard at golden hour — dreamy pastel pink, worn like heritage.",
+     "alt": "Bridal portrait in a marigold courtyard — Blush Pastel Bridal Lehenga with sheer veil at golden hour"
+    }
+   ]
+  }
  },
  {
   "slug": "scarlet-royal-bridal-lehenga",
