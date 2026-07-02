@@ -17,7 +17,32 @@
   "description": "Ivory Elegance Saree by Aarchi's by Archana Soni — a made-to-measure saree crafted in Ahmedabad. A timeless handcrafted drape that pairs ivory grace with intricate detailing. Enquire on WhatsApp to customise the colour, fabric and size.",
   "metaDescription": "Ivory Elegance Saree — Saree by Aarchi's by Archana Soni, Ahmedabad. A timeless handcrafted drape that pairs ivory grace with intricate detailing. Made to mea",
   "source": "https://www.instagram.com/p/C8wuTa8PdlI/",
-  "shortCode": "C8wuTa8PdlI"
+  "shortCode": "C8wuTa8PdlI",
+  "editorial": {
+   "storyTitle": "Rani pink, worked in gold",
+   "storyLead": "A deep rani-pink silk drape with gold butis and an ornately worked pallu, set against a royal-purple blouse in gold floral jaal — the Ivory Elegance Saree, up close.",
+   "slides": [
+    {
+     "img": "/assets/img/editorial/elegance-flatlay.webp",
+     "kicker": "The Details",
+     "caption": "Folded in temple light — the purple blouse worked in gold floral jaal, resting on the saree's zari-bordered silk.",
+     "alt": "Flat-lay of the Ivory Elegance Saree — rani-pink silk saree with zari border and purple blouse with gold floral embroidery, rose petals on marble"
+    },
+    {
+     "img": "/assets/img/editorial/elegance-drape.webp",
+     "kicker": "The Drape",
+     "caption": "Pinning the pallu — paisley zari work with beaded edging, draped the way you wear it.",
+     "crosssell": true,
+     "alt": "Model pinning the ornate zari pallu of the Ivory Elegance Saree by Aarchi's by Archana Soni in a carved sandstone corridor"
+    },
+    {
+     "img": "/assets/img/editorial/elegance-portrait.webp",
+     "kicker": "The Elegance",
+     "caption": "Golden hour in the courtyard — a timeless drape, made to measure in Ahmedabad.",
+     "alt": "Portrait in golden-hour courtyard light wearing the rani-pink Ivory Elegance Saree with purple gold-embroidered blouse"
+    }
+   ]
+  }
  },
  {
   "slug": "linen-silk-gamthi-saree",
