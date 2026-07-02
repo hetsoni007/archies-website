@@ -48,8 +48,8 @@ def head(title, desc, canonical_path, og_img, schema=None):
   <meta property="og:type" content="website">
   <link rel="icon" href="/assets/favicon.png">
   <link rel="apple-touch-icon" href="/assets/favicon.png">
-  <link rel="stylesheet" href="/styles.css?v=13">
-  <link rel="stylesheet" href="/catalogue.css?v=13">
+  <link rel="stylesheet" href="/styles.css?v=14">
+  <link rel="stylesheet" href="/catalogue.css?v=14">
   <script>document.documentElement.classList.add("js")</script>
 {GTAG}{sc}</head>
 <body>
@@ -180,7 +180,7 @@ def catalogue_index():
 {sections}
   </div>
   <p class="cat-empty" id="cat-empty" hidden><span class="wrap">No designs match those filters — <a href="https://wa.me/{WA}">message us</a> and we&#39;ll create one for you.</span></p>
-""" + FOOTER + '  <script src="/app.js?v=13" defer></script>\n  <script src="/catalogue.js?v=13" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=14" defer></script>\n  <script src="/catalogue.js?v=14" defer></script>\n</body>\n</html>\n'
 
 SOCIAL_ICONS = ('<a href="https://www.instagram.com/aarchis.byarchanasoni/" target="_blank" rel="noopener">Instagram</a>'
   '<a href="https://www.facebook.com/aarchis.byearchanasonii/" target="_blank" rel="noopener">Facebook</a>'
@@ -190,33 +190,42 @@ def _exists(webpath):
     return bool(webpath) and (ROOT / webpath.lstrip("/")).exists()
 
 def editorial_html(d, related):
-    """Flagship editorial sections — rendered only when a design has an `editorial`
-    block. Image slots degrade to an elegant gradient until the photo is added."""
+    """Flagship editorial — full self-contained story slides (each carries its own
+    baked-in copy), a cross-sell strip and an owner/atelier promo band. Renders only
+    when a design has an `editorial.slides` block; missing images are skipped so the
+    page degrades gracefully before photography lands."""
     ed = d.get("editorial")
     if not ed:
         return ""
-    rows = []
-    for i, s in enumerate(ed.get("sections", []), 1):
-        rev = " rev" if i % 2 == 0 else ""
-        if _exists(s.get("img", "")):
-            media = f'<img src="{s["img"]}" alt="{esc(s["title"])} — {esc(d["name"])} by {SITE}" loading="lazy" width="900" height="1120">'
-        else:
-            media = '<div class="estory-ph" aria-hidden="true"></div>'
-        cross = ""
-        if s.get("crosssell") and related:
-            cross = ('\n    <div class="wrap"><p class="estory-crosslabel" data-reveal>Complete the look</p>'
-                     '<div class="estory-cross">' + "".join(card(r) for r in related[:3]) + "</div></div>")
-        rows.append(f"""  <section class="estory{rev}">
-    <div class="wrap estory-in">
-      <div class="estory-media" data-reveal="{'right' if rev else 'left'}">{media}</div>
-      <div class="estory-text" data-reveal="{'left' if rev else 'right'}">
-        <span class="eyebrow">{esc(s.get('kicker',''))}</span>
-        <h2>{esc(s.get('title',''))}</h2>
-        <p>{esc(s.get('body',''))}</p>
-      </div>
-    </div>{cross}
-  </section>""")
-    promo = f"""  <section class="section-soft eowner">
+    all_slides = ed.get("slides", [])
+    slides = [s for s in all_slides if _exists(s.get("img", ""))]
+    if not slides:
+        return ""
+    figs = "\n".join(
+        f'      <figure class="eslide" data-reveal><img src="{s["img"]}" '
+        f'alt="{esc(s.get("alt",""))}" loading="lazy" width="562" height="1000"></figure>'
+        for s in slides
+    )
+    story_title = esc(ed.get("storyTitle", "Up close"))
+    story_lead = esc(ed.get("storyLead",
+        "From the first sketch to the final drape — every detail is hand-worked, "
+        "made to measure, and shipped worldwide."))
+    intro = f"""  <section class="estory-intro">
+    <div class="wrap center">
+      <p class="eyebrow" data-reveal>The Story</p>
+      <h2 data-reveal style="font-size:clamp(28px,4vw,50px);margin-top:6px">{story_title}</h2>
+      <p class="lead center" data-reveal>{story_lead}</p>
+    </div>
+  </section>"""
+    gallery = f'  <section class="estory"><div class="eslides">\n{figs}\n    </div>\n  </section>'
+    cross = ""
+    if related and any(s.get("crosssell") for s in all_slides):
+        cross = ('\n  <section class="estory-cross-sec"><div class="wrap center">'
+                 '<p class="estory-crosslabel" data-reveal>Complete the look</p>'
+                 '<div class="estory-cross">' + "".join(card(r) for r in related[:3]) +
+                 "</div></div></section>")
+    promo = f"""
+  <section class="section-soft eowner">
     <div class="wrap center">
       <p class="eyebrow" data-reveal>The Atelier</p>
       <h2 data-reveal style="font-size:clamp(28px,4vw,46px);margin-top:6px">Designed by Archana Soni</h2>
@@ -228,7 +237,7 @@ def editorial_html(d, related):
       <div class="esocials" data-reveal>{SOCIAL_ICONS}</div>
     </div>
   </section>"""
-    return "\n" + "\n".join(rows) + "\n" + promo + "\n"
+    return "\n" + intro + "\n" + gallery + cross + promo + "\n"
 
 def design_page(d, related):
     hero_img = d["editorial"]["heroImg"] if (d.get("editorial") and _exists(d["editorial"].get("heroImg",""))) else d["img"]
@@ -291,7 +300,7 @@ def design_page(d, related):
       <div class="dgrid">{rel_cards}</div>
     </div>
   </section>
-""" if related else "") + FOOTER + '  <script src="/app.js?v=13" defer></script>\n  <script src="/catalogue.js?v=13" defer></script>\n</body>\n</html>\n'
+""" if related else "") + FOOTER + '  <script src="/app.js?v=14" defer></script>\n  <script src="/catalogue.js?v=14" defer></script>\n</body>\n</html>\n'
 
 SCENE_DESC = {
     "bridal":     "Heirloom lehengas in zari, zardozi and khat work — crafted for the moment you've always pictured.",
