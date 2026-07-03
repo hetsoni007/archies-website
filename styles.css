@@ -428,3 +428,11 @@ section { padding-block: clamp(64px, 9vw, 120px); }
 /* ===================== INSTAGRAM PROOF ===================== */
 .ig-proof { padding-block: clamp(50px, 7vw, 90px) clamp(30px, 4vw, 50px); }
 .ig-proof .ig-strip { margin-top: clamp(24px, 3vw, 40px); }
+
+/* ===================== NRI FACT LIST ===================== */
+.nri-facts { list-style: none; padding: 0; max-width: 620px; margin: 28px auto 0; display: grid; gap: 10px; text-align: left; }
+.nri-facts li { border: 1px solid var(--line, #ddd2bf); border-radius: 12px; padding: 14px 18px;
+  font-size: 15px; color: var(--ink-soft); background: var(--bg); }
+.nri-facts li strong { color: var(--gold-deep); font-weight: 600; margin-right: 6px; }
+/* nav gains a 5th link — keep it tidy at laptop widths */
+@media (max-width: 1080px) and (min-width: 981px) { .nav-links a { font-size: 14px; } .nav-links { gap: 18px; } }

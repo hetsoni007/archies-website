@@ -25,7 +25,7 @@ GTAG = '''  <!-- Google tag (gtag.js) -->
 
 designs = json.loads((ROOT / "data" / "designs.json").read_text())
 SITECFG = json.loads((ROOT / "data" / "site.json").read_text())
-EXTRA_PAGES = []  # future static landing pages appended here for the sitemap
+EXTRA_PAGES = ["/how-it-works/", "/nri-brides/", "/nri-brides/usa/", "/nri-brides/uk/"]
 
 def _live(v):
     """A config value is live once it no longer carries a TODO marker."""
@@ -129,6 +129,7 @@ def nav(active=""):
       <nav class="nav-links">
         {a("/","Home","home")}
         {a("/catalogue/","Catalogue","cat")}
+        {a("/how-it-works/","How it works","how")}
         {a("/about/","About","about")}
         {a("/contact/","Contact","contact")}
         <a href="/contact/" class="nav-cta">Book a Consultation</a>
@@ -147,6 +148,9 @@ FOOTER = f"""  <footer class="foot">
         </div>
         <div><h4>Explore</h4><ul>
           <li><a href="/catalogue/">Catalogue</a></li>
+          <li><a href="/how-it-works/">How it works</a></li>
+          <li><a href="/nri-brides/">For NRI brides</a></li>
+          <li><a href="/navratri-outfits-ahmedabad/">Navratri edit</a></li>
           <li><a href="/about/">About</a></li>
           <li><a href="/contact/">Contact</a></li>
         </ul></div>
@@ -532,6 +536,254 @@ def navratri_page():
   </section>
 """ + FOOTER + '  <script src="/app.js?v=19" defer></script>\n  <script src="/catalogue.js?v=19" defer></script>\n</body>\n</html>\n'
 
+
+PROCESS_STEPS = [
+  ("Consultation on WhatsApp", "Tell us the occasion, your ideas and budget — share reference photos or pick a catalogue design as the starting point."),
+  ("Design & fabric", "Archana works out the silhouette, fabrics, colours and embroidery with you, with photos and swatches shared on chat."),
+  ("Measurements at home", "A video-guided measurement session on WhatsApp — all you need is a measuring tape and a helper."),
+  ("Crafted in Ahmedabad", "Your outfit is cut, embroidered and finished at the studio, with progress photos as it comes together."),
+  ("Fitting review", "You see the finished piece on photos and video before it ships — tweaks are agreed right there."),
+  ("Delivered to your door", "Carefully packed and shipped — across India and worldwide."),
+]
+
+def process_html():
+    return '<div class="svc-grid" style="grid-template-columns:repeat(3,1fr)">' + "".join(
+        f'<article class="svc-card" data-reveal style="--i:{i}"><span class="svc-num">{i+1:02d}</span>'
+        f'<h3>{esc(t)}</h3><p>{esc(b)}</p></article>'
+        for i, (t, b) in enumerate(PROCESS_STEPS)) + "</div>"
+
+def _nri_fact(label, key_path, fallback):
+    """Renders a fact line when its site.json value is live; else a generic honest line + TODO comment."""
+    node = SITECFG.get("nri", {})
+    for k in key_path.split("."):
+        node = node.get(k, "") if isinstance(node, dict) else ""
+    if _live(node):
+        return f'<li><strong>{esc(label)}:</strong> {esc(str(node))}</li>'
+    return f'<li><strong>{esc(label)}:</strong> {esc(fallback)}</li><!-- TODO: set nri.{key_path} in data/site.json -->'
+
+def _faq_block(faqs):
+    faq_html = "".join(f'<details class="faq-item"><summary>{esc(q)}</summary><p>{esc(a)}</p></details>' for q, a in faqs)
+    schema = {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+        {"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q, a in faqs]}
+    return faq_html, schema
+
+def how_it_works_page():
+    title = "How It Works — Custom Outfits, Made to Measure | Aarchi's"
+    desc = ("From a WhatsApp consultation to your door: how Aarchi's designs, measures, crafts and delivers "
+            "made-to-measure Indian outfits from the Ahmedabad studio — locally and worldwide.")
+    faqs = [
+      ("Do I need to visit the studio?",
+       "No — the whole process runs on WhatsApp if you prefer: consultation, video-guided measurements, progress photos and a fitting review before shipping. Studio visits in Ahmedabad are welcome by appointment."),
+      ("How are measurements taken remotely?",
+       "On a short WhatsApp video call, Archana guides you through each measurement step by step. You need a measuring tape and ideally someone to help."),
+      ("Can I customise a catalogue design?",
+       "Yes — every catalogue piece is a starting point. Colours, fabrics, embroidery and silhouettes are tailored to you."),
+      ("How is the price decided?",
+       "Each piece is quoted individually based on fabric, hand-work and construction. Share your budget in the first chat and the design is worked around it."),
+    ]
+    faq_html, schema = _faq_block(faqs)
+    bc = {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Home","item":DOMAIN+"/"},
+        {"@type":"ListItem","position":2,"name":"How It Works"}]}
+    return head(title, desc, "/how-it-works/", "/assets/og.jpg", [schema, bc]) + nav("how") + f"""
+  <section class="cat-hero">
+    <div class="cat-hero-bg" data-parallax data-speed="0.16"></div>
+    <div class="wrap center">
+      <p class="eyebrow" data-reveal style="--i:0">The Process</p>
+      <h1 data-reveal style="--i:1">Made for you, <em>step by step</em></h1>
+      <p class="lead center" data-reveal style="--i:2">Every Aarchi's piece is made to measure — here's exactly how a
+        custom outfit comes to life, whether you're in Ahmedabad or across the world.</p>
+    </div>
+  </section>
+  <section class="section-soft" style="padding-block:clamp(50px,7vw,90px)">
+    <div class="wrap center">{process_html()}</div>
+  </section>
+  <section class="faq">
+    <div class="wrap">
+      <div class="center"><p class="eyebrow" data-reveal>Good to know</p>
+      <h2 data-reveal style="font-size:clamp(26px,4vw,42px);margin-top:8px">Common questions</h2></div>
+      <div class="faq-list">{faq_html}</div>
+      <div class="hero-actions" style="justify-content:center;margin-top:30px" data-reveal>
+        <a href="https://wa.me/{WA}" class="btn btn-primary" rel="noopener">{wa_cta_label()}</a>
+        <a href="/catalogue/" class="btn btn-ghost">Browse the catalogue</a>
+      </div>
+      <p class="center" style="margin-top:22px;color:var(--ink-soft);font-size:14.5px">Ordering from outside India?
+        See <a href="/nri-brides/" style="color:var(--gold-deep);font-weight:600">how it works for NRI brides</a>.</p>
+    </div>
+  </section>
+""" + FOOTER + '  <script src="/app.js?v=19" defer></script>\n</body>\n</html>\n'
+
+def nri_hub_page():
+    title = "Custom Indian Bridal Outfits for NRI Brides — Made in India, Delivered Worldwide | Aarchi's"
+    desc = ("Custom bridal lehengas and Indian wedding outfits for NRI brides — designed on WhatsApp, made to "
+            "measure in Ahmedabad, shipped to the USA, UK, Canada, Australia and UAE.")
+    faqs = [
+      ("Can I order a custom bridal lehenga from India to the USA or UK?",
+       "Yes — that's exactly what we do. The consultation, design and measurements all happen on WhatsApp, the outfit is handcrafted in Ahmedabad, and it ships to your door in the USA, UK, Canada, Australia, UAE and beyond."),
+      ("How do made-to-measure outfits work online?",
+       "Measurements are taken on a video-guided WhatsApp call, and you review the finished outfit on photos and video before it ships — so nothing is left to chance."),
+      ("What if it doesn't fit when it arrives?",
+       "Made-to-measure cuts fit risk dramatically, and every piece is checked against your measurements before shipping. If something needs adjusting, message us and we'll guide the alteration with a local tailor."),
+      ("Do you understand what NRI brides need?",
+       "Many of our clients order from abroad for weddings in India or celebrations overseas. Timezone-friendly chats, clear progress photos and honest timelines are part of the service."),
+    ]
+    faq_html, schema = _faq_block(faqs)
+    bc = {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Home","item":DOMAIN+"/"},
+        {"@type":"ListItem","position":2,"name":"NRI Brides"}]}
+    facts = "".join([
+      _nri_fact("Typical timeline", "timeline", "confirmed on enquiry — share your wedding date first"),
+      _nri_fact("Payment", "payment", "discussed and confirmed on WhatsApp before work begins"),
+    ])
+    return head(title, desc, "/nri-brides/", "/assets/og.jpg", [schema, bc]) + nav("") + f"""
+  <section class="cat-hero">
+    <div class="cat-hero-bg" data-parallax data-speed="0.16"></div>
+    <div class="wrap center">
+      <p class="eyebrow" data-reveal style="--i:0">For NRI Brides</p>
+      <h1 data-reveal style="--i:1">Made in India,<br><em>delivered worldwide</em></h1>
+      <p class="lead center" data-reveal style="--i:2">Custom Indian bridal outfits designed over WhatsApp, handcrafted
+        in Ahmedabad, and shipped to the USA, UK, Canada, Australia and UAE — made to your measurements, not a size chart.</p>
+      <div class="hero-actions" data-reveal style="--i:3;justify-content:center">
+        <a href="https://wa.me/{WA}" class="btn btn-primary" rel="noopener">{wa_cta_label()}</a>
+        <a href="/how-it-works/" class="btn btn-ghost">How it works</a>
+      </div>
+    </div>
+  </section>
+  <section class="section-soft" style="padding-block:clamp(50px,7vw,90px)">
+    <div class="wrap center">
+      <p class="eyebrow" data-reveal>The Remote Process</p>
+      <h2 data-reveal style="font-size:clamp(26px,4vw,44px);margin:8px 0 30px">Six steps, zero guesswork</h2>
+      {process_html()}
+      <ul class="nri-facts" data-reveal>{facts}</ul>
+    </div>
+  </section>
+  <section style="padding-block:clamp(46px,6vw,80px)">
+    <div class="wrap center">
+      <p class="eyebrow" data-reveal>Your Country</p>
+      <h2 data-reveal style="font-size:clamp(26px,4vw,42px);margin-top:8px">Ordering from&hellip;</h2>
+      <div class="hero-actions" style="justify-content:center;margin-top:24px" data-reveal>
+        <a href="/nri-brides/usa/" class="btn btn-ghost">United States</a>
+        <a href="/nri-brides/uk/" class="btn btn-ghost">United Kingdom</a>
+        <a href="https://wa.me/{WA}" class="btn btn-ghost" rel="noopener">Canada &middot; Australia &middot; UAE — ask us</a>
+      </div>
+    </div>
+  </section>
+  <!-- TESTIMONIALS slot: fills automatically once data/site.json testimonials are real -->
+{testimonials_html()}
+  <section class="faq section-soft">
+    <div class="wrap">
+      <div class="center"><p class="eyebrow" data-reveal>Good to know</p>
+      <h2 data-reveal style="font-size:clamp(26px,4vw,42px);margin-top:8px">NRI orders, answered</h2></div>
+      <div class="faq-list">{faq_html}</div>
+      <div class="hero-actions" style="justify-content:center;margin-top:30px" data-reveal>
+        <a href="https://wa.me/{WA}" class="btn btn-primary" rel="noopener">{wa_cta_label()}</a>
+        <a href="/catalogue/" class="btn btn-ghost">Browse designs</a>
+      </div>
+    </div>
+  </section>
+""" + FOOTER + '  <script src="/app.js?v=19" defer></script>\n</body>\n</html>\n'
+
+COUNTRY_META = {
+  "usa": {
+    "label": "the USA", "cur": "USD",
+    "title": "Custom Bridal Lehengas from India to the USA — Made to Measure, Shipped to Your Door | Aarchi's",
+    "desc": ("Order a custom bridal lehenga from India to the USA. Designed on WhatsApp, made to measure in "
+             "Ahmedabad, shipped across the United States. For NRI brides who want it made right."),
+    "h1": "From Ahmedabad<br>to <em>the USA</em>",
+    "lead": ("Custom bridal lehengas and Indian wedding outfits for NRI brides across the United States — "
+             "designed together on WhatsApp despite the timezones, crafted in Ahmedabad, delivered to your door."),
+    "faqs": [
+      ("How do I order a custom bridal lehenga from India to the USA?",
+       "Start a WhatsApp chat with your date and ideas. Design and fabric choices happen on chat, measurements on a guided video call, and the finished lehenga ships from Ahmedabad to your US address."),
+      ("Do you work across US timezones?",
+       "Yes — chats are asynchronous by nature and calls are scheduled to suit EST to PST."),
+      ("What about customs and duties in the US?",
+       "Any applicable US import duties are confirmed with your quote before you commit, so there are no surprises at delivery."),
+      ("Is made-to-measure safe to order online?",
+       "Measurements are video-guided and the finished piece is reviewed on photos and video before shipping — a fitting, minus the flight."),
+    ]},
+  "uk": {
+    "label": "the UK", "cur": "GBP",
+    "title": "Custom Bridal Lehengas from India to the UK — Made to Measure, Shipped to Your Door | Aarchi's",
+    "desc": ("Order a custom bridal lehenga from India to the UK. Designed on WhatsApp, made to measure in "
+             "Ahmedabad, shipped across the United Kingdom. For British-Indian brides who want it made right."),
+    "h1": "From Ahmedabad<br>to <em>the UK</em>",
+    "lead": ("Custom bridal lehengas and Indian wedding outfits for brides across the United Kingdom — designed "
+             "together on WhatsApp, handcrafted in Ahmedabad, delivered to your door."),
+    "faqs": [
+      ("How do I order a custom bridal lehenga from India to the UK?",
+       "Message us on WhatsApp with your date and ideas. Design and fabric choices happen on chat, measurements on a guided video call, and the finished lehenga ships from Ahmedabad to your UK address."),
+      ("Do UK brides really order bridal wear from India?",
+       "Constantly — made-to-measure from the source is often better made and better value than off-the-peg abroad, and it's genuinely yours."),
+      ("What about UK customs and VAT?",
+       "Any applicable UK import charges are confirmed with your quote before you commit, so there are no surprises at delivery."),
+      ("Is made-to-measure safe to order online?",
+       "Measurements are video-guided and the finished piece is reviewed on photos and video before shipping — a fitting, minus the flight."),
+    ]},
+}
+
+def nri_country_page(cc):
+    m = COUNTRY_META[cc]
+    faq_html, schema = _faq_block(m["faqs"])
+    bc = {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Home","item":DOMAIN+"/"},
+        {"@type":"ListItem","position":2,"name":"NRI Brides","item":DOMAIN+"/nri-brides/"},
+        {"@type":"ListItem","position":3,"name":m["label"].replace("the ","").upper() if cc!="usa" else "USA"}]}
+    facts = "".join([
+      _nri_fact("Shipping", f"shipping.{cc}", "carrier, time and cost confirmed with your quote"),
+      _nri_fact("Bridal range", f"priceRange.{cc}", "quoted per design — share your budget in the first chat"),
+      _nri_fact("Payment", "payment", "discussed and confirmed on WhatsApp before work begins"),
+      _nri_fact("Typical timeline", "timeline", "confirmed on enquiry — share your wedding date first"),
+    ])
+    bridal = [d for d in designs if d["category"] == "bridal"][:6]
+    cards = "".join(card(d) for d in bridal)
+    return head(m["title"], m["desc"], f"/nri-brides/{cc}/", "/assets/og.jpg", [schema, bc]) + nav("") + f"""
+  <section class="cat-hero">
+    <div class="cat-hero-bg" data-parallax data-speed="0.16"></div>
+    <div class="wrap center">
+      <p class="eyebrow" data-reveal style="--i:0">NRI Brides &middot; {esc(m["label"].title().replace("The ","The "))}</p>
+      <h1 data-reveal style="--i:1">{m["h1"]}</h1>
+      <p class="lead center" data-reveal style="--i:2">{esc(m["lead"])}</p>
+      <div class="hero-actions" data-reveal style="--i:3;justify-content:center">
+        <a href="https://wa.me/{WA}" class="btn btn-primary" rel="noopener">{wa_cta_label()}</a>
+        <a href="/how-it-works/" class="btn btn-ghost">How it works</a>
+      </div>
+    </div>
+  </section>
+  <section class="section-soft" style="padding-block:clamp(46px,6vw,80px)">
+    <div class="wrap center">
+      <p class="eyebrow" data-reveal>Ordering from {esc(m["label"])}</p>
+      <h2 data-reveal style="font-size:clamp(26px,4vw,42px);margin:8px 0 22px">The practical details</h2>
+      <ul class="nri-facts" data-reveal>{facts}</ul>
+    </div>
+  </section>
+  <section class="catsec">
+    <div class="wrap">
+      <header class="catsec-head">
+        <div class="catsec-head-main">
+          <h2 data-reveal>Bridal designs to start from</h2>
+          <p class="lead" data-reveal style="--i:1">Every piece customisable in colour, fabric and embroidery — or bring your own reference.</p>
+          {price_from("bridal")}
+        </div>
+      </header>
+      <div class="dgrid">
+{cards}      </div>
+      <div class="center" style="margin-top:30px"><a href="/catalogue/" class="btn btn-ghost" data-reveal>View the full catalogue</a></div>
+    </div>
+  </section>
+  <section class="faq section-soft">
+    <div class="wrap">
+      <div class="center"><p class="eyebrow" data-reveal>Good to know</p>
+      <h2 data-reveal style="font-size:clamp(26px,4vw,42px);margin-top:8px">Questions from {esc(m["label"])}</h2></div>
+      <div class="faq-list">{faq_html}</div>
+      <div class="hero-actions" style="justify-content:center;margin-top:30px" data-reveal>
+        <a href="https://wa.me/{WA}" class="btn btn-primary" rel="noopener">{wa_cta_label()}</a>
+        <a href="/nri-brides/" class="btn btn-ghost">All NRI info</a>
+      </div>
+    </div>
+  </section>
+""" + FOOTER + '  <script src="/app.js?v=19" defer></script>\n  <script src="/catalogue.js?v=19" defer></script>\n</body>\n</html>\n'
+
 def inject_showcase():
     import re
     idx = ROOT/"index.html"; src = idx.read_text()
@@ -573,6 +825,13 @@ def main():
     print(f"generated /catalogue/ + {len(designs)} design pages")
     nv = ROOT/"navratri-outfits-ahmedabad"; nv.mkdir(exist_ok=True)
     (nv/"index.html").write_text(navratri_page())
+    hw = ROOT/"how-it-works"; hw.mkdir(exist_ok=True)
+    (hw/"index.html").write_text(how_it_works_page())
+    nb = ROOT/"nri-brides"; nb.mkdir(exist_ok=True)
+    (nb/"index.html").write_text(nri_hub_page())
+    for cc in COUNTRY_META:
+        d = nb/cc; d.mkdir(exist_ok=True)
+        (d/"index.html").write_text(nri_country_page(cc))
     inject_showcase()
     write_sitemap_robots()
 

@@ -4,17 +4,65 @@
   "mapEmbedUrl": "TODO: Google Maps embed URL for the studio area (Share > Embed a map)",
   "locality": "TODO: area/locality within Ahmedabad, e.g. Satellite",
   "pricing": {
-    "bridal":     { "inr": "TODO: e.g. 45,000", "usd": "TODO: e.g. 550" },
-    "saree":      { "inr": "TODO", "usd": "TODO" },
-    "dupatta":    { "inr": "TODO", "usd": "TODO" },
-    "ethnic":     { "inr": "TODO", "usd": "TODO" },
-    "festive":    { "inr": "TODO", "usd": "TODO" },
-    "mens":       { "inr": "TODO", "usd": "TODO" },
-    "babyshower": { "inr": "TODO", "usd": "TODO" }
+    "bridal": {
+      "inr": "TODO: e.g. 45,000",
+      "usd": "TODO: e.g. 550"
+    },
+    "saree": {
+      "inr": "TODO",
+      "usd": "TODO"
+    },
+    "dupatta": {
+      "inr": "TODO",
+      "usd": "TODO"
+    },
+    "ethnic": {
+      "inr": "TODO",
+      "usd": "TODO"
+    },
+    "festive": {
+      "inr": "TODO",
+      "usd": "TODO"
+    },
+    "mens": {
+      "inr": "TODO",
+      "usd": "TODO"
+    },
+    "babyshower": {
+      "inr": "TODO",
+      "usd": "TODO"
+    }
   },
   "testimonials": [
-    { "name": "TODO: bride's first name", "place": "TODO: city, country", "quote": "TODO: real client quote — do not publish until real", "img": "" },
-    { "name": "TODO: client name",        "place": "TODO: city, country", "quote": "TODO: real client quote", "img": "" },
-    { "name": "TODO: client name",        "place": "TODO: city, country", "quote": "TODO: real client quote", "img": "" }
-  ]
+    {
+      "name": "TODO: bride's first name",
+      "place": "TODO: city, country",
+      "quote": "TODO: real client quote — do not publish until real",
+      "img": ""
+    },
+    {
+      "name": "TODO: client name",
+      "place": "TODO: city, country",
+      "quote": "TODO: real client quote",
+      "img": ""
+    },
+    {
+      "name": "TODO: client name",
+      "place": "TODO: city, country",
+      "quote": "TODO: real client quote",
+      "img": ""
+    }
+  ],
+  "nri": {
+    "timeline": "TODO: typical crafting + delivery window, e.g. 6-10 weeks",
+    "payment": "TODO: accepted international payment methods, e.g. bank transfer / UPI / PayPal",
+    "shipping": {
+      "usa": "TODO: shipping carrier + typical time/cost to USA, e.g. DHL 4-7 days, $40-60",
+      "uk": "TODO: shipping carrier + typical time/cost to UK"
+    },
+    "priceRange": {
+      "usa": "TODO: bridal range in USD, e.g. $550-$2,500",
+      "uk": "TODO: bridal range in GBP, e.g. £450-£2,000"
+    }
+  }
 }
