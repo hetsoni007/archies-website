@@ -31,12 +31,25 @@ STYLES = sorted({s for d in designs for s in d["styles"]})
 
 def esc(s): return html.escape(s, quote=True)
 
+BIZ_SCHEMA = json.dumps({"@context":"https://schema.org","@type":"ClothingStore",
+  "@id":DOMAIN+"/#business","name":SITE,"url":DOMAIN+"/",
+  "image":DOMAIN+"/assets/og.jpg","logo":DOMAIN+"/assets/logo-mark.png",
+  "telephone":"+91-98793-90731",
+  "address":{"@type":"PostalAddress","addressLocality":"Ahmedabad","addressRegion":"Gujarat","addressCountry":"IN"},
+  "priceRange":"$$",
+  "areaServed":[{"@type":"Country","name":n} for n in ["India","United States","United Kingdom","Canada","Australia","United Arab Emirates"]],
+  "sameAs":["https://www.instagram.com/aarchis.byarchanasoni/",
+            "https://www.facebook.com/aarchis.byearchanasonii/",
+            "https://in.pinterest.com/aarchisbyarchanasoni/",
+            "https://in.linkedin.com/company/aarchi-s-by-archana-soni"]}, ensure_ascii=False)
+
+
+
 def head(title, desc, canonical_path, og_img, schema=None):
-    cn = (f'  <link rel="canonical" href="{DOMAIN}{canonical_path}">\n'
-          f'  <link rel="alternate" hreflang="en" href="{DOMAIN}{canonical_path}">\n'
-          f'  <link rel="alternate" hreflang="x-default" href="{DOMAIN}{canonical_path}">\n') if DOMAIN else f'  <!-- canonical TODO (set DOMAIN): {canonical_path} -->\n'
+    cn = (f'  <link rel="canonical" href="{DOMAIN}{canonical_path}">\n') if DOMAIN else f'  <!-- canonical TODO (set DOMAIN): {canonical_path} -->\n'
     ogi = f"{DOMAIN}{og_img}" if DOMAIN else og_img
     sc = f'  <script type="application/ld+json">{json.dumps(schema, ensure_ascii=False)}</script>\n' if schema else ""
+    sc += f'  <script type="application/ld+json">{BIZ_SCHEMA}</script>\n'
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,8 +69,8 @@ def head(title, desc, canonical_path, og_img, schema=None):
   <meta name="twitter:image" content="{ogi}">
   <link rel="icon" href="/assets/favicon.png">
   <link rel="apple-touch-icon" href="/assets/favicon.png">
-  <link rel="stylesheet" href="/styles.css?v=18">
-  <link rel="stylesheet" href="/catalogue.css?v=18">
+  <link rel="stylesheet" href="/styles.css?v=19">
+  <link rel="stylesheet" href="/catalogue.css?v=19">
   <script>document.documentElement.classList.add("js")</script>
 {GTAG}{sc}</head>
 <body>
@@ -188,7 +201,7 @@ def catalogue_index():
 {sections}
   </div>
   <p class="cat-empty" id="cat-empty" hidden><span class="wrap">No designs match those filters — <a href="https://wa.me/{WA}">message us</a> and we&#39;ll create one for you.</span></p>
-""" + FOOTER + '  <script src="/app.js?v=18" defer></script>\n  <script src="/catalogue.js?v=18" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=19" defer></script>\n  <script src="/catalogue.js?v=19" defer></script>\n</body>\n</html>\n'
 
 SOCIAL_ICONS = ('<a href="https://www.instagram.com/aarchis.byarchanasoni/" target="_blank" rel="noopener">Instagram</a>'
   '<a href="https://www.facebook.com/aarchis.byearchanasonii/" target="_blank" rel="noopener">Facebook</a>'
@@ -311,7 +324,7 @@ def design_page(d, related):
       <div class="dgrid">{rel_cards}</div>
     </div>
   </section>
-""" if related else "") + FOOTER + '  <script src="/app.js?v=18" defer></script>\n  <script src="/catalogue.js?v=18" defer></script>\n</body>\n</html>\n'
+""" if related else "") + FOOTER + '  <script src="/app.js?v=19" defer></script>\n  <script src="/catalogue.js?v=19" defer></script>\n</body>\n</html>\n'
 
 SCENE_DESC = {
     "bridal":     "Heirloom lehengas in zari, zardozi and khat work — crafted for the moment you've always pictured.",

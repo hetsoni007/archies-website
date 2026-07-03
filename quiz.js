@@ -67,6 +67,7 @@
   function submit() {
     var name = (mount.querySelector("#quiz-name") || {}).value || "";
     ev("quiz_complete", { occasion: answers.occasion, piece: answers.piece, timeline: answers.timeline, deliver_to: answers.location });
+    ev("form_submit", { form_name: "style_quiz", page_path: location.pathname });
     ev("generate_lead", { value: 1, currency: "INR" });
     var msg = "Hi Aarchi's! I'd love to enquire ✨\n"
       + "• Occasion: " + (answers.occasion || "-") + "\n"

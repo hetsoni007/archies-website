@@ -147,11 +147,37 @@ function initForm() {
 /* ---------------------- GA4 behavior events ---------------------- */
 /* Fires custom events into GA4 (gtag). No-ops safely if gtag isn't present. */
 function track(name, params) { try { if (window.gtag) gtag("event", name, params || {}); } catch (e) {} }
+function ctaPosition(el) {
+  if (el.classList.contains("wa-fab")) return "floating_fab";
+  const zones = [
+    [".design-form", "product_form"], [".design", "product_page"],
+    [".hero", "hero"], [".hslider", "campaign_slider"], [".quiz-card", "style_quiz"],
+    [".faq", "faq"], ["footer", "footer"], [".eowner", "editorial_atelier"]
+  ];
+  for (const [sel, name] of zones) { if (el.closest(sel)) return name; }
+  return "body";
+}
+
 function initAnalytics() {
+  const designH1 = document.querySelector(".design-info h1");
+  const designName = designH1 ? designH1.textContent.trim() : undefined;
   // WhatsApp clicks (delegated — covers FAB, buttons, inline links, quiz)
   document.addEventListener("click", (e) => {
     const t = e.target.closest ? e.target.closest('a[href*="wa.me"]') : null;
-    if (t) track("whatsapp_click", { location: location.pathname });
+    if (t) track("whatsapp_click", {
+      page_path: location.pathname,
+      cta_position: ctaPosition(t),
+      design_name: designName
+    });
+  });
+  // Outbound social profile clicks
+  document.addEventListener("click", (e) => {
+    const s = e.target.closest ? e.target.closest(
+      'a[href*="instagram.com"],a[href*="facebook.com"],a[href*="pinterest.com"],a[href*="linkedin.com"]') : null;
+    if (s) track("outbound_social", {
+      network: (s.href.match(/instagram|facebook|pinterest|linkedin/) || ["other"])[0],
+      page_path: location.pathname
+    });
   });
   // Primary CTAs
   document.querySelectorAll(".btn-primary, .nav-cta, .scene-cta").forEach(el => {
