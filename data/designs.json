@@ -1,10 +1,10 @@
 [
  {
-  "slug": "gharchola-heritage-saree",
-  "name": "Gharchola Heritage Saree",
-  "category": "saree",
-  "categoryLabel": "Saree",
-  "img": "/assets/img/designs/gharchola-heritage-saree.webp",
+  "slug": "gharchola-heritage-dupatta",
+  "name": "Gharchola Heritage Dupatta",
+  "category": "dupatta",
+  "categoryLabel": "Dupatta",
+  "img": "/assets/img/designs/gharchola-heritage-dupatta.webp",
   "occasions": [
    "Wedding",
    "Festive"
@@ -13,17 +13,17 @@
    "Traditional",
    "Bandhej"
   ],
-  "detail": "A classic red gharchola in bandhej checks, framed by hand-embroidered green and indigo borders with elephant motifs.",
-  "description": "Gharchola Heritage Saree by Aarchi's by Archana Soni — a classic red gharchola saree with bandhej tie-dye checks, a hand-embroidered deep-green border with elephant motifs and an indigo zari band. A traditional Gujarati wedding drape, made to measure in Ahmedabad and shipped worldwide. Enquire on WhatsApp to customise the colour, fabric and blouse.",
-  "metaDescription": "Gharchola Heritage Saree — red bandhej gharchola with hand-embroidered green & indigo borders by Aarchi's, Ahmedabad. Made to measure, ships worldwide.",
+  "detail": "A classic red gharchola dupatta in bandhej checks, framed by hand-embroidered green and indigo borders with elephant motifs.",
+  "description": "Gharchola Heritage Dupatta by Aarchi's by Archana Soni — a classic red gharchola dupatta with bandhej tie-dye checks, a hand-embroidered deep-green border with elephant motifs and an indigo zari band. A traditional Gujarati wedding dupatta, made to order in Ahmedabad and shipped worldwide. Enquire on WhatsApp to customise the colours and pairing.",
+  "metaDescription": "Gharchola Heritage Dupatta — red bandhej gharchola dupatta with hand-embroidered green & indigo borders by Aarchi's, Ahmedabad. Made to order, ships worldwide.",
   "isNew": true
  },
  {
-  "slug": "sunset-bandhani-ombre-drape",
-  "name": "Sunset Bandhani Ombré Drape",
-  "category": "saree",
-  "categoryLabel": "Saree",
-  "img": "/assets/img/designs/sunset-bandhani-ombre-drape.webp",
+  "slug": "sunset-bandhani-ombre-dupatta",
+  "name": "Sunset Bandhani Ombré Dupatta",
+  "category": "dupatta",
+  "categoryLabel": "Dupatta",
+  "img": "/assets/img/designs/sunset-bandhani-ombre-dupatta.webp",
   "occasions": [
    "Festive",
    "Wedding"
@@ -32,17 +32,17 @@
    "Bandhej",
    "Modern"
   ],
-  "detail": "A sheer bandhej drape melting from rose pink through orange to red, scattered with gold butis and finished with a gilt-embroidered edge.",
-  "description": "Sunset Bandhani Ombré Drape by Aarchi's by Archana Soni — a featherlight sheer drape in bandhej dots, shading from rose pink through sunset orange to deep red, scattered with gold butis and edged in gilt embroidery. Made to measure in Ahmedabad and shipped worldwide. Enquire on WhatsApp to customise the colours and pairing.",
-  "metaDescription": "Sunset Bandhani Ombré Drape — sheer pink-to-red bandhej drape with gold butis by Aarchi's, Ahmedabad. Made to measure, ships worldwide.",
+  "detail": "A sheer bandhej dupatta melting from rose pink through orange to red, scattered with gold butis and finished with a gilt-embroidered edge.",
+  "description": "Sunset Bandhani Ombré Dupatta by Aarchi's by Archana Soni — a featherlight sheer dupatta in bandhej dots, shading from rose pink through sunset orange to deep red, scattered with gold butis and edged in gilt embroidery. Made to order in Ahmedabad and shipped worldwide. Enquire on WhatsApp to customise the colours and pairing.",
+  "metaDescription": "Sunset Bandhani Ombré Dupatta — sheer pink-to-red bandhej dupatta with gold butis by Aarchi's, Ahmedabad. Made to order, ships worldwide.",
   "isNew": true
  },
  {
-  "slug": "scarlet-pearl-petal-drape",
-  "name": "Scarlet Pearl Petal Drape",
-  "category": "saree",
-  "categoryLabel": "Saree",
-  "img": "/assets/img/designs/scarlet-pearl-petal-drape.webp",
+  "slug": "scarlet-pearl-petal-dupatta",
+  "name": "Scarlet Pearl Petal Dupatta",
+  "category": "dupatta",
+  "categoryLabel": "Dupatta",
+  "img": "/assets/img/designs/scarlet-pearl-petal-dupatta.webp",
   "occasions": [
    "Wedding",
    "Festive"
@@ -51,9 +51,9 @@
    "Modern",
    "Statement"
   ],
-  "detail": "Scarlet net worked in pearl-white petal jaal, bordered with hand-embroidered gold sequins — a veil-soft statement drape.",
-  "description": "Scarlet Pearl Petal Drape by Aarchi's by Archana Soni — a veil-soft scarlet net drape hand-worked in a pearl-white petal jaal, finished with a gold sequin-embroidered border. A statement layer for brides and festive dressing, made to measure in Ahmedabad and shipped worldwide. Enquire on WhatsApp to customise.",
-  "metaDescription": "Scarlet Pearl Petal Drape — red net drape with pearl petal jaal & gold sequin border by Aarchi's, Ahmedabad. Made to measure, ships worldwide.",
+  "detail": "Scarlet net worked in pearl-white petal jaal, bordered with hand-embroidered gold sequins — a veil-soft statement dupatta.",
+  "description": "Scarlet Pearl Petal Dupatta by Aarchi's by Archana Soni — a veil-soft scarlet net dupatta hand-worked in a pearl-white petal jaal, finished with a gold sequin-embroidered border. A statement layer for brides and festive dressing, made to order in Ahmedabad and shipped worldwide. Enquire on WhatsApp to customise.",
+  "metaDescription": "Scarlet Pearl Petal Dupatta — red net dupatta with pearl petal jaal & gold sequin border by Aarchi's, Ahmedabad. Made to order, ships worldwide.",
   "isNew": true
  },
  {

@@ -24,7 +24,7 @@ GTAG = '''  <!-- Google tag (gtag.js) -->
 '''
 
 designs = json.loads((ROOT / "data" / "designs.json").read_text())
-CATS = [("bridal","Bridal Lehengas"),("saree","Sarees"),("ethnic","Ethnic & Festive"),
+CATS = [("bridal","Bridal Lehengas"),("saree","Sarees"),("dupatta","Dupattas"),("ethnic","Ethnic & Festive"),
         ("festive","Festive Wear"),("mens","Men's Ethnic"),("babyshower","Baby Shower & Maternity")]
 OCCASIONS = sorted({o for d in designs for o in d["occasions"]})
 STYLES = sorted({s for d in designs for s in d["styles"]})
@@ -316,6 +316,7 @@ def design_page(d, related):
 SCENE_DESC = {
     "bridal":     "Heirloom lehengas in zari, zardozi and khat work — crafted for the moment you've always pictured.",
     "saree":      "Silk, paithani and bandhej drapes, hand-finished and styled for every celebration.",
+    "dupatta":    "Hand-worked gharchola, bandhej and net dupattas — the finishing layer for bridal and festive looks.",
     "ethnic":     "Festive and Navratri ensembles that turn a little tradition into a statement.",
     "festive":    "Occasion-ready festive wear, designed and made to measure.",
     "mens":       "Sharp, regal ethnic wear for grooms and the men of the celebration.",
