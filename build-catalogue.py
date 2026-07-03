@@ -25,6 +25,7 @@ GTAG = '''  <!-- Google tag (gtag.js) -->
 
 designs = json.loads((ROOT / "data" / "designs.json").read_text())
 SITECFG = json.loads((ROOT / "data" / "site.json").read_text())
+EXTRA_PAGES = []  # future static landing pages appended here for the sitemap
 
 def _live(v):
     """A config value is live once it no longer carries a TODO marker."""
@@ -464,6 +465,73 @@ def home_campaign():
     </div>
   </section>"""
 
+
+def navratri_page():
+    items = [d for d in designs if d["category"] in ("ethnic", "festive")]
+    cards = "".join(card(d) for d in items)
+    faqs = [
+      ("Do you design custom chaniya cholis for Navratri?",
+       "Yes — Navratri and garba-night ensembles are made to order at the Ahmedabad studio. Pick a design from the festive edit or bring a reference, and it's cut to your measurements with the colours and work you choose."),
+      ("How early should I order before Navratri?",
+       "The earlier the better — festive season slots fill fast. Message us on WhatsApp with your date and we'll confirm what's possible for your timeline."),
+      ("Can I customise the colours or mirror work?",
+       "Absolutely. Colours, fabrics, embroidery and mirror work are all tailored to you — every piece is a starting point."),
+      ("I'm not in Ahmedabad — can you still make my Navratri outfit?",
+       "Yes. Measurements are guided over WhatsApp video and finished outfits ship across India and worldwide."),
+    ]
+    faq_html = "".join(
+        f'<details class="faq-item"><summary>{esc(q)}</summary><p>{esc(a)}</p></details>' for q, a in faqs)
+    faq_schema = {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+        {"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q, a in faqs]}
+    bc = {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Home","item":DOMAIN+"/"},
+        {"@type":"ListItem","position":2,"name":"Navratri Outfits Ahmedabad"}]}
+    title = "Navratri Chaniya Choli & Festive Outfits, Ahmedabad | Aarchi's"
+    desc = ("Custom Navratri chaniya cholis and garba-night festive wear, made to measure in Ahmedabad by "
+            "Archana Soni. Choose a design, customise colours and mirror work, enquire on WhatsApp.")
+    return head(title, desc, "/navratri-outfits-ahmedabad/", items[0]["img"] if items else "/assets/og.jpg",
+                [faq_schema, bc]) + nav("cat") + f"""
+  <section class="cat-hero">
+    <div class="cat-hero-bg" data-parallax data-speed="0.16"></div>
+    <div class="wrap center">
+      <p class="eyebrow" data-reveal style="--i:0">Festive Edit &middot; Ahmedabad</p>
+      <h1 data-reveal style="--i:1">Navratri, made <em>to twirl</em></h1>
+      <p class="lead center" data-reveal style="--i:2">Custom chaniya cholis and festive ensembles for garba nights —
+        designed and made to measure in Ahmedabad by Archana Soni. Nine nights deserve better than off-the-rack.</p>
+      <div class="hero-actions" data-reveal style="--i:3" style="justify-content:center">
+        <a href="https://wa.me/{WA}" class="btn btn-primary" rel="noopener">{wa_cta_label()}</a>
+        <a href="/catalogue/#cat-ethnic" class="btn btn-ghost">Full festive catalogue</a>
+      </div>
+    </div>
+  </section>
+  <section class="catsec">
+    <div class="wrap">
+      <header class="catsec-head">
+        <div class="catsec-head-main">
+          <h2 data-reveal>The festive edit</h2>
+          <p class="lead" data-reveal style="--i:1">Navratri-ready ensembles from the catalogue — every one customisable in colour, fabric and mirror work.</p>
+          {price_from("ethnic")}
+        </div>
+        <span class="catsec-count" data-reveal>{len(items)} designs</span>
+      </header>
+      <div class="dgrid">
+{cards}      </div>
+    </div>
+  </section>
+  <section class="faq section-soft">
+    <div class="wrap">
+      <div class="center">
+        <p class="eyebrow" data-reveal>Good to know</p>
+        <h2 data-reveal style="font-size:clamp(26px,4vw,42px);margin-top:8px">Navratri orders, answered</h2>
+      </div>
+      <div class="faq-list">{faq_html}</div>
+      <div class="hero-actions" style="justify-content:center;margin-top:30px" data-reveal>
+        <a href="https://wa.me/{WA}" class="btn btn-primary" rel="noopener">{wa_cta_label()}</a>
+      </div>
+    </div>
+  </section>
+""" + FOOTER + '  <script src="/app.js?v=19" defer></script>\n  <script src="/catalogue.js?v=19" defer></script>\n</body>\n</html>\n'
+
 def inject_showcase():
     import re
     idx = ROOT/"index.html"; src = idx.read_text()
@@ -480,7 +548,8 @@ def write_sitemap_robots():
     if not DOMAIN:
         print("DOMAIN unset — skipping sitemap/robots"); return
     today = datetime.date.today().isoformat()
-    urls = ["/", "/catalogue/", "/about/", "/contact/"] + [f"/catalogue/{d['slug']}/" for d in designs]
+    urls = (["/", "/catalogue/", "/about/", "/contact/", "/navratri-outfits-ahmedabad/"]
+            + EXTRA_PAGES + [f"/catalogue/{d['slug']}/" for d in designs])
     def row(u):
         pr = "1.0" if u == "/" else ("0.9" if u == "/catalogue/" else "0.7")
         cf = "weekly" if u in ("/", "/catalogue/") else "monthly"
@@ -502,6 +571,8 @@ def main():
         out = ROOT/"catalogue"/d["slug"]; out.mkdir(exist_ok=True)
         (out/"index.html").write_text(design_page(d, related))
     print(f"generated /catalogue/ + {len(designs)} design pages")
+    nv = ROOT/"navratri-outfits-ahmedabad"; nv.mkdir(exist_ok=True)
+    (nv/"index.html").write_text(navratri_page())
     inject_showcase()
     write_sitemap_robots()
 
