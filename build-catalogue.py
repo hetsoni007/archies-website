@@ -24,8 +24,50 @@ GTAG = '''  <!-- Google tag (gtag.js) -->
 '''
 
 designs = json.loads((ROOT / "data" / "designs.json").read_text())
+SITECFG = json.loads((ROOT / "data" / "site.json").read_text())
+
+def _live(v):
+    """A config value is live once it no longer carries a TODO marker."""
+    return bool(v) and "TODO" not in str(v)
+
+LIVE_TESTIMONIALS = [t for t in SITECFG.get("testimonials", [])
+                     if _live(t.get("name")) and _live(t.get("quote"))]
+
+def wa_cta_label():
+    rh = SITECFG.get("replyHours", "")
+    return (f"Get a quote on WhatsApp — replies within {rh} hours"
+            if _live(rh) else "Get a quote on WhatsApp")
+
+def price_from(cat):
+    p = SITECFG.get("pricing", {}).get(cat, {})
+    if _live(p.get("inr")) and _live(p.get("usd")):
+        return (f'<p class="price-from">{CAT_LABEL.get(cat, "Pieces")} from &#8377;{esc(str(p["inr"]))} / '
+                f'${esc(str(p["usd"]))} &middot; final quote on enquiry</p>')
+    return f'<!-- TODO: pricing for "{cat}" unset in data/site.json — price anchor hidden -->'
+
+def testimonials_html(compact=False):
+    if not LIVE_TESTIMONIALS:
+        return '<!-- TODO: real testimonials unset in data/site.json — section hidden until filled -->'
+    items = LIVE_TESTIMONIALS[:2] if compact else LIVE_TESTIMONIALS
+    cards = "".join(
+        f'<figure class="tst-card{" tst-mini" if compact else ""}" data-reveal>'
+        f'<blockquote>&ldquo;{esc(t["quote"])}&rdquo;</blockquote>'
+        f'<figcaption>{esc(t["name"])}<span>{esc(t.get("place",""))}</span></figcaption></figure>'
+        for t in items)
+    if compact:
+        return f'<div class="tst-strip">{cards}</div>'
+    return f"""  <section class="section-soft tst">
+    <div class="wrap center">
+      <p class="eyebrow" data-reveal>Real Brides</p>
+      <h2 data-reveal style="font-size:clamp(28px,4.4vw,48px);margin-top:8px">Loved, worn, remembered</h2>
+      <div class="tst-grid">{cards}</div>
+    </div>
+  </section>"""
+
 CATS = [("bridal","Bridal Lehengas"),("saree","Sarees"),("dupatta","Dupattas"),("ethnic","Ethnic & Festive"),
         ("festive","Festive Wear"),("mens","Men's Ethnic"),("babyshower","Baby Shower & Maternity")]
+CAT_LABEL = {"bridal":"Bridal lehengas","saree":"Sarees","dupatta":"Dupattas","ethnic":"Ethnic & festive wear",
+             "festive":"Festive wear","mens":"Men's ethnic wear","babyshower":"Baby-shower outfits"}
 OCCASIONS = sorted({o for d in designs for o in d["occasions"]})
 STYLES = sorted({s for d in designs for s in d["styles"]})
 
@@ -160,6 +202,7 @@ def catalogue_index():
         <div class="catsec-head-main">
           <h2 data-reveal style="--i:1">{esc(lbl)}</h2>
           <p class="lead" data-reveal style="--i:2">{esc(SCENE_DESC.get(k, ''))}</p>
+          {price_from(k)}
         </div>
         <span class="catsec-count" data-reveal style="--i:1">{n} {nlabel}</span>
       </header>
@@ -255,7 +298,7 @@ def editorial_html(d, related):
       <h2 data-reveal style="font-size:clamp(28px,4vw,46px);margin-top:6px">Designed by Archana Soni</h2>
       <p class="lead center" data-reveal>Every Aarchi's piece is designed and made to measure by Archana Soni in Ahmedabad — and shipped worldwide. Custom colours, fabrics and sizing, tailored to your story.</p>
       <div class="hero-actions" data-reveal style="justify-content:center;margin-top:24px">
-        <a href="https://wa.me/{WA}" class="btn btn-primary" rel="noopener">Enquire on WhatsApp</a>
+        <a href="https://wa.me/{WA}" class="btn btn-primary" rel="noopener">{wa_cta_label()}</a>
         <a href="/about/" class="btn btn-ghost">Meet Archana</a>
       </div>
       <div class="esocials" data-reveal>{SOCIAL_ICONS}</div>
@@ -300,6 +343,7 @@ def design_page(d, related):
         <form class="enquiry glass" id="design-enquiry"
               data-name="{esc(d['name'])}" data-cat="{esc(d['categoryLabel'])}" data-slug="{d['slug']}">
           <h2>Enquire &amp; customise</h2>
+          {price_from(d["category"])}
           <div class="erow">
             <label>Occasion<select name="occasion">{occ_opts}</select></label>
             <label>Size<select name="size">{size_opts}</select></label>
@@ -310,8 +354,9 @@ def design_page(d, related):
           </div>
           <label class="efull">Customisation notes
             <textarea name="notes" placeholder="Colour, fabric, sleeves, timeline, budget…"></textarea></label>
-          <button type="submit" class="btn btn-primary ebtn">Enquire on WhatsApp</button>
+          <button type="submit" class="btn btn-primary ebtn">{wa_cta_label()}</button>
           <p class="form-note">Opens WhatsApp with your details pre-filled for this design.</p>
+        {testimonials_html(compact=True)}
         </form>
       </div>
     </div>
@@ -399,7 +444,7 @@ def home_campaign():
           <p>{esc(d['editorial'].get('storyTitle',''))} — {esc(d['detail'])}</p>
           <div class="hs-actions">
             <a class="btn btn-primary" href="/catalogue/{d['slug']}/">View the story</a>
-            <a class="btn btn-ghost" href="https://wa.me/{WA}" rel="noopener">Enquire</a>
+            <a class="btn btn-ghost" href="https://wa.me/{WA}" rel="noopener">Get a quote</a>
           </div>
         </div>
       </article>""")
@@ -426,6 +471,8 @@ def inject_showcase():
     new = re.sub(r"<!-- SHOWCASE:START -->.*?<!-- SHOWCASE:END -->", lambda m: block, src, flags=re.S)
     cblock = "<!-- CAMPAIGN:START -->\n" + home_campaign() + "\n  <!-- CAMPAIGN:END -->"
     new = re.sub(r"<!-- CAMPAIGN:START -->.*?<!-- CAMPAIGN:END -->", lambda m: cblock, new, flags=re.S)
+    tblock = "<!-- TESTIMONIALS:START -->\n" + testimonials_html() + "\n  <!-- TESTIMONIALS:END -->"
+    new = re.sub(r"<!-- TESTIMONIALS:START -->.*?<!-- TESTIMONIALS:END -->", lambda m: tblock, new, flags=re.S)
     idx.write_text(new)
     print("injected home showcase + campaign slider")
 

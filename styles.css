@@ -406,3 +406,25 @@ section { padding-block: clamp(64px, 9vw, 120px); }
 .faq-item[open] summary::after { transform: rotate(45deg); }
 .faq-item p { padding: 0 22px 20px; color: var(--ink-soft); font-size: 15.5px; line-height: 1.65; }
 .faq-item a { color: var(--gold-deep); font-weight: 600; }
+
+/* ===================== TESTIMONIALS (rendered once data/site.json has real quotes) ===================== */
+.tst { padding-block: clamp(56px, 8vw, 100px); }
+.tst-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2vw, 26px);
+  max-width: 1000px; margin: clamp(28px, 4vw, 44px) auto 0; }
+.tst-card { margin: 0; text-align: left; border: 1px solid var(--line, #ddd2bf); border-radius: 16px;
+  padding: 26px 26px 22px; background: var(--bg); }
+.tst-card blockquote { margin: 0; font-family: var(--font-display); font-size: clamp(17px, 1.8vw, 20px);
+  line-height: 1.5; color: var(--ink); }
+.tst-card figcaption { margin-top: 16px; font-weight: 600; font-size: 14px; color: var(--gold-deep); }
+.tst-card figcaption span { display: block; font-weight: 400; color: var(--ink-soft); font-size: 13px; margin-top: 2px; }
+.tst-strip { display: grid; gap: 12px; margin-top: 18px; }
+.tst-mini { padding: 18px 20px 16px; }
+.tst-mini blockquote { font-size: 15.5px; }
+@media (max-width: 860px) { .tst-grid { grid-template-columns: 1fr; } }
+
+/* ===================== PRICE ANCHOR ===================== */
+.price-from { font-size: 14px; font-weight: 600; color: var(--gold-deep); margin-top: 10px; letter-spacing: .02em; }
+
+/* ===================== INSTAGRAM PROOF ===================== */
+.ig-proof { padding-block: clamp(50px, 7vw, 90px) clamp(30px, 4vw, 50px); }
+.ig-proof .ig-strip { margin-top: clamp(24px, 3vw, 40px); }
