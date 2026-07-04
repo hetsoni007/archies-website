@@ -49,7 +49,12 @@ function renderCollections(targetId, limit) {
    is no observer support / no measurable viewport, everything is shown. */
 function initReveal() {
   const els = Array.from(document.querySelectorAll("[data-reveal]"));
-  const show = (n) => n.classList.add("in");
+  // Wait for an actual painted frame before flipping the class. Elements far below the
+  // fold are never painted while off-screen, so if ".in" is added the instant they're
+  // revealed (e.g. after a fast flick-scroll or an anchor jump lands right on them), there
+  // is no rendered "hidden" frame to transition from — opacity can get stuck permanently
+  // at 0. Double rAF guarantees one real paint has happened first.
+  const show = (n) => requestAnimationFrame(() => requestAnimationFrame(() => n.classList.add("in")));
   const vh = window.innerHeight;
   if (!("IntersectionObserver" in window) || !vh) { els.forEach(show); return; }
   // Reveal anything already on screen right now (don't wait for async IO).

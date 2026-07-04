@@ -112,8 +112,8 @@ def head(title, desc, canonical_path, og_img, schema=None):
   <meta name="twitter:image" content="{ogi}">
   <link rel="icon" href="/assets/favicon.png">
   <link rel="apple-touch-icon" href="/assets/favicon.png">
-  <link rel="stylesheet" href="/styles.css?v=19">
-  <link rel="stylesheet" href="/catalogue.css?v=19">
+  <link rel="stylesheet" href="/styles.css?v=20">
+  <link rel="stylesheet" href="/catalogue.css?v=20">
   <script>document.documentElement.classList.add("js")</script>
 {GTAG}{sc}</head>
 <body>
@@ -249,7 +249,7 @@ def catalogue_index():
 {sections}
   </div>
   <p class="cat-empty" id="cat-empty" hidden><span class="wrap">No designs match those filters — <a href="https://wa.me/{WA}">message us</a> and we&#39;ll create one for you.</span></p>
-""" + FOOTER + '  <script src="/app.js?v=19" defer></script>\n  <script src="/catalogue.js?v=19" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=20" defer></script>\n  <script src="/catalogue.js?v=20" defer></script>\n</body>\n</html>\n'
 
 SOCIAL_ICONS = ('<a href="https://www.instagram.com/aarchis.byarchanasoni/" target="_blank" rel="noopener">Instagram</a>'
   '<a href="https://www.facebook.com/aarchis.byearchanasonii/" target="_blank" rel="noopener">Facebook</a>'
@@ -374,7 +374,7 @@ def design_page(d, related):
       <div class="dgrid">{rel_cards}</div>
     </div>
   </section>
-""" if related else "") + FOOTER + '  <script src="/app.js?v=19" defer></script>\n  <script src="/catalogue.js?v=19" defer></script>\n</body>\n</html>\n'
+""" if related else "") + FOOTER + '  <script src="/app.js?v=20" defer></script>\n  <script src="/catalogue.js?v=20" defer></script>\n</body>\n</html>\n'
 
 SCENE_DESC = {
     "bridal":     "Heirloom lehengas in zari, zardozi and khat work — crafted for the moment you've always pictured.",
@@ -534,7 +534,7 @@ def navratri_page():
       </div>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=19" defer></script>\n  <script src="/catalogue.js?v=19" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=20" defer></script>\n  <script src="/catalogue.js?v=20" defer></script>\n</body>\n</html>\n'
 
 
 PROCESS_STEPS = [
@@ -547,7 +547,7 @@ PROCESS_STEPS = [
 ]
 
 def process_html():
-    return '<div class="svc-grid" style="grid-template-columns:repeat(3,1fr)">' + "".join(
+    return '<div class="svc-grid">' + "".join(
         f'<article class="svc-card" data-reveal style="--i:{i}"><span class="svc-num">{i+1:02d}</span>'
         f'<h3>{esc(t)}</h3><p>{esc(b)}</p></article>'
         for i, (t, b) in enumerate(PROCESS_STEPS)) + "</div>"
@@ -611,7 +611,7 @@ def how_it_works_page():
         See <a href="/nri-brides/" style="color:var(--gold-deep);font-weight:600">how it works for NRI brides</a>.</p>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=19" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=20" defer></script>\n</body>\n</html>\n'
 
 def nri_hub_page():
     title = "Custom Indian Bridal Outfits for NRI Brides — Made in India, Delivered Worldwide | Aarchi's"
@@ -681,7 +681,7 @@ def nri_hub_page():
       </div>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=19" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=20" defer></script>\n</body>\n</html>\n'
 
 COUNTRY_META = {
   "usa": {
@@ -782,7 +782,7 @@ def nri_country_page(cc):
       </div>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=19" defer></script>\n  <script src="/catalogue.js?v=19" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=20" defer></script>\n  <script src="/catalogue.js?v=20" defer></script>\n</body>\n</html>\n'
 
 def inject_showcase():
     import re
