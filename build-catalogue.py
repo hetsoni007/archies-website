@@ -112,8 +112,8 @@ def head(title, desc, canonical_path, og_img, schema=None):
   <meta name="twitter:image" content="{ogi}">
   <link rel="icon" href="/assets/favicon.png">
   <link rel="apple-touch-icon" href="/assets/favicon.png">
-  <link rel="stylesheet" href="/styles.css?v=20">
-  <link rel="stylesheet" href="/catalogue.css?v=20">
+  <link rel="stylesheet" href="/styles.css?v=21">
+  <link rel="stylesheet" href="/catalogue.css?v=21">
   <script>document.documentElement.classList.add("js")</script>
 {GTAG}{sc}</head>
 <body>
@@ -174,12 +174,14 @@ def chips(items, cls): return "".join(f'<span class="chip {cls}">{esc(i)}</span>
 
 def card(d):
     occ = " ".join(d["occasions"]); sty = " ".join(d["styles"])
+    price_badge = f'<span class="dcard-price">&#8377;{d["priceINR"]:,}</span>' if d.get("priceINR") else ""
     return f"""      <a class="dcard glass-card" href="/catalogue/{d['slug']}/" data-cat="{d['category']}" data-occ="{esc(occ)}" data-sty="{esc(sty)}">
         <div class="dcard-media">{'<span class="dcard-badge">New arrival</span>' if d.get('isNew') else ''}<img src="{d['img']}" alt="{esc(d['name'])} — {esc(d['categoryLabel'])} by {SITE}" loading="lazy" width="600" height="750"></div>
         <div class="dcard-body">
           <span class="dcard-cat">{esc(d['categoryLabel'])}</span>
           <h3>{esc(d['name'])}</h3>
           <div class="dcard-tags">{chips(d['occasions'][:2],'occ')}</div>
+          {price_badge}
           <span class="dcard-link">View &amp; customise <i>&rarr;</i></span>
         </div>
       </a>
@@ -249,7 +251,7 @@ def catalogue_index():
 {sections}
   </div>
   <p class="cat-empty" id="cat-empty" hidden><span class="wrap">No designs match those filters — <a href="https://wa.me/{WA}">message us</a> and we&#39;ll create one for you.</span></p>
-""" + FOOTER + '  <script src="/app.js?v=20" defer></script>\n  <script src="/catalogue.js?v=20" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=21" defer></script>\n  <script src="/catalogue.js?v=21" defer></script>\n</body>\n</html>\n'
 
 SOCIAL_ICONS = ('<a href="https://www.instagram.com/aarchis.byarchanasoni/" target="_blank" rel="noopener">Instagram</a>'
   '<a href="https://www.facebook.com/aarchis.byearchanasonii/" target="_blank" rel="noopener">Facebook</a>'
@@ -324,6 +326,10 @@ def design_page(d, related):
     schema = {"@context":"https://schema.org","@type":"Product","name":d["name"],
               "image":imgs,"description":d["description"],
               "category":d["categoryLabel"],"brand":{"@type":"Brand","name":SITE}}
+    if d.get("priceINR"):
+        schema["offers"] = {"@type":"Offer","priceCurrency":"INR","price":str(d["priceINR"]),
+                             "availability":"https://schema.org/InStock",
+                             "url":(DOMAIN+f"/catalogue/{d['slug']}/") if DOMAIN else f"/catalogue/{d['slug']}/"}
     bc = {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
         {"@type":"ListItem","position":1,"name":"Catalogue","item":(DOMAIN+"/catalogue/") if DOMAIN else "/catalogue/"},
         {"@type":"ListItem","position":2,"name":d["name"]}]}
@@ -342,7 +348,7 @@ def design_page(d, related):
         <ul class="design-meta">
           <li><b>Category</b> {esc(d['categoryLabel'])}</li>
           <li><b>Crafting</b> Handcrafted, made to measure in Ahmedabad</li>
-          <li><b>Pricing</b> On enquiry — every piece is customised</li>
+          <li><b>Pricing</b> {f'&#8377;{d["priceINR"]:,}' if d.get("priceINR") else "On enquiry — every piece is customised"}</li>
         </ul>
 
         <form class="enquiry glass" id="design-enquiry"
@@ -374,7 +380,7 @@ def design_page(d, related):
       <div class="dgrid">{rel_cards}</div>
     </div>
   </section>
-""" if related else "") + FOOTER + '  <script src="/app.js?v=20" defer></script>\n  <script src="/catalogue.js?v=20" defer></script>\n</body>\n</html>\n'
+""" if related else "") + FOOTER + '  <script src="/app.js?v=21" defer></script>\n  <script src="/catalogue.js?v=21" defer></script>\n</body>\n</html>\n'
 
 SCENE_DESC = {
     "bridal":     "Heirloom lehengas in zari, zardozi and khat work — crafted for the moment you've always pictured.",
@@ -534,7 +540,7 @@ def navratri_page():
       </div>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=20" defer></script>\n  <script src="/catalogue.js?v=20" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=21" defer></script>\n  <script src="/catalogue.js?v=21" defer></script>\n</body>\n</html>\n'
 
 
 PROCESS_STEPS = [
@@ -611,7 +617,7 @@ def how_it_works_page():
         See <a href="/nri-brides/" style="color:var(--gold-deep);font-weight:600">how it works for NRI brides</a>.</p>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=20" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=21" defer></script>\n</body>\n</html>\n'
 
 def nri_hub_page():
     title = "Custom Indian Bridal Outfits for NRI Brides — Made in India, Delivered Worldwide | Aarchi's"
@@ -681,7 +687,7 @@ def nri_hub_page():
       </div>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=20" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=21" defer></script>\n</body>\n</html>\n'
 
 COUNTRY_META = {
   "usa": {
@@ -782,7 +788,7 @@ def nri_country_page(cc):
       </div>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=20" defer></script>\n  <script src="/catalogue.js?v=20" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=21" defer></script>\n  <script src="/catalogue.js?v=21" defer></script>\n</body>\n</html>\n'
 
 def inject_showcase():
     import re

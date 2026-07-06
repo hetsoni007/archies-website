@@ -35,7 +35,27 @@
   "detail": "A sheer bandhej dupatta melting from rose pink through orange to red, scattered with gold butis and finished with a gilt-embroidered edge.",
   "description": "Sunset Bandhani Ombré Dupatta by Aarchi's by Archana Soni — a featherlight sheer dupatta in bandhej dots, shading from rose pink through sunset orange to deep red, scattered with gold butis and edged in gilt embroidery. Made to order in Ahmedabad and shipped worldwide. Enquire on WhatsApp to customise the colours and pairing.",
   "metaDescription": "Sunset Bandhani Ombré Dupatta — sheer pink-to-red bandhej dupatta with gold butis by Aarchi's, Ahmedabad. Made to order, ships worldwide.",
-  "isNew": true
+  "isNew": true,
+  "priceINR": 1800,
+  "editorial": {
+   "storyTitle": "Sunset, folded into silk",
+   "storyLead": "A featherlight bandhej dupatta shading from rose pink through sunset orange to deep red, gold butis scattered across the sheer silk — the Sunset Bandhani Ombré, ready to wear.",
+   "slides": [
+    {
+     "img": "/assets/img/editorial/sunset-flatlay.webp",
+     "kicker": "The Details",
+     "caption": "Folded in marigold light — the ombré wash and gold-bordered pallu laid out on marble.",
+     "alt": "Flat-lay of the Sunset Bandhani Ombré Dupatta — pink-to-orange bandhej silk with gold zari border, marigold flowers on marble"
+    },
+    {
+     "img": "/assets/img/editorial/sunset-look.webp",
+     "kicker": "The Look",
+     "caption": "Draped over a simple kurta — the ombré does all the talking.",
+     "crosssell": true,
+     "alt": "Model wearing the Sunset Bandhani Ombré Dupatta by Aarchi's by Archana Soni over a beige kurta"
+    }
+   ]
+  }
  },
  {
   "slug": "scarlet-pearl-petal-dupatta",
