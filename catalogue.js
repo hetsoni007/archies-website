@@ -74,9 +74,11 @@ function initDesignEnquiry() {
     const f = new FormData(form);
     const name = f.get("name") ? `\nName: ${f.get("name")}` : "";
     const notes = f.get("notes") ? `\nCustomisation: ${f.get("notes")}` : "";
+    const price = form.dataset.price ? `\nPrice: ${form.dataset.price}` : "";
     const msg =
       `Hi Aarchi's! I'd like to enquire about this design:\n` +
-      `*${form.dataset.name}* (${form.dataset.cat})\n` +
+      `*${form.dataset.name}* (${form.dataset.cat})` +
+      price + `\n` +
       `Occasion: ${f.get("occasion")}\n` +
       `Size: ${f.get("size")}\n` +
       `Style preference: ${f.get("style")}` +

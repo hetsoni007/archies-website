@@ -1005,7 +1005,8 @@
   "styles": [
    "Embroidered",
    "Traditional"
-  ]
+  ],
+  "priceINR": 14000
  },
  {
   "slug": "mahogany-stag-jacquard-silk-suit",
@@ -1024,7 +1025,8 @@
   "styles": [
    "Woven",
    "Contemporary"
-  ]
+  ],
+  "priceINR": 5800
  },
  {
   "slug": "magenta-zari-stripe-silk-suit",
@@ -1043,7 +1045,8 @@
   "styles": [
    "Zari",
    "Contemporary"
-  ]
+  ],
+  "priceINR": 8500
  },
  {
   "slug": "olive-floral-jaal-silk-suit",
@@ -1062,7 +1065,8 @@
   "styles": [
    "Woven",
    "Traditional"
-  ]
+  ],
+  "priceINR": 3500
  },
  {
   "slug": "ice-blue-floral-jaal-silk-suit",
@@ -1081,6 +1085,7 @@
   "styles": [
    "Woven",
    "Traditional"
-  ]
+  ],
+  "priceINR": 3500
  }
 ]
