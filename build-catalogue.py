@@ -65,10 +65,12 @@ def testimonials_html(compact=False):
     </div>
   </section>"""
 
-CATS = [("bridal","Bridal Lehengas"),("saree","Sarees"),("dupatta","Dupattas"),("ethnic","Ethnic & Festive"),
+CATS = [("bridal","Bridal Lehengas"),("saree","Sarees"),("dupatta","Dupattas"),
+        ("dressmaterial","Dress Material"),("ethnic","Ethnic & Festive"),
         ("festive","Festive Wear"),("mens","Men's Ethnic"),("babyshower","Baby Shower & Maternity")]
-CAT_LABEL = {"bridal":"Bridal lehengas","saree":"Sarees","dupatta":"Dupattas","ethnic":"Ethnic & festive wear",
-             "festive":"Festive wear","mens":"Men's ethnic wear","babyshower":"Baby-shower outfits"}
+CAT_LABEL = {"bridal":"Bridal lehengas","saree":"Sarees","dupatta":"Dupattas","dressmaterial":"Dress material",
+             "ethnic":"Ethnic & festive wear","festive":"Festive wear","mens":"Men's ethnic wear",
+             "babyshower":"Baby-shower outfits"}
 OCCASIONS = sorted({o for d in designs for o in d["occasions"]})
 STYLES = sorted({s for d in designs for s in d["styles"]})
 
@@ -112,8 +114,8 @@ def head(title, desc, canonical_path, og_img, schema=None):
   <meta name="twitter:image" content="{ogi}">
   <link rel="icon" href="/assets/favicon.png">
   <link rel="apple-touch-icon" href="/assets/favicon.png">
-  <link rel="stylesheet" href="/styles.css?v=21">
-  <link rel="stylesheet" href="/catalogue.css?v=21">
+  <link rel="stylesheet" href="/styles.css?v=22">
+  <link rel="stylesheet" href="/catalogue.css?v=22">
   <script>document.documentElement.classList.add("js")</script>
 {GTAG}{sc}</head>
 <body>
@@ -251,7 +253,7 @@ def catalogue_index():
 {sections}
   </div>
   <p class="cat-empty" id="cat-empty" hidden><span class="wrap">No designs match those filters — <a href="https://wa.me/{WA}">message us</a> and we&#39;ll create one for you.</span></p>
-""" + FOOTER + '  <script src="/app.js?v=21" defer></script>\n  <script src="/catalogue.js?v=21" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=22" defer></script>\n  <script src="/catalogue.js?v=22" defer></script>\n</body>\n</html>\n'
 
 SOCIAL_ICONS = ('<a href="https://www.instagram.com/aarchis.byarchanasoni/" target="_blank" rel="noopener">Instagram</a>'
   '<a href="https://www.facebook.com/aarchis.byearchanasonii/" target="_blank" rel="noopener">Facebook</a>'
@@ -380,12 +382,13 @@ def design_page(d, related):
       <div class="dgrid">{rel_cards}</div>
     </div>
   </section>
-""" if related else "") + FOOTER + '  <script src="/app.js?v=21" defer></script>\n  <script src="/catalogue.js?v=21" defer></script>\n</body>\n</html>\n'
+""" if related else "") + FOOTER + '  <script src="/app.js?v=22" defer></script>\n  <script src="/catalogue.js?v=22" defer></script>\n</body>\n</html>\n'
 
 SCENE_DESC = {
     "bridal":     "Heirloom lehengas in zari, zardozi and khat work — crafted for the moment you've always pictured.",
     "saree":      "Silk, paithani and bandhej drapes, hand-finished and styled for every celebration.",
     "dupatta":    "Hand-worked gharchola, bandhej and net dupattas — the finishing layer for bridal and festive looks.",
+    "dressmaterial": "Pure silk suit pieces with a matching dupatta — unstitched, and tailored to your measurements.",
     "ethnic":     "Festive and Navratri ensembles that turn a little tradition into a statement.",
     "festive":    "Occasion-ready festive wear, designed and made to measure.",
     "mens":       "Sharp, regal ethnic wear for grooms and the men of the celebration.",
@@ -540,7 +543,7 @@ def navratri_page():
       </div>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=21" defer></script>\n  <script src="/catalogue.js?v=21" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=22" defer></script>\n  <script src="/catalogue.js?v=22" defer></script>\n</body>\n</html>\n'
 
 
 PROCESS_STEPS = [
@@ -617,7 +620,7 @@ def how_it_works_page():
         See <a href="/nri-brides/" style="color:var(--gold-deep);font-weight:600">how it works for NRI brides</a>.</p>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=21" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=22" defer></script>\n</body>\n</html>\n'
 
 def nri_hub_page():
     title = "Custom Indian Bridal Outfits for NRI Brides — Made in India, Delivered Worldwide | Aarchi's"
@@ -687,7 +690,7 @@ def nri_hub_page():
       </div>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=21" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=22" defer></script>\n</body>\n</html>\n'
 
 COUNTRY_META = {
   "usa": {
@@ -788,7 +791,7 @@ def nri_country_page(cc):
       </div>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=21" defer></script>\n  <script src="/catalogue.js?v=21" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=22" defer></script>\n  <script src="/catalogue.js?v=22" defer></script>\n</body>\n</html>\n'
 
 def inject_showcase():
     import re
