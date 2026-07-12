@@ -201,19 +201,28 @@
 .share-btn svg { width: 15px; height: 15px; fill: currentColor; }
 .share-btn:hover, .share-btn[aria-expanded="true"] { color: var(--gold-deep); border-color: var(--gold-deep);
   background: color-mix(in srgb, var(--gold) 10%, transparent); }
-.share-menu { position: absolute; top: calc(100% + 10px); right: 0; z-index: 30;
-  display: flex; gap: 8px; padding: 10px; border-radius: 14px;
-  background: var(--bg); border: 1px solid var(--line); box-shadow: 0 22px 50px -20px rgba(28,22,15,.45); }
-.share-opt { display: flex; align-items: center; justify-content: center; width: 38px; height: 38px;
-  border-radius: 50%; border: 1px solid var(--line); background: transparent; color: var(--ink-soft);
-  cursor: pointer; transition: border-color .25s, color .25s, transform .2s; }
-.share-opt svg { width: 17px; height: 17px; fill: currentColor; }
+/* Centered, backdrop-dimmed dialog — deliberately NOT an inline dropdown, so it can
+   never sit on top of the tag chips or other page content below the button. */
+.share-backdrop { position: fixed; inset: 0; z-index: 90; background: rgba(20,15,8,.5);
+  -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
+.share-menu { position: fixed; z-index: 91; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: min(320px, calc(100vw - 40px)); border-radius: 18px; padding: 18px;
+  background: var(--bg); border: 1px solid var(--line); box-shadow: 0 30px 80px -20px rgba(20,15,8,.55); }
+.share-menu-head { display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px; font-family: var(--font-display); font-size: 17px; font-weight: 600; }
+.share-close { font: inherit; font-size: 22px; line-height: 1; color: var(--ink-soft);
+  background: none; border: 0; cursor: pointer; padding: 2px 4px; }
+.share-close:hover { color: var(--ink); }
+.share-opts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.share-opt { display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 16px 8px 13px; border-radius: 14px; border: 1px solid var(--line); background: transparent;
+  color: var(--ink-soft); font: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer;
+  transition: border-color .25s, color .25s, transform .2s; }
+.share-opt svg { width: 21px; height: 21px; fill: currentColor; }
 .share-opt:hover { color: var(--gold-deep); border-color: var(--gold-deep); transform: translateY(-2px); }
-.share-toast { position: absolute; top: calc(100% + 10px); right: 0; z-index: 31;
+.share-toast { position: fixed; z-index: 92; top: 50%; left: 50%; transform: translate(-50%, calc(-50% + 130px));
   font-size: 12.5px; font-weight: 600; color: #fff; background: color-mix(in srgb, var(--ink) 92%, black);
   padding: 8px 14px; border-radius: 99px; white-space: nowrap; box-shadow: 0 14px 30px -14px rgba(28,22,15,.5); }
 @media (max-width: 480px) {
   .design-head { flex-direction: column; }
-  .share-menu { right: auto; left: 0; }
-  .share-toast { right: auto; left: 0; }
 }

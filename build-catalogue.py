@@ -115,8 +115,8 @@ def head(title, desc, canonical_path, og_img, schema=None):
   <meta name="twitter:image" content="{ogi}">
   <link rel="icon" href="/assets/favicon.png">
   <link rel="apple-touch-icon" href="/assets/favicon.png">
-  <link rel="stylesheet" href="/styles.css?v=25">
-  <link rel="stylesheet" href="/catalogue.css?v=25">
+  <link rel="stylesheet" href="/styles.css?v=26">
+  <link rel="stylesheet" href="/catalogue.css?v=26">
   <script>document.documentElement.classList.add("js")</script>
 {GTAG}{sc}</head>
 <body>
@@ -184,12 +184,12 @@ SHARE_SVG = {
 }
 
 def share_html(d):
-    """Share button + fallback menu for a design page. The visible trigger tries the
-    native OS share sheet first (covers Instagram, WhatsApp, Messages, etc. on mobile);
-    the menu below is the desktop fallback, built from real share URLs at generation time
-    so it works even before/without JS. Instagram has no public web share URL, so it's
-    reachable only via the native share sheet, not the fallback menu — that's honest,
-    not a gap."""
+    """Share button for a design page. Tapping it always opens our own labelled menu
+    of destinations (WhatsApp, Facebook, Pinterest, Copy link) as a centered, backdrop-
+    dimmed dialog — never an inline dropdown, so it can never sit on top of the tag
+    chips below it. Links are built from real share URLs at generation time so they
+    work even before/without JS. Instagram has no public web share URL, so it isn't
+    listed as a direct link here — that's a platform limitation, not a gap."""
     page_url = f"{DOMAIN}/catalogue/{d['slug']}/" if DOMAIN else f"/catalogue/{d['slug']}/"
     img_url = f"{DOMAIN}{d['img']}" if DOMAIN else d['img']
     text = f"{d['name']} — {SITE}"
@@ -197,14 +197,21 @@ def share_html(d):
     fb = "https://www.facebook.com/sharer/sharer.php?u=" + quote(page_url)
     pin = "https://pinterest.com/pin/create/button/?url=" + quote(page_url) + "&media=" + quote(img_url) + "&description=" + quote(text)
     return f"""<div class="design-share">
-          <button type="button" class="share-btn" data-share-title="{esc(text)}" data-share-url="{esc(page_url)}" data-share-img="{esc(img_url)}" aria-haspopup="true" aria-expanded="false">
+          <button type="button" class="share-btn" data-share-title="{esc(text)}" data-share-url="{esc(page_url)}" data-share-img="{esc(img_url)}" aria-haspopup="dialog" aria-expanded="false">
             {SHARE_SVG['share']}<span>Share</span>
           </button>
-          <div class="share-menu" hidden>
-            <a class="share-opt" href="{wa}" target="_blank" rel="noopener" data-net="whatsapp" aria-label="Share on WhatsApp">{SHARE_SVG['whatsapp']}</a>
-            <a class="share-opt" href="{fb}" target="_blank" rel="noopener" data-net="facebook" aria-label="Share on Facebook">{SHARE_SVG['facebook']}</a>
-            <a class="share-opt" href="{pin}" target="_blank" rel="noopener" data-net="pinterest" aria-label="Share on Pinterest">{SHARE_SVG['pinterest']}</a>
-            <button type="button" class="share-opt" data-net="copy" aria-label="Copy link">{SHARE_SVG['link']}</button>
+          <div class="share-backdrop" hidden></div>
+          <div class="share-menu" role="dialog" aria-modal="true" aria-label="Share this design" hidden>
+            <div class="share-menu-head">
+              <span>Share this design</span>
+              <button type="button" class="share-close" aria-label="Close">&times;</button>
+            </div>
+            <div class="share-opts">
+              <a class="share-opt" href="{wa}" target="_blank" rel="noopener" data-net="whatsapp">{SHARE_SVG['whatsapp']}<span>WhatsApp</span></a>
+              <a class="share-opt" href="{fb}" target="_blank" rel="noopener" data-net="facebook">{SHARE_SVG['facebook']}<span>Facebook</span></a>
+              <a class="share-opt" href="{pin}" target="_blank" rel="noopener" data-net="pinterest">{SHARE_SVG['pinterest']}<span>Pinterest</span></a>
+              <button type="button" class="share-opt" data-net="copy">{SHARE_SVG['link']}<span>Copy link</span></button>
+            </div>
           </div>
           <span class="share-toast" role="status" aria-live="polite" hidden></span>
         </div>"""
@@ -288,7 +295,7 @@ def catalogue_index():
 {sections}
   </div>
   <p class="cat-empty" id="cat-empty" hidden><span class="wrap">No designs match those filters — <a href="https://wa.me/{WA}">message us</a> and we&#39;ll create one for you.</span></p>
-""" + FOOTER + '  <script src="/app.js?v=25" defer></script>\n  <script src="/catalogue.js?v=25" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=26" defer></script>\n  <script src="/catalogue.js?v=26" defer></script>\n</body>\n</html>\n'
 
 SOCIAL_ICONS = ('<a href="https://www.instagram.com/aarchis.byarchanasoni/" target="_blank" rel="noopener">Instagram</a>'
   '<a href="https://www.facebook.com/aarchis.byearchanasonii/" target="_blank" rel="noopener">Facebook</a>'
@@ -420,7 +427,7 @@ def design_page(d, related):
       <div class="dgrid">{rel_cards}</div>
     </div>
   </section>
-""" if related else "") + FOOTER + '  <script src="/app.js?v=25" defer></script>\n  <script src="/catalogue.js?v=25" defer></script>\n</body>\n</html>\n'
+""" if related else "") + FOOTER + '  <script src="/app.js?v=26" defer></script>\n  <script src="/catalogue.js?v=26" defer></script>\n</body>\n</html>\n'
 
 SCENE_DESC = {
     "bridal":     "Heirloom lehengas in zari, zardozi and khat work — crafted for the moment you've always pictured.",
@@ -581,7 +588,7 @@ def navratri_page():
       </div>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=25" defer></script>\n  <script src="/catalogue.js?v=25" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=26" defer></script>\n  <script src="/catalogue.js?v=26" defer></script>\n</body>\n</html>\n'
 
 
 PROCESS_STEPS = [
@@ -658,7 +665,7 @@ def how_it_works_page():
         See <a href="/nri-brides/" style="color:var(--gold-deep);font-weight:600">how it works for NRI brides</a>.</p>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=25" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=26" defer></script>\n</body>\n</html>\n'
 
 def nri_hub_page():
     title = "Custom Indian Bridal Outfits for NRI Brides — Made in India, Delivered Worldwide | Aarchi's"
@@ -728,7 +735,7 @@ def nri_hub_page():
       </div>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=25" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=26" defer></script>\n</body>\n</html>\n'
 
 COUNTRY_META = {
   "usa": {
@@ -829,7 +836,7 @@ def nri_country_page(cc):
       </div>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=25" defer></script>\n  <script src="/catalogue.js?v=25" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=26" defer></script>\n  <script src="/catalogue.js?v=26" defer></script>\n</body>\n</html>\n'
 
 def inject_showcase():
     import re

@@ -94,12 +94,13 @@ function initShare() {
   if (!wrap) return;
   const btn = wrap.querySelector(".share-btn");
   const menu = wrap.querySelector(".share-menu");
+  const backdrop = wrap.querySelector(".share-backdrop");
   const toast = wrap.querySelector(".share-toast");
   const slug = (location.pathname.match(/\/catalogue\/([^/]+)\//) || [])[1] || "";
   const ev = (name, params) => { try { if (window.track) track(name, params); } catch (e) {} };
 
-  function openMenu() { menu.hidden = false; btn.setAttribute("aria-expanded", "true"); }
-  function closeMenu() { menu.hidden = true; btn.setAttribute("aria-expanded", "false"); }
+  function openMenu() { menu.hidden = false; backdrop.hidden = false; btn.setAttribute("aria-expanded", "true"); }
+  function closeMenu() { menu.hidden = true; backdrop.hidden = true; btn.setAttribute("aria-expanded", "false"); }
 
   // Pre-fetch the product image in the background (not on tap) so a native share can
   // attach it as a file. Fetching it *after* the tap and awaiting it before calling
@@ -146,7 +147,9 @@ function initShare() {
     setTimeout(() => { toast.hidden = true; }, 2400);
   });
 
-  document.addEventListener("click", (e) => { if (!wrap.contains(e.target)) closeMenu(); });
+  const closeBtn = menu.querySelector(".share-close");
+  if (closeBtn) closeBtn.addEventListener("click", closeMenu);
+  backdrop.addEventListener("click", closeMenu);
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
 }
 
