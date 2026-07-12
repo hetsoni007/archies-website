@@ -101,19 +101,29 @@ function initShare() {
   function openMenu() { menu.hidden = false; btn.setAttribute("aria-expanded", "true"); }
   function closeMenu() { menu.hidden = true; btn.setAttribute("aria-expanded", "false"); }
 
-  async function nativeShare() {
-    const title = btn.dataset.shareTitle, url = btn.dataset.shareUrl, imgUrl = btn.dataset.shareImg;
-    let data = { title, url };
-    if (navigator.canShare && imgUrl) {
-      try {
-        const res = await fetch(imgUrl);
-        const blob = await res.blob();
+  // Pre-fetch the product image in the background (not on tap) so a native share can
+  // attach it as a file. Fetching it *after* the tap and awaiting it before calling
+  // navigator.share() was the bug: browsers require share() to run on the same user
+  // gesture, and an await in between drops that activation, so navigator.share()
+  // silently rejects and the button looks unresponsive. Fetching ahead of time keeps
+  // the actual share() call synchronous with the click.
+  let sharedFile = null;
+  if (navigator.share && navigator.canShare && btn.dataset.shareImg) {
+    fetch(btn.dataset.shareImg)
+      .then(res => res.blob())
+      .then(blob => {
         const file = new File([blob], "aarchis-design.webp", { type: blob.type || "image/webp" });
-        if (navigator.canShare({ files: [file] })) data = { title, files: [file] };
-      } catch (e) { /* image fetch failed — fall back to link-only share */ }
-    }
-    try { await navigator.share(data); ev("share_click", { method: "native", design_slug: slug }); }
-    catch (e) { /* user cancelled the share sheet — no-op */ }
+        if (navigator.canShare({ files: [file] })) sharedFile = file;
+      })
+      .catch(() => { /* prefetch failed — link-only share still works */ });
+  }
+
+  function nativeShare() {
+    const title = btn.dataset.shareTitle, url = btn.dataset.shareUrl;
+    const data = sharedFile ? { title, files: [sharedFile] } : { title, url };
+    navigator.share(data)
+      .then(() => ev("share_click", { method: "native", design_slug: slug }))
+      .catch(() => { /* user cancelled the share sheet — no-op */ });
   }
 
   btn.addEventListener("click", () => {
