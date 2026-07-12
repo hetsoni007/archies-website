@@ -88,7 +88,60 @@ function initDesignEnquiry() {
   });
 }
 
+/* ---------------------- per-design share (native sheet + fallback menu) --- */
+function initShare() {
+  const wrap = document.querySelector(".design-share");
+  if (!wrap) return;
+  const btn = wrap.querySelector(".share-btn");
+  const menu = wrap.querySelector(".share-menu");
+  const toast = wrap.querySelector(".share-toast");
+  const slug = (location.pathname.match(/\/catalogue\/([^/]+)\//) || [])[1] || "";
+  const ev = (name, params) => { try { if (window.track) track(name, params); } catch (e) {} };
+
+  function openMenu() { menu.hidden = false; btn.setAttribute("aria-expanded", "true"); }
+  function closeMenu() { menu.hidden = true; btn.setAttribute("aria-expanded", "false"); }
+
+  async function nativeShare() {
+    const title = btn.dataset.shareTitle, url = btn.dataset.shareUrl, imgUrl = btn.dataset.shareImg;
+    let data = { title, url };
+    if (navigator.canShare && imgUrl) {
+      try {
+        const res = await fetch(imgUrl);
+        const blob = await res.blob();
+        const file = new File([blob], "aarchis-design.webp", { type: blob.type || "image/webp" });
+        if (navigator.canShare({ files: [file] })) data = { title, files: [file] };
+      } catch (e) { /* image fetch failed — fall back to link-only share */ }
+    }
+    try { await navigator.share(data); ev("share_click", { method: "native", design_slug: slug }); }
+    catch (e) { /* user cancelled the share sheet — no-op */ }
+  }
+
+  btn.addEventListener("click", () => {
+    if (navigator.share) { nativeShare(); return; }
+    menu.hidden ? openMenu() : closeMenu();
+  });
+
+  menu.querySelectorAll("a.share-opt").forEach(a =>
+    a.addEventListener("click", () => ev("share_click", { method: a.dataset.net, design_slug: slug })));
+
+  const copyBtn = menu.querySelector('[data-net="copy"]');
+  if (copyBtn) copyBtn.addEventListener("click", async () => {
+    let ok = true;
+    try { await navigator.clipboard.writeText(btn.dataset.shareUrl); }
+    catch (e) { ok = false; }
+    toast.textContent = ok ? "Link copied" : "Couldn't copy — long-press the address bar";
+    toast.hidden = false;
+    ev("share_click", { method: "copy_link", design_slug: slug });
+    closeMenu();
+    setTimeout(() => { toast.hidden = true; }, 2400);
+  });
+
+  document.addEventListener("click", (e) => { if (!wrap.contains(e.target)) closeMenu(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initCatalogue();
   initDesignEnquiry();
+  initShare();
 });

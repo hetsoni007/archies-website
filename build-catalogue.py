@@ -7,6 +7,7 @@ Reads data/designs.json and emits, from a shared template (no runtime build):
 Run after editing data/designs.json or adding images:  python3 build-catalogue.py
 """
 import json, pathlib, html, datetime
+from urllib.parse import quote
 
 ROOT = pathlib.Path(__file__).parent
 WA = "919879390731"
@@ -114,8 +115,8 @@ def head(title, desc, canonical_path, og_img, schema=None):
   <meta name="twitter:image" content="{ogi}">
   <link rel="icon" href="/assets/favicon.png">
   <link rel="apple-touch-icon" href="/assets/favicon.png">
-  <link rel="stylesheet" href="/styles.css?v=23">
-  <link rel="stylesheet" href="/catalogue.css?v=23">
+  <link rel="stylesheet" href="/styles.css?v=24">
+  <link rel="stylesheet" href="/catalogue.css?v=24">
   <script>document.documentElement.classList.add("js")</script>
 {GTAG}{sc}</head>
 <body>
@@ -173,6 +174,40 @@ FOOTER = f"""  <footer class="foot">
 """
 
 def chips(items, cls): return "".join(f'<span class="chip {cls}">{esc(i)}</span>' for i in items)
+
+SHARE_SVG = {
+  "share": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08a2.9 2.9 0 00-1.94.75l-7.05-4.11a2.9 2.9 0 000-1.44l6.96-4.06a2.92 2.92 0 10-1.03-1.73l-6.96 4.06a2.9 2.9 0 100 4.9l7.05 4.12A2.92 2.92 0 1018 16.08z"/></svg>',
+  "whatsapp": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M.06 24l1.68-6.13A11.83 11.83 0 010 11.98C0 5.37 5.37 0 11.98 0a11.9 11.9 0 018.41 3.49 11.82 11.82 0 013.49 8.41c0 6.6-5.38 11.97-11.98 11.97a12 12 0 01-5.73-1.46L.06 24zM6.6 20.2c1.67.99 3.27 1.58 5.38 1.58 5.48 0 9.95-4.46 9.95-9.95 0-5.5-4.45-9.95-9.94-9.95C6.5 1.88 2.04 6.33 2.04 11.82c0 2.22.65 3.88 1.74 5.62l-1 3.62 3.82-1zm11.39-5.55c-.07-.12-.27-.2-.57-.35-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.42.25-.69.25-1.28.18-1.41z"/></svg>',
+  "facebook": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.6c-.3 0-1.3-.1-2.45-.1-2.4 0-4.05 1.5-4.05 4.2v2.2H7.6V13h2.55v8h3.35z"/></svg>',
+  "pinterest": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2a9.8 9.8 0 00-3.6 18.9c-.08-.8-.15-2 .03-2.9l1.16-4.9s-.3-.6-.3-1.46c0-1.37.8-2.4 1.8-2.4.85 0 1.26.64 1.26 1.4 0 .85-.55 2.13-.83 3.31-.24.99.5 1.8 1.47 1.8 1.77 0 3.13-1.87 3.13-4.56 0-2.38-1.71-4.05-4.16-4.05-2.83 0-4.5 2.12-4.5 4.32 0 .85.33 1.77.74 2.27a.3.3 0 01.07.29l-.28 1.12c-.04.18-.15.22-.34.13-1.25-.58-2.03-2.4-2.03-3.87 0-3.15 2.29-6.04 6.6-6.04 3.46 0 6.16 2.47 6.16 5.77 0 3.44-2.17 6.22-5.18 6.22-1.01 0-1.97-.53-2.29-1.15l-.62 2.37c-.23.86-.83 1.95-1.24 2.61A9.8 9.8 0 1012 2.2z"/></svg>',
+  "link": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.3 14.7a1 1 0 010-1.4l4-4a1 1 0 111.4 1.4l-4 4a1 1 0 01-1.4 0zM7.8 17.4l-1.1 1.1a3.5 3.5 0 01-5-4.9l3-3a3.5 3.5 0 014.9 0 1 1 0 11-1.4 1.4 1.5 1.5 0 00-2.1 0l-3 3a1.5 1.5 0 002.1 2.1l1.1-1.1a1 1 0 111.5 1.4zm8.5-6.1l3-3a3.5 3.5 0 10-4.9-4.9l-1.1 1.1a1 1 0 101.4 1.4l1.1-1.1a1.5 1.5 0 012.1 2.1l-3 3a1.5 1.5 0 01-2.1 0 1 1 0 10-1.4 1.4 3.5 3.5 0 004.9 0z"/></svg>',
+}
+
+def share_html(d):
+    """Share button + fallback menu for a design page. The visible trigger tries the
+    native OS share sheet first (covers Instagram, WhatsApp, Messages, etc. on mobile);
+    the menu below is the desktop fallback, built from real share URLs at generation time
+    so it works even before/without JS. Instagram has no public web share URL, so it's
+    reachable only via the native share sheet, not the fallback menu — that's honest,
+    not a gap."""
+    page_url = f"{DOMAIN}/catalogue/{d['slug']}/" if DOMAIN else f"/catalogue/{d['slug']}/"
+    img_url = f"{DOMAIN}{d['img']}" if DOMAIN else d['img']
+    text = f"{d['name']} — {SITE}"
+    wa = "https://api.whatsapp.com/send?text=" + quote(f"{text}\n{page_url}")
+    fb = "https://www.facebook.com/sharer/sharer.php?u=" + quote(page_url)
+    pin = "https://pinterest.com/pin/create/button/?url=" + quote(page_url) + "&media=" + quote(img_url) + "&description=" + quote(text)
+    return f"""<div class="design-share">
+          <button type="button" class="share-btn" data-share-title="{esc(text)}" data-share-url="{esc(page_url)}" data-share-img="{esc(img_url)}" aria-haspopup="true" aria-expanded="false">
+            {SHARE_SVG['share']}<span>Share</span>
+          </button>
+          <div class="share-menu" hidden>
+            <a class="share-opt" href="{wa}" target="_blank" rel="noopener" data-net="whatsapp" aria-label="Share on WhatsApp">{SHARE_SVG['whatsapp']}</a>
+            <a class="share-opt" href="{fb}" target="_blank" rel="noopener" data-net="facebook" aria-label="Share on Facebook">{SHARE_SVG['facebook']}</a>
+            <a class="share-opt" href="{pin}" target="_blank" rel="noopener" data-net="pinterest" aria-label="Share on Pinterest">{SHARE_SVG['pinterest']}</a>
+            <button type="button" class="share-opt" data-net="copy" aria-label="Copy link">{SHARE_SVG['link']}</button>
+          </div>
+          <span class="share-toast" role="status" aria-live="polite" hidden></span>
+        </div>"""
 
 def card(d):
     occ = " ".join(d["occasions"]); sty = " ".join(d["styles"])
@@ -253,7 +288,7 @@ def catalogue_index():
 {sections}
   </div>
   <p class="cat-empty" id="cat-empty" hidden><span class="wrap">No designs match those filters — <a href="https://wa.me/{WA}">message us</a> and we&#39;ll create one for you.</span></p>
-""" + FOOTER + '  <script src="/app.js?v=23" defer></script>\n  <script src="/catalogue.js?v=23" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=24" defer></script>\n  <script src="/catalogue.js?v=24" defer></script>\n</body>\n</html>\n'
 
 SOCIAL_ICONS = ('<a href="https://www.instagram.com/aarchis.byarchanasoni/" target="_blank" rel="noopener">Instagram</a>'
   '<a href="https://www.facebook.com/aarchis.byearchanasonii/" target="_blank" rel="noopener">Facebook</a>'
@@ -344,7 +379,10 @@ def design_page(d, related):
       </div>
       <div class="design-info" data-reveal="right">
         <nav class="crumbs"><a href="/catalogue/">Catalogue</a> <span>/</span> {esc(d['categoryLabel'])}</nav>
-        <h1>{esc(d['name'])}</h1>
+        <div class="design-head">
+          <h1>{esc(d['name'])}</h1>
+          {share_html(d)}
+        </div>
         <div class="design-tags">{'<span class="chip new">New arrival</span>' if d.get('isNew') else ''}{chips(d['occasions'],'occ')}{chips(d['styles'],'sty')}</div>
         <p class="design-desc">{esc(d['detail'])}</p>
         <ul class="design-meta">
@@ -382,7 +420,7 @@ def design_page(d, related):
       <div class="dgrid">{rel_cards}</div>
     </div>
   </section>
-""" if related else "") + FOOTER + '  <script src="/app.js?v=23" defer></script>\n  <script src="/catalogue.js?v=23" defer></script>\n</body>\n</html>\n'
+""" if related else "") + FOOTER + '  <script src="/app.js?v=24" defer></script>\n  <script src="/catalogue.js?v=24" defer></script>\n</body>\n</html>\n'
 
 SCENE_DESC = {
     "bridal":     "Heirloom lehengas in zari, zardozi and khat work — crafted for the moment you've always pictured.",
@@ -543,7 +581,7 @@ def navratri_page():
       </div>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=23" defer></script>\n  <script src="/catalogue.js?v=23" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=24" defer></script>\n  <script src="/catalogue.js?v=24" defer></script>\n</body>\n</html>\n'
 
 
 PROCESS_STEPS = [
@@ -620,7 +658,7 @@ def how_it_works_page():
         See <a href="/nri-brides/" style="color:var(--gold-deep);font-weight:600">how it works for NRI brides</a>.</p>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=23" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=24" defer></script>\n</body>\n</html>\n'
 
 def nri_hub_page():
     title = "Custom Indian Bridal Outfits for NRI Brides — Made in India, Delivered Worldwide | Aarchi's"
@@ -690,7 +728,7 @@ def nri_hub_page():
       </div>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=23" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=24" defer></script>\n</body>\n</html>\n'
 
 COUNTRY_META = {
   "usa": {
@@ -791,7 +829,7 @@ def nri_country_page(cc):
       </div>
     </div>
   </section>
-""" + FOOTER + '  <script src="/app.js?v=23" defer></script>\n  <script src="/catalogue.js?v=23" defer></script>\n</body>\n</html>\n'
+""" + FOOTER + '  <script src="/app.js?v=24" defer></script>\n  <script src="/catalogue.js?v=24" defer></script>\n</body>\n</html>\n'
 
 def inject_showcase():
     import re
