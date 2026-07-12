@@ -108,26 +108,35 @@ function initShare() {
   // gesture, and an await in between drops that activation, so navigator.share()
   // silently rejects and the button looks unresponsive. Fetching ahead of time keeps
   // the actual share() call synchronous with the click.
+  const shareTitle = btn.dataset.shareTitle, shareUrl = btn.dataset.shareUrl;
   let sharedFile = null;
   if (navigator.share && navigator.canShare && btn.dataset.shareImg) {
     fetch(btn.dataset.shareImg)
       .then(res => res.blob())
       .then(blob => {
         const file = new File([blob], "aarchis-design.webp", { type: blob.type || "image/webp" });
-        if (navigator.canShare({ files: [file] })) sharedFile = file;
+        // Validate the FULL shape (title + url + files together) up front — sharing just
+        // {files} was the other bug: it silently dropped the product URL from every
+        // native share once an image was attached, since {title, files} alone was sent.
+        if (navigator.canShare({ title: shareTitle, url: shareUrl, files: [file] })) sharedFile = file;
       })
       .catch(() => { /* prefetch failed — link-only share still works */ });
   }
 
   function nativeShare() {
-    const title = btn.dataset.shareTitle, url = btn.dataset.shareUrl;
-    const data = sharedFile ? { title, files: [sharedFile] } : { title, url };
+    const data = sharedFile
+      ? { title: shareTitle, url: shareUrl, files: [sharedFile] }
+      : { title: shareTitle, url: shareUrl };
     navigator.share(data)
       .then(() => ev("share_click", { method: "native", design_slug: slug }))
       .catch(() => { /* user cancelled the share sheet — no-op */ });
   }
 
   btn.addEventListener("click", () => {
+    // Fires on every tap, regardless of whether a share is completed — the
+    // top-of-funnel signal for "Share was opened", distinct from share_click below
+    // which only fires once a destination is actually used.
+    ev("share_open", { design_slug: slug });
     if (navigator.share) { nativeShare(); return; }
     menu.hidden ? openMenu() : closeMenu();
   });
